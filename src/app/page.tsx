@@ -1,6 +1,12 @@
-import { getTranslations } from "next-intl/server";
+import { Button } from "@/ui/button";
 
 export default async function Home() {
-  const t = await getTranslations("pages");
-  return <p className="text-primary">{t("home.title")}</p>;
+  return (
+    <div className="p-6 flex items-center gap-5">
+      <Button variant={"primary"} size={"small"}>کلیک کنید!</Button>
+      <Button variant={"primary"} size={"medium"}>کلیک کنید!</Button>
+      <Button variant={"primary"} size={"large"}>کلیک کنید!</Button>
+      <Button variant={"information"} size={"medium"}>کلیک کنید!</Button>
+    </div>
+  );
 }
