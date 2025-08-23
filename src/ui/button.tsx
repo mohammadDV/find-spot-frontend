@@ -23,11 +23,10 @@ const buttonVariants = cva(
           "bg-information text-on-information hover:bg-information/90",
       },
       size: {
-        medium: "px-6 py-3 font-bold has-[>svg]:px-4",
+        medium: "px-5 py-3 font-bold has-[>svg]:px-4",
         small:
-          "rounded-lg text-xs font-bold py-3 gap-1.5 px-5 has-[>svg]:px-3.5",
-        large: "text-lg rounded-xl font-normal py-3.5 px-7 has-[>svg]:px-5",
-        icon: "size-9",
+          "rounded-lg text-xs font-bold py-3 gap-1.5 px-4 has-[>svg]:px-3",
+        large: "text-lg rounded-xl font-normal py-3.5 px-6 has-[>svg]:px-5",
       },
     },
     defaultVariants: {

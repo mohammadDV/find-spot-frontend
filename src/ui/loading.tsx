@@ -11,7 +11,6 @@ const sizeClasses: Record<Size, string> = {
   small: "w-4",
   medium: "w-6",
   large: "w-10",
-  icon: "w-5",
 };
 
 const typeClasses: Record<LoadingProps["type"], string> = {
