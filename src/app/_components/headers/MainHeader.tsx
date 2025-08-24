@@ -1,6 +1,6 @@
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/ui/button";
-import { ArrowDown2, Coin, Coin1 } from "iconsax-react";
+import { ArrowDown2, Coin, Coin1, HambergerMenu } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,7 +31,7 @@ export const MainHeader = () => {
   ];
 
   return (
-    <header className="container relative mx-auto px-4 py-6 z-40">
+    <header className="container relative mx-auto px-4 py-3 lg:py-6 z-40">
       <div className="flex items-center justify-between">
         <Link href={"/"}>
           <Image
@@ -39,29 +39,31 @@ export const MainHeader = () => {
             alt="finybo logo"
             width={158}
             height={40}
+            className="w-[94px] h-6 lg:w-[158px] lg:h-10"
           />
         </Link>
-        <ul className="flex items-center gap-10">
+        <ul className="hidden lg:flex items-center gap-10">
           {menuData.map((item) => (
             <li key={item.id} className="text-xl font-light text-white">
               <Link href={item.link}>{item.title}</Link>
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-end gap-3">
+        <div className="hidden lg:flex items-center justify-end gap-3">
           <Button
             variant={"outline"}
             size={"medium"}
             className="border-white text-white bg-transparent"
           >
-            <Coin1 className="stroke-white"/>
+            <Coin1 className="stroke-white" />
             {t("buttons.convertCurrency")}
-            <ArrowDown2 className="stroke-white size-4"/>
+            <ArrowDown2 className="stroke-white size-4" />
           </Button>
           <Button variant={"white"} size={"medium"}>
             {t("buttons.login")}
           </Button>
         </div>
+        <HambergerMenu className="lg:hidden size-6 stroke-white" />
       </div>
     </header>
   );
