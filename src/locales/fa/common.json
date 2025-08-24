@@ -1,3 +1,20 @@
 {
-  "buttons": {}
+  "buttons": {
+    "login": "ورود/ ثبت نام",
+    "convertCurrency": "تبدیل ارز",
+    "search": "جست و جو"
+  },
+  "navigation": {
+    "submitBusiness": "ثبت کسب و کار",
+    "searchMap": "جست و جو در نقشه",
+    "events": "رویدادها",
+    "news": "اخبار"
+  },
+  "categories": {
+    "all": "دسته‌بندی‌ها",
+    "restaurants": "رستوران‌ها",
+    "house": "خانه و کاشانه",
+    "vehicle": "خودرو",
+    "health": "سلامت"
+  }
 }
