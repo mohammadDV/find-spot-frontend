@@ -18,7 +18,7 @@ export const HorizontalPostCard = () => {
                     دنبال ته‌چین خوشمزه یا دیزی اصیل ایرانی هستی؟ این لیست بهت کمک می‌کنه بهترین رستوران‌های ایرانی استانبول رو پیدا کنی.
                 </p>
                 <Button variant={"link"} size={"medium"}>
-                    {t("buttons.more")}
+                    {t("buttons.readMore")}
                     <ArrowLeft2 className="size-4 stroke-primary" />
                 </Button>
             </div>
