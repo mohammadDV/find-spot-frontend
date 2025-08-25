@@ -3,7 +3,9 @@
     "login": "ورود/ ثبت نام",
     "convertCurrency": "تبدیل ارز",
     "search": "جست و جو",
-    "seeAll": "مشاهده همه"
+    "seeAll": "مشاهده همه",
+    "more": "بیشتر",
+    "readAll": "خواندن همه"
   },
   "navigation": {
     "submitBusiness": "ثبت کسب و کار",
