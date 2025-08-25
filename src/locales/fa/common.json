@@ -7,11 +7,24 @@
     "more": "بیشتر",
     "readAll": "خواندن همه"
   },
+  "brand": {
+    "name": "فینیبو"
+  },
   "navigation": {
     "submitBusiness": "ثبت کسب و کار",
     "searchMap": "جست و جو در نقشه",
     "events": "رویدادها",
-    "news": "اخبار"
+    "news": "اخبار",
+    "aboutUs": "درباره‌ی ما",
+    "contactUs": "تماس با ما",
+    "terms": "قوانین و مقررات",
+    "concerts": "کنسرت‌ها",
+    "houseRepairs": "تعمیرات منزل",
+    "houseCleaning": "نظافت منزل",
+    "makeup": "آرایشگری",
+    "restaurant": "رستوران و کافه",
+    "jobs": "فرصت‌های شغلی",
+    "support": "پشتیبانی"
   },
   "categories": {
     "all": "دسته‌بندی‌ها",
@@ -19,5 +32,11 @@
     "house": "خانه و کاشانه",
     "vehicle": "خودرو",
     "health": "سلامت"
+  },
+  "footer": {
+    "customerServices": "خدمات مشتریان",
+    "others": "سایر",
+    "contactInfo": "اطلاعات تماس",
+    "copyright": "کلیه حقوق این سرویس (وب‌سایت) محفوظ و متعلق به شرکت فینیبو می‌باشد."
   }
 }

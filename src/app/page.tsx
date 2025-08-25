@@ -7,6 +7,7 @@ import { BannerSlider } from "./_components/bannerSilder/BannerSlider";
 import { Coffee } from "iconsax-react";
 import { HorizontalPostCard } from "./_components/cards/HorizontalPostCard";
 import { VerticalPostCard } from "./_components/cards/VerticalPostCard";
+import { Footer } from "./_components/footer/Footer";
 
 export default async function Home() {
   const tPages = await getTranslations("pages");
@@ -60,6 +61,7 @@ export default async function Home() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }
