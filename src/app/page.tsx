@@ -3,6 +3,7 @@ import { MainHeader } from "./_components/headers/MainHeader";
 import Hero from "./_components/hero/Hero";
 import { TitleSection } from "./_components/titleSection";
 import { BusinessCard } from "./_components/cards/BusinessCard";
+import { BannerSlider } from "./_components/bannerSilder/BannerSlider";
 
 export default async function Home() {
   const t = await getTranslations("pages");
@@ -17,6 +18,9 @@ export default async function Home() {
           <div className="mt-8 grid lg:grid-cols-3 gap-8">
             {Array.from({ length: 6 }, (_, i) => <BusinessCard key={i} />)}
           </div>
+        </div>
+        <div className="mt-24">
+          <BannerSlider />
         </div>
       </main>
     </>
