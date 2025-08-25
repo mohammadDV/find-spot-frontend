@@ -2,7 +2,8 @@
   "buttons": {
     "login": "ورود/ ثبت نام",
     "convertCurrency": "تبدیل ارز",
-    "search": "جست و جو"
+    "search": "جست و جو",
+    "seeAll": "مشاهده همه"
   },
   "navigation": {
     "submitBusiness": "ثبت کسب و کار",

@@ -61,6 +61,7 @@ body {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --shadow-card: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 :root {
@@ -118,13 +119,14 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
 .container {
-  @media (width >= 96rem) {
+  @media (width >=96rem) {
     max-width: 80rem;
   }
 }

@@ -17,9 +17,9 @@ const Hero = () => {
   const tPages = usePagesTranslation();
 
   return (
-    <div className="relative h-[420px] lg:h-[630px] w-full relative bg-[url('/images/hero.jpg')] -mt-24 z-10 flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat">
+    <div className="relative h-[420px] lg:h-[630px] 2xl:h-[760px] w-full bg-[url('/images/hero.jpg')] -mt-24 z-10 flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0"></div>
-      <div className="lg:w-3xl flex flex-col items-center w-full p-4 lg:p-0 mt-12 lg:mb-20">
+      <div className="lg:w-3xl flex flex-col items-center w-full p-4 lg:p-0 mt-12 lg:mb-20 2xl:mb-44">
         <h1 className="text-white text-2xl lg:text-4xl font-bold">
           {tPages("home.title")}
         </h1>
@@ -59,7 +59,7 @@ const Hero = () => {
           <div className="relative flex-1 w-full lg:w-auto">
             <SearchNormal1 className="size-6 stroke-white absolute right-3 top-3 rotate-90" />
             <input
-              className="w-full border border-white/60 rounded-xl outline-none p-3 pr-11 bg-transparent text-white"
+              className="w-full border border-white/60 rounded-xl outline-none px-3 py-[11px] pr-11 bg-transparent text-white"
               placeholder={tCommon("buttons.search")}
             />
           </div>
