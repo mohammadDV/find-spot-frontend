@@ -163,3 +163,19 @@ body {
   background: var(--primary);
   border-radius: 6px;
 }
+
+.carousel-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: var(--on-primary);
+  border-radius: 50%;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-pagination-bullet-active {
+  width: 40px;
+  background: var(--primary);
+  border-radius: 6px;
+}

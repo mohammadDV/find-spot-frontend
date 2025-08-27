@@ -8,14 +8,14 @@ export const BusinessCard = () => {
   return (
     <Link
       href={"/"}
-      className="overflow-hidden rounded-lg lg:rounded-3xl bg-white shadow-card"
+      className="block overflow-hidden rounded-lg lg:rounded-3xl bg-white shadow-card"
     >
       <Image
         src={cardThumbnail}
         alt=""
         width={400}
         height={283}
-        className="rounded-t-lg lg:rounded-t-3xl w-full lg:h-[283px] h-28"
+        className="rounded-t-lg lg:rounded-t-3xl w-full lg:aspect-3/2 object-cover"
       />
       <div className="p-3 lg:p-6">
         <h3 className="text-title font-semibold text-2xs lg:text-base">

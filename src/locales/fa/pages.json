@@ -13,5 +13,10 @@
     "aroundMe": "اطراف من",
     "fastShipping": "ارسال سریع",
     "takeaway": "بیرون بر"
+  },
+  "events": {
+    "title": "رویداد ها",
+    "newest": "جدیدترین",
+    "cheapest": "ارزان ترین"
   }
 }
