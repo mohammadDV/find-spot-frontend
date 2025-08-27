@@ -1,6 +1,6 @@
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/ui/button";
-import { ArrowDown2, Coin, Coin1, HambergerMenu } from "iconsax-react";
+import { ArrowDown2, Coin1, HambergerMenu } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -44,7 +44,7 @@ export const MainHeader = () => {
         </Link>
         <ul className="hidden lg:flex items-center gap-10">
           {menuData.map((item) => (
-            <li key={item.id} className="text-xl font-light text-white">
+            <li key={item.id} className="font-normal text-lg text-white">
               <Link href={item.link}>{item.title}</Link>
             </li>
           ))}

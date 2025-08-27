@@ -5,5 +5,13 @@
     "weekend": "آخر هفته چیکار کنیم",
     "categories": "دسته‌بندی‌ها",
     "news": "اخبار"
+  },
+  "search": {
+    "filters": "فیلتر",
+    "price": "قیمت",
+    "nowOpen": "الان بازه",
+    "aroundMe": "اطراف من",
+    "fastShipping": "ارسال سریع",
+    "takeaway": "بیرون بر"
   }
 }
