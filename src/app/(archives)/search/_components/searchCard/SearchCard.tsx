@@ -6,9 +6,9 @@ import Image from "next/image";
 
 export const SearchCard = () => {
     return (
-        <div className="hover:bg-white transition-all p-6 border-b border-border flex gap-6">
-            <Image src={coffeeImg} alt="" width={308} height={184} className="rounded-2xl object-cover" />
-            <div className="flex flex-col gap-2.5">
+        <div className="hover:bg-white overflow-hidden transition-all lg:p-6 lg:border-b shadow-card lg:shadow-none rounded-lg lg:rounded-none border-border lg:flex gap-6">
+            <Image src={coffeeImg} alt="" width={308} height={184} className="lg:rounded-2xl object-cover w-full lg:w-[308px] h-[107px] lg:h-[184px]" />
+            <div className="flex flex-col gap-2.5 p-3 lg:p-0">
                 <h3 className="text-title font-bold">
                     رستوران مهمت افندی
                 </h3>
@@ -26,10 +26,10 @@ export const SearchCard = () => {
                     <Location className="stroke-title size-3 lg:size-6" />
                     <p className="text-2xs lg:text-xs text-title">عومرانیه، چارشی</p>
                 </div>
-                <p className="text-description text-lg leading-6">
+                <p className="text-description text-2xs lg:text-lg lg:leading-6">
                     دنبال ته‌چین خوشمزه یا دیزی اصیل ایرانی هستی؟ این لیست بهت کمک می‌کنه بهترین رستوران‌های ایرانی استانبول رو پیدا کنی.
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center flex-wrap gap-2">
                     <Badge variant={"secondary"}>
                         قهوه
                     </Badge>

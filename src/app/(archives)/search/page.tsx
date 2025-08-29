@@ -47,7 +47,7 @@ export default async function SearchPage() {
                             {t("search.takeaway")}
                         </Button>
                     </div>
-                    <div className="flex flex-col gap-6 mt-8">
+                    <div className="grid grid-cols-2 lg:flex flex-col gap-4 lg:gap-6 mt-8">
                         {Array.from({ length: 3 }, (_, i) => (
                             <SearchCard key={i} />
                         ))}
