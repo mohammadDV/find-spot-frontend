@@ -18,5 +18,10 @@
     "title": "رویداد ها",
     "newest": "جدیدترین",
     "cheapest": "ارزان ترین"
+  },
+  "biz": {
+    "website": "وبسایت",
+    "phoneNumber": "تلفن تماس",
+    "address": "آدرس"
   }
 }
