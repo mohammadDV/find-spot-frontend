@@ -22,6 +22,19 @@
   "biz": {
     "website": "وبسایت",
     "phoneNumber": "تلفن تماس",
-    "address": "آدرس"
+    "address": "آدرس",
+    "addressAndHour": "آدرس و ساعت",
+    "features": "امکانات",
+    "score": "امتیاز",
+    "servicesQuality": "کیفیت خدمات",
+    "comments": "نظرات",
+    "great": "عالی",
+    "good": "خوب",
+    "medium": "متوسط",
+    "bad": "بد",
+    "tooBad": "خیلی بد",
+    "newestComments": "جدیدترین نظرات",
+    "highestScore": "بالاترین امتیاز",
+    "likeComment": "پسندیدن نظر"
   }
 }

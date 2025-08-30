@@ -3,11 +3,13 @@ import bizImg from "@/assets/images/biz.jpg";
 import Star from "@/ui/star";
 import {
   ArchiveAdd,
+  ArrowDown2,
   BookSaved,
   Call,
   Clock,
   Gallery,
   Global,
+  Like1,
   Location,
   Share,
   ShieldTick,
@@ -16,6 +18,9 @@ import {
 import { Badge } from "@/ui/badge";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/ui/button";
+import { Progress } from "@/ui/progress";
+import sampleAvatar from "@/assets/images/sample-avatar.png";
+import foodImg from "@/assets/images/food.jpg";
 
 export default async function BizPage() {
   const tCommon = await getTranslations("common");
@@ -140,7 +145,7 @@ export default async function BizPage() {
                 height={24}
                 className="size-4 lg:size-6"
               />
-              <h2 className="text-title lg:text-2xl font-bold">آدرس و ساعت</h2>
+              <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.addressAndHour")}</h2>
             </div>
             <div className="flex gap-6 mt-4">
               <iframe
@@ -196,7 +201,7 @@ export default async function BizPage() {
                 height={24}
                 className="size-4 lg:size-6"
               />
-              <h2 className="text-title lg:text-2xl font-bold">امکانات</h2>
+              <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.features")}</h2>
             </div>
             <div className="flex items-center gap-3 mt-4">
               <div className="flex items-center flex-wrap gap-2">
@@ -214,10 +219,213 @@ export default async function BizPage() {
                 </Badge>
               </div>
             </div>
+            <div className="flex items-center gap-1 lg:gap-2 mt-8">
+              <Image
+                src={"/images/finybo-icon.svg"}
+                alt="finybo icon"
+                width={24}
+                height={24}
+                className="size-4 lg:size-6"
+              />
+              <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.score")}</h2>
+            </div>
+            <div className="flex items-center justify-between gap-6 mt-4">
+              <div className="flex flex-col gap-4 flex-1">
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-14">
+                    {tPages("biz.great")}
+                  </p>
+                  <Progress value={90} className="flex-1" indicatorColorClass="bg-secondary" />
+                  <p className="text-lg text-title w-7">
+                    142
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-14">
+                    {tPages("biz.good")}
+                  </p>
+                  <Progress value={75} className="flex-1" indicatorColorClass="bg-[#DE3314]" />
+                  <p className="text-lg text-title w-7">
+                    12
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-14">
+                    {tPages("biz.medium")}
+                  </p>
+                  <Progress value={60} className="flex-1" indicatorColorClass="bg-[#E14212]" />
+                  <p className="text-lg text-title w-7">
+                    2
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-14">
+                    {tPages("biz.bad")}
+                  </p>
+                  <Progress value={45} className="flex-1" indicatorColorClass="bg-[#E86310]" />
+                  <p className="text-lg text-title w-7">
+                    3
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-14">
+                    {tPages("biz.tooBad")}
+                  </p>
+                  <Progress value={20} className="flex-1" indicatorColorClass="bg-[#F59D0C]" />
+                  <p className="text-lg text-title w-7">
+                    15
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <p className="text-sm text-black">
+                  خیلی خوب
+                </p>
+                <div className="flex items-center">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star key={i} className="size-4 lg:size-8" />
+                  ))}
+                </div>
+                <p className="text-sm text-black">
+                  (2.5 از مجموع 128 امتیاز)
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 lg:gap-2 mt-8">
+              <Image
+                src={"/images/finybo-icon.svg"}
+                alt="finybo icon"
+                width={24}
+                height={24}
+                className="size-4 lg:size-6"
+              />
+              <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.servicesQuality")}</h2>
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-6">
+              <div className="flex flex-col lg:w-1/2 gap-6">
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-20 text-center">
+                    کیفیت غذا
+                  </p>
+                  <Progress value={80} className="flex-1" />
+                  <p className="text-lg text-title w-7">
+                    4.5
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-20 text-center">
+                    فضای آرام
+                  </p>
+                  <Progress value={80} className="flex-1" />
+                  <p className="text-lg text-title w-7">
+                    4.5
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col lg:w-1/2 gap-6">
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-20 text-center">
+                    کیفیت غذا
+                  </p>
+                  <Progress value={80} className="flex-1" />
+                  <p className="text-lg text-title w-7">
+                    4.5
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-2.5">
+                  <p className="text-lg text-title w-20 text-center">
+                    فضای آرام
+                  </p>
+                  <Progress value={80} className="flex-1" />
+                  <p className="text-lg text-title w-7">
+                    4.5
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 lg:gap-4 mt-8">
+              <div className="flex items-center gap-1 lg:gap-2">
+                <Image
+                  src={"/images/finybo-icon.svg"}
+                  alt="finybo icon"
+                  width={24}
+                  height={24}
+                  className="size-4 lg:size-6"
+                />
+                <h2 className="text-title lg:text-3xl font-bold">
+                  {tPages("biz.comments")}
+                </h2>
+              </div>
+              <div className="flex items-center gap-2 lg:gap-4">
+                <Button variant={"outline"} size={"small"}>
+                  {tPages("biz.newestComments")}
+                  <ArrowDown2 className="size-4 stroke-primary mr-1" />
+                </Button>
+                <Button variant={"outline"} size={"small"}>
+                  {tPages("biz.highestScore")}
+                  <ArrowDown2 className="size-4 stroke-primary mr-1" />
+                </Button>
+              </div>
+            </div>
+            <div className="mt-6 flex flex-col gap-6">
+              {Array.from({ length: 3 }, (_, i) => (
+                <div key={i} className="p-6 border-b border-border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <Image src={sampleAvatar} alt="" width={57} height={57} className="rounded-full" />
+                      <div className="flex flex-col gap-2">
+                        <p className="text-title">مریم عطایی</p>
+                        <p className="text-title text-xs">124 نظر</p>
+                      </div>
+                    </div>
+                    <Button variant={"link"} size={"small"} className="!px-2">
+                      {tPages("biz.likeComment")}
+                      <Like1 className="stroke-primary size-4" />
+                    </Button>
+                  </div>
+                  <div className="flex items-center gap-2 mt-6">
+                    <div className="flex items-center">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Star key={i} className="size-4" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-description">
+                      27 آذر 1403
+                    </p>
+                  </div>
+                  <p className="my-2.5 text-lg text-description">
+                    دنبال ته‌چین خوشمزه یا دیزی اصیل ایرانی هستی؟ این لیست بهت کمک می‌کنه بهترین رستوران‌های ایرانی استانبول رو پیدا کنی.
+                  </p>
+                  <div className="flex items-center flex-wrap gap-2">
+                    <Badge variant={"secondary"} className="text-sm">
+                      کیفیت غذای خوب
+                    </Badge>
+                    <Badge variant={"secondary"} className="text-sm">
+                      فضای آرام و راحت
+                    </Badge>
+                    <Badge variant={"secondary"} className="text-sm">
+                      دسترسی به حمل و نقل عمومی
+                    </Badge>
+                  </div>
+                  <div className="grid lg:grid-cols-4 gap-4 mt-6">
+                    {Array.from({ length: 3 }, (_, i) => (
+                      <Image key={i} src={foodImg} alt="" width={177} height={127} className="w-full rounded-sm" />
+                    ))}
+                    <div className="w-full relative rounded-sm overflow-hidden">
+                      <div className="absolute inset-0 bg-black/40"></div>
+                      <Image src={foodImg} alt="" width={177} height={127} className="w-full rounded-sm" />
+                      <p className="flex absolute h-full top-0 w-full z-10 items-center justify-center font-bold text-2xl text-white">
+                        +12
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="lg:w-1/3">
-            <div className="w-full shadow-card rounded-2xl p-6 flex flex-col gap-6">
+            <div className="w-full shadow-card rounded-2xl p-6 flex flex-col gap-6 sticky top-28">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Global className="stroke-title size-6" />
