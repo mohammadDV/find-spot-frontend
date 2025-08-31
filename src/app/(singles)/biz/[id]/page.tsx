@@ -113,21 +113,21 @@ export default async function BizPage() {
               <Button
                 variant={"outline"}
                 size={"medium"}
-                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !p-2 lg:px-5 lg:py-2.5">
+                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
                 {tCommon("buttons.menu")}
                 <BookSaved className="stroke-primary size-4 lg:size-6" />
               </Button>
               <Button
                 variant={"outline"}
                 size={"medium"}
-                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !p-2 lg:px-5 lg:py-2.5">
+                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
                 {tCommon("buttons.share")}
                 <Share className="stroke-primary size-4 lg:size-6" />
               </Button>
               <Button
                 variant={"outline"}
                 size={"medium"}
-                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !p-2 lg:px-5 lg:py-2.5">
+                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
                 {tCommon("buttons.save")}
                 <ArchiveAdd className="stroke-primary size-4 lg:size-6" />
               </Button>
@@ -439,14 +439,14 @@ export default async function BizPage() {
 
           <div className="hidden lg:block lg:w-1/3">
             <div className="w-full shadow-card rounded-2xl p-6 flex flex-col gap-6 sticky top-28">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Global className="stroke-title size-6" />
                   <p className="text-xs text-title">{tPages("biz.website")}</p>
                 </div>
                 <p className="text-sm text-title text-left">mehmet.efendi.tr</p>
               </div>
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Call className="stroke-title size-6" />
                   <p className="text-xs text-title">
@@ -455,7 +455,7 @@ export default async function BizPage() {
                 </div>
                 <p className="text-sm text-title text-left">05379786435</p>
               </div>
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Location className="stroke-title size-6" />
                   <p className="text-xs text-title">{tPages("biz.address")}</p>

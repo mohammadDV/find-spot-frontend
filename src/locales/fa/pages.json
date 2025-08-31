@@ -37,5 +37,9 @@
     "highestScore": "بالاترین امتیاز",
     "likeComment": "پسندیدن نظر",
     "suggestions": "پیشنهادها"
+  },
+  "event": {
+    "information": "اطلاعات",
+    "similarEvents": "رویدادهای مشابه"
   }
 }
