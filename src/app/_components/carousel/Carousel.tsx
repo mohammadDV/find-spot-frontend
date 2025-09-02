@@ -1,10 +1,11 @@
 "use client";
 
-import { useCommonTranslation } from "@/hooks/useTranslation";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
 import Image from "next/image";
 import { JSX, useRef } from "react";
 import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -34,7 +35,7 @@ export const Carousel = ({
     };
 
     return (
-        <section className="mt-8 lg:mt-16 container mx-auto lg:px-4">
+        <section className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-4 lg:mb-6">
                 <div className="flex items-center gap-2.5 lg:gap-4">
                     {title && <div className="flex items-center gap-1 lg:gap-2">

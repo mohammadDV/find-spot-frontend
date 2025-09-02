@@ -41,5 +41,8 @@
   "event": {
     "information": "اطلاعات",
     "similarEvents": "رویدادهای مشابه"
+  },
+  "weekend": {
+    "title": "آخر هفته چیکار کنیم؟"
   }
 }

@@ -14,7 +14,7 @@ export default async function EventsPage() {
             <div className="mt-4 lg:mt-10">
                 <BannerSlider />
             </div>
-            <div className="mt-4 lg:mt-10 container mx-auto px-4">
+            <div className="mt-4 lg:mt-10">
                 <Carousel
                     slides={Array.from({ length: 4 }, (_, i) => <BusinessCard key={i} />)}
                     desktopSlidesPerView={3}
