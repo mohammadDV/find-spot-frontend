@@ -15,6 +15,7 @@ import { MainHeader } from "./_components/headers/MainHeader";
 import Hero from "./_components/hero/Hero";
 import { TitleSection } from "./_components/titleSection";
 import { PostsResponse } from "@/types/post.type";
+import { EventSummary } from "@/types/event.type";
 
 interface FeaturedBusinessesService {
   status: StatusCode;
@@ -22,6 +23,11 @@ interface FeaturedBusinessesService {
     offers: Array<BusinessSummary>,
     weekends: Array<BusinessSummary>,
   }
+}
+
+interface EventsSlidersService {
+  sliders: Array<EventSummary>,
+  recommended: Array<EventSummary>,
 }
 
 async function getFeaturedBusinesses(): Promise<FeaturedBusinessesService> {
@@ -36,6 +42,10 @@ async function getLatestPosts(): Promise<PostsResponse> {
   return await getFetch<PostsResponse>("/posts/latest");
 }
 
+async function getEventsSliders(): Promise<EventsSlidersService> {
+  return await getFetch<EventsSlidersService>("/events/sliders");
+}
+
 export default async function Home() {
   const tPages = await getTranslations("pages");
   const tCommon = await getTranslations("common");
@@ -44,10 +54,12 @@ export default async function Home() {
   const [
     featuredBusinessesData,
     activeCategoriesData,
+    eventsSlidersData,
     latestPostsData
   ] = await Promise.all([
     getFeaturedBusinesses(),
     getActiveCategories(),
+    getEventsSliders(),
     getLatestPosts()
   ])
 
@@ -87,7 +99,7 @@ export default async function Home() {
           </div>
         </div>
         <div className="mt-10 lg:mt-24">
-          <BannerSlider />
+          <BannerSlider data={eventsSlidersData.sliders} />
         </div>
         <div className="mt-10 lg:mt-24 container mx-auto px-4">
           <TitleSection title={tPages("home.weekend")} link="/" />
@@ -131,7 +143,7 @@ export default async function Home() {
           {isMobile ? (
             <div className="flex flex-col gap-3">
               {latestPostsData.data?.slice(0, 3).map(item => (
-                <VerticalPostCard data={item} />
+                <VerticalPostCard key={item.id} data={item} />
               ))}
             </div>
           ) : (

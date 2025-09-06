@@ -9,34 +9,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { Badge } from "@/ui/badge";
+import { EventSummary } from "@/types/event.type";
+import { useCommonTranslation } from "@/hooks/useTranslation";
+import { createFileUrl } from "@/lib/utils";
 
-export const BannerSlider = () => {
-  const slideData = [
-    {
-      id: 1,
-      title: "فستیوال رقص ۲۰۲۵ – استانبول",
-      description:
-        "با ما برقص، بخند و از لحظه‌هات لذت ببر. تجربه‌ای فراموش‌نشدنی در انتظار توست!",
-      tags: ["رویدادهای ویژه", "22 - 27 مهر"],
-      button: "تهیه‌ی بلیط",
-    },
-    {
-      id: 2,
-      title: "فستیوال رقص ۲۰۲۵ – استانبول",
-      description:
-        "با ما برقص، بخند و از لحظه‌هات لذت ببر. تجربه‌ای فراموش‌نشدنی در انتظار توست!",
-      tags: ["رویدادهای ویژه", "22 - 27 مهر"],
-      button: "تهیه‌ی بلیط",
-    },
-    {
-      id: 3,
-      title: "فستیوال رقص ۲۰۲۵ – استانبول",
-      description:
-        "با ما برقص، بخند و از لحظه‌هات لذت ببر. تجربه‌ای فراموش‌نشدنی در انتظار توست!",
-      tags: ["رویدادهای ویژه", "22 - 27 مهر"],
-      button: "تهیه‌ی بلیط",
-    },
-  ];
+interface BannerSliderProps {
+  data: Array<EventSummary>
+}
+
+export const BannerSlider = ({ data }: BannerSliderProps) => {
+  const t = useCommonTranslation();
 
   return (
     <>
@@ -57,44 +39,49 @@ export const BannerSlider = () => {
           loop={true}
           className="h-full"
         >
-          {slideData.map((slide, index) => (
+          {data.map((slide, index) => (
             <SwiperSlide key={index}>
               <div className="relative w-full h-full">
                 <div className="absolute inset-0">
                   <Image
-                    src={bannerSample}
+                    src={createFileUrl(slide.image)}
                     alt=""
                     priority={index === 0}
                     quality={100}
+                    width={1440}
+                    height={555}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="relative lg:max-w-3xl px-4 mx-auto z-10 h-full flex items-center">
                   <div className="flex flex-col justify-center items-start h-full">
                     <div className="flex items-center gap-2.5">
-                      {slide.tags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant={"primary"}
-                          className="text-lg py-0"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
+                      <Badge
+                        variant={"primary"}
+                        className="text-lg py-0 font-normal"
+                      >
+                        {slide.start_date}
+                      </Badge>
+                      <Badge
+                        variant={"primary"}
+                        className="text-lg py-0 font-normal"
+                      >
+                        {slide.end_date}
+                      </Badge>
                     </div>
                     <h1 className="text-white text-2xl lg:text-4xl font-bold mt-6 mb-2">
                       {slide.title}
                     </h1>
                     <p className="font-normal text-white text-xl lg:text-2xl">
-                      {slide.description}
+                      {slide.summary}
                     </p>
-                    <Link href={"/"} className="mt-4">
+                    <Link href={slide.link} target="_blank" className="mt-4">
                       <Button
                         variant="white"
                         size="medium"
                         className="rounded-lg lg:rounded-xl text-xs lg:text-base"
                       >
-                        {slide.button}
+                        {t("buttons.ticketing")}
                       </Button>
                     </Link>
                   </div>
