@@ -1,6 +1,4 @@
 import { Pagination } from "@/app/_components/pagination";
-import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
-import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { getBusinesses } from "./_api/getBusinesses";
 import { SearchFilters } from "./_components/filters/SearchFilters";
@@ -21,9 +19,6 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-    const t = await getTranslations("pages");
-    const isMobile = await isMobileDevice();
-
     const resolvedSearchParams = await searchParams;
 
     const page = parseInt(resolvedSearchParams?.page || "1");
@@ -66,14 +61,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                             height={24}
                             className="size-4 lg:size-6"
                         />
-                        <h2 className="text-title lg:text-3xl font-bold">بهترین رستوران‌های استانبول</h2>
+                        <h2 className="text-title lg:text-3xl font-bold">کسب و کار های یافت شده</h2>
                     </div>
                     <div className="mt-5 lg:mt-8 flex flex-wrap items-center gap-2 lg:gap-4">
                         <SearchFilters />
                     </div>
                     <div className="grid grid-cols-2 lg:flex flex-col gap-4 lg:gap-6 mt-8">
-                        {Array.from({ length: 3 }, (_, i) => (
-                            <SearchCard key={i} />
+                        {searchData.data?.map(item => (
+                            <SearchCard key={item.id} data={item} />
                         ))}
                     </div>
                     {searchData.data && searchData.total > 10 && (

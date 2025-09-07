@@ -2,6 +2,7 @@ import { usePagesTranslation } from "@/hooks/useTranslation"
 import { Button } from "@/ui/button"
 import { ArrowDown2, HambergerMenu } from "iconsax-react";
 import { AmountTypeFilter } from "./AmountTypeFilter";
+import { NowOpenFilter } from "./NowOpenFilter";
 
 export const SearchFilters = () => {
     const t = usePagesTranslation();
@@ -14,17 +15,9 @@ export const SearchFilters = () => {
                 <ArrowDown2 className="size-4 stroke-white mr-1" />
             </Button>
             <AmountTypeFilter />
-            <Button variant={"outline"} size={"small"}>
-                {t("search.nowOpen")}
-            </Button>
+            <NowOpenFilter />
             <Button variant={"outline"} size={"small"}>
                 {t("search.aroundMe")}
-            </Button>
-            <Button variant={"outline"} size={"small"}>
-                {t("search.fastShipping")}
-            </Button>
-            <Button variant={"outline"} size={"small"}>
-                {t("search.takeaway")}
             </Button>
         </>
     )
