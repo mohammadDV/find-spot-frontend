@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getBusinesses } from "./_api/getBusinesses";
 import { SearchFilters } from "./_components/filters/SearchFilters";
 import { SearchCard } from "./_components/searchCard/SearchCard";
+import { SortFilter } from "./_components/filters/SortFilter";
 
 interface SearchPageProps {
     searchParams: Promise<{
@@ -53,15 +54,18 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <div className="my-8 lg:my-10 container mx-auto px-4">
             <div className="lg:flex justify-between gap-10">
                 <div className="lg:w-3/4">
-                    <div className="flex items-center gap-1 lg:gap-2">
-                        <Image
-                            src={"/images/finybo-icon.svg"}
-                            alt="finybo icon"
-                            width={24}
-                            height={24}
-                            className="size-4 lg:size-6"
-                        />
-                        <h2 className="text-title lg:text-3xl font-bold">کسب و کار های یافت شده</h2>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 lg:gap-2">
+                            <Image
+                                src={"/images/finybo-icon.svg"}
+                                alt="finybo icon"
+                                width={24}
+                                height={24}
+                                className="size-4 lg:size-6"
+                            />
+                            <h2 className="text-title lg:text-3xl font-bold">کسب و کار های یافت شده</h2>
+                        </div>
+                        <SortFilter />
                     </div>
                     <div className="mt-5 lg:mt-8 flex flex-wrap items-center gap-2 lg:gap-4">
                         <SearchFilters />

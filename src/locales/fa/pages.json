@@ -12,7 +12,14 @@
     "nowOpen": "الان بازه",
     "aroundMe": "اطراف من",
     "fastShipping": "ارسال سریع",
-    "takeaway": "بیرون بر"
+    "takeaway": "بیرون بر",
+    "sort": {
+      "default": "پیش‌فرض",
+      "most_rate": "بیشترین امتیاز",
+      "min_rate": "کمترین امتیاز",
+      "most_price": "بیشترین قیمت",
+      "min_price": "کمترین قیمت"
+    }
   },
   "events": {
     "title": "رویداد ها",

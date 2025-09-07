@@ -1,5 +1,5 @@
-import { usePagesTranslation } from "@/hooks/useTranslation"
-import { Button } from "@/ui/button"
+import { usePagesTranslation } from "@/hooks/useTranslation";
+import { Button } from "@/ui/button";
 import { ArrowDown2, HambergerMenu } from "iconsax-react";
 import { AmountTypeFilter } from "./AmountTypeFilter";
 import { NowOpenFilter } from "./NowOpenFilter";
