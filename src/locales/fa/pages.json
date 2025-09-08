@@ -24,7 +24,9 @@
   "events": {
     "title": "رویداد ها",
     "newest": "جدیدترین",
-    "cheapest": "ارزان ترین"
+    "oldest": "قدیمی‌ترین",
+    "priceHighest": "گران‌ترین",
+    "priceLowest": "ارزان‌ترین"
   },
   "biz": {
     "website": "وبسایت",

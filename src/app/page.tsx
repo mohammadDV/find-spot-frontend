@@ -4,6 +4,8 @@ import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
 import { createFileUrl } from "@/lib/utils";
 import { BusinessSummary } from "@/types/business.type";
 import { Category } from "@/types/category.type";
+import { EventsSlidersResponse } from "@/types/event.type";
+import { PostsResponse } from "@/types/post.type";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { BannerSlider } from "./_components/bannerSilder/BannerSlider";
@@ -14,8 +16,6 @@ import { Footer } from "./_components/footer/Footer";
 import { MainHeader } from "./_components/headers/MainHeader";
 import Hero from "./_components/hero/Hero";
 import { TitleSection } from "./_components/titleSection";
-import { PostsResponse } from "@/types/post.type";
-import { EventSummary } from "@/types/event.type";
 
 interface FeaturedBusinessesService {
   status: StatusCode;
@@ -23,11 +23,6 @@ interface FeaturedBusinessesService {
     offers: Array<BusinessSummary>,
     weekends: Array<BusinessSummary>,
   }
-}
-
-interface EventsSlidersService {
-  sliders: Array<EventSummary>,
-  recommended: Array<EventSummary>,
 }
 
 async function getFeaturedBusinesses(): Promise<FeaturedBusinessesService> {
@@ -42,8 +37,8 @@ async function getLatestPosts(): Promise<PostsResponse> {
   return await getFetch<PostsResponse>("/posts/latest");
 }
 
-async function getEventsSliders(): Promise<EventsSlidersService> {
-  return await getFetch<EventsSlidersService>("/events/sliders");
+async function getEventsSliders(): Promise<EventsSlidersResponse> {
+  return await getFetch<EventsSlidersResponse>("/events/sliders");
 }
 
 export default async function Home() {

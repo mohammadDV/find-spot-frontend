@@ -1,5 +1,5 @@
 import { useCommonTranslation } from "@/hooks/useTranslation";
-import { cn, createFileUrl, isEmpty } from "@/lib/utils";
+import { cn, createFileUrl } from "@/lib/utils";
 import Star from "@/ui/star";
 import { Location } from "iconsax-react";
 import Image from "next/image";
@@ -8,10 +8,12 @@ import Link from "next/link";
 interface BusinessCardProps {
   id: number;
   title: string;
-  start_amount?: number;
+  start_amount?: number | string;
   image: string | null;
   rate?: number;
-  location?: string
+  location?: string;
+  start_date?: string;
+  end_date?: string;
 }
 
 export const BusinessCard = ({
@@ -20,13 +22,15 @@ export const BusinessCard = ({
   image,
   location,
   rate,
-  start_amount
+  start_amount,
+  start_date,
+  end_date
 }: BusinessCardProps) => {
   const t = useCommonTranslation();
 
   return (
     <Link
-      href={`/biz/${id}`}
+      href={start_date ? `/event/${id}` : `/biz/${id}`}
       className="block overflow-hidden rounded-lg lg:rounded-3xl bg-white shadow-card"
     >
       <Image
@@ -40,6 +44,10 @@ export const BusinessCard = ({
         <h3 className="text-title font-semibold text-2xs mb-2.5 lg:text-base line-clamp-1">
           {title}
         </h3>
+        {start_date && <div className="flex items-center gap-2 mb-1 lg:my-2">
+          <Location className="stroke-title size-3 lg:size-6" />
+          <p className="text-2xs lg:text-xs text-title">{start_date + " تا " + end_date}</p>
+        </div>}
         {location && <div className="flex items-center gap-2 mb-1 lg:my-2">
           <Location className="stroke-title size-3 lg:size-6" />
           <p className="text-2xs lg:text-xs text-title">{location}</p>
@@ -58,7 +66,6 @@ export const BusinessCard = ({
           <p className="text-2xs lg:text-sm text-title">{t("currency.startAmount")}</p>
           <p className="text-primary text-2xs lg:text-base">
             {start_amount}
-            <span className="font-semibold mr-1">لیر</span>
           </p>
         </div>}
       </div>
