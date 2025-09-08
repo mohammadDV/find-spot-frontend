@@ -42,7 +42,9 @@
     "tooBad": "خیلی بد",
     "noScoreYet": "هنوز امتیازی ثبت نشده",
     "newestComments": "جدیدترین نظرات",
+    "oldestComments": "قدیمی نظرات",
     "highestScore": "بالاترین امتیاز",
+    "lowestScore": "کمترین امتیاز",
     "likeComment": "پسندیدن نظر",
     "suggestions": "پیشنهادها"
   },

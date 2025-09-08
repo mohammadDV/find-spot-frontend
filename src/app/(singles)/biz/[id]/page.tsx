@@ -1,8 +1,7 @@
 import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { Map } from "@/app/_components/Map";
+import { Pagination } from "@/app/_components/pagination/Pagination";
 import { TitleSection } from "@/app/_components/titleSection";
-import foodImg from "@/assets/images/food.jpg";
-import sampleAvatar from "@/assets/images/sample-avatar.png";
 import { cn, createFileUrl, isEmpty } from "@/lib/utils";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
@@ -10,12 +9,9 @@ import { Progress } from "@/ui/progress";
 import Star from "@/ui/star";
 import {
   ArchiveAdd,
-  ArrowDown2,
-  BookSaved,
   Call,
   Clock,
   Global,
-  Like1,
   Location,
   Share,
   ShieldTick,
@@ -25,22 +21,46 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import { getBusiness } from "../_api/getBusiness";
+import { getBusinessReviews } from "../_api/getBusinessReviews";
+import { getSimilarBusinesses } from "../_api/getSimilarBusinesses";
 import { ImageGallery } from "../_components/ImageGallery";
 import { MenuViewer } from "../_components/MenuViewer";
+import { ReviewCard } from "../_components/ReviewCard";
+import { ReviewSortFilter } from "../_components/ReviewSortFilter";
 
 interface BizPageProps {
   params: Promise<{
     id: string;
   }>;
+  searchParams: Promise<{
+    page?: string;
+    sort?: string;
+    column?: string;
+  }>;
 }
 
-export default async function BizPage({ params }: BizPageProps) {
+export default async function BizPage({ params, searchParams }: BizPageProps) {
   const tCommon = await getTranslations("common");
   const tPages = await getTranslations("pages");
 
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
 
-  const [businessData] = await Promise.all([getBusiness({ id: resolvedParams?.id || '' })])
+  const page = parseInt(resolvedSearchParams?.page || "1");
+  const sort = resolvedSearchParams?.sort;
+  const column = resolvedSearchParams?.column;
+
+  const [businessData, similarBusinessesData, reviewsData] = await Promise.all([
+    getBusiness({ id: resolvedParams?.id || '' }),
+    getSimilarBusinesses({ id: resolvedParams?.id || '' }),
+    getBusinessReviews({
+      id: resolvedParams?.id || '',
+      page,
+      count: 10,
+      sort,
+      column
+    }),
+  ])
 
   const colorClasses = [
     "bg-secondary",
@@ -354,71 +374,23 @@ export default async function BizPage({ params }: BizPageProps) {
                 </h2>
               </div>
               <div className="flex items-center gap-4">
-                <Button variant={"outline"} size={"small"}>
-                  {tPages("biz.newestComments")}
-                  <ArrowDown2 className="size-4 stroke-primary mr-1" />
-                </Button>
-                <Button variant={"outline"} size={"small"}>
-                  {tPages("biz.highestScore")}
-                  <ArrowDown2 className="size-4 stroke-primary mr-1" />
-                </Button>
+                <ReviewSortFilter />
               </div>
             </div>
             <div className="mt-3 lg:mt-6 flex flex-col gap-2 lg:gap-6">
-              {Array.from({ length: 3 }, (_, i) => (
-                <div key={i} className="p-3 lg:p-6 border-b border-border">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <Image src={sampleAvatar} alt="" width={57} height={57} className="rounded-full" />
-                      <div className="flex flex-col gap-2">
-                        <p className="text-title font-medium">مریم عطایی</p>
-                        <p className="text-title text-xs">124 نظر</p>
-                      </div>
-                    </div>
-                    <Button variant={"link"} size={"small"} className="!px-2">
-                      {tPages("biz.likeComment")}
-                      <Like1 className="stroke-primary size-4" />
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-2 mt-3 lg:mt-6">
-                    <div className="flex items-center">
-                      {Array.from({ length: 5 }, (_, i) => (
-                        <Star key={i} className="size-4" />
-                      ))}
-                    </div>
-                    <p className="text-xs text-description">
-                      27 آذر 1403
-                    </p>
-                  </div>
-                  <p className="my-2.5 text-xs lg:text-lg text-description">
-                    دنبال ته‌چین خوشمزه یا دیزی اصیل ایرانی هستی؟ این لیست بهت کمک می‌کنه بهترین رستوران‌های ایرانی استانبول رو پیدا کنی.
-                  </p>
-                  <div className="flex items-center flex-wrap gap-2">
-                    <Badge variant={"secondary"} className="text-xs lg:text-sm">
-                      کیفیت غذای خوب
-                    </Badge>
-                    <Badge variant={"secondary"} className="text-xs lg:text-sm">
-                      فضای آرام و راحت
-                    </Badge>
-                    <Badge variant={"secondary"} className="text-xs lg:text-sm">
-                      دسترسی به حمل و نقل عمومی
-                    </Badge>
-                  </div>
-                  <div className="grid grid-cols-4 gap-2 lg:gap-4 mt-3 lg:mt-6">
-                    {Array.from({ length: 3 }, (_, i) => (
-                      <Image key={i} src={foodImg} alt="" width={177} height={127} className="w-full rounded-sm h-[87px] lg:h-[137px] object-cover" />
-                    ))}
-                    <div className="w-full relative rounded-sm overflow-hidden">
-                      <div className="absolute inset-0 bg-black/40"></div>
-                      <Image src={foodImg} alt="" width={177} height={127} className="w-full rounded-sm h-[87px] lg:h-[137px] object-cover" />
-                      <p className="flex absolute h-full top-0 w-full z-10 items-center justify-center font-bold text-2xl text-white">
-                        +12
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              {reviewsData.data.map((review) => (
+                <ReviewCard key={review.id} review={review} />
               ))}
             </div>
+            {reviewsData.last_page > 1 && (
+              <Pagination
+                currentPage={reviewsData.current_page}
+                lastPage={reviewsData.last_page}
+                links={reviewsData.links}
+                total={reviewsData.total}
+                routeUrl={`/biz/${resolvedParams.id}`}
+              />
+            )}
           </div>
 
           <div className="hidden lg:block lg:w-1/3">
@@ -454,8 +426,15 @@ export default async function BizPage({ params }: BizPageProps) {
         <div className="mt-10 lg:mt-24 container mx-auto">
           <TitleSection title={tPages("biz.suggestions")} link="/" />
           <div className="mt-4 lg:mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
-            {Array.from({ length: 4 }, (_, i) => (
-              <BusinessCard key={i} />
+            {similarBusinessesData?.map(item => (
+              <BusinessCard
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                image={item.image}
+                location={item.area?.title}
+                rate={item.rate}
+                start_amount={item.start_amount} />
             ))}
           </div>
         </div>
