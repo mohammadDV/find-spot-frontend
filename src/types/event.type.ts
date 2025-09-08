@@ -13,6 +13,29 @@ export interface EventSummary {
     image: string;
 }
 
+export interface Event {
+    id: number;
+    title: string;
+    summary: string | null;
+    information: string | null;
+    description: string | null;
+    link: string | null;
+    address: string | null;
+    amount: string;
+    lat: string;
+    long: string;
+    image: string | null;
+    video: string | null;
+    website: string | null;
+    facebook: string | null;
+    instagram: string | null;
+    whatsapp: string | null;
+    youtube: string | null;
+    start_date: string;
+    end_date: string;
+    slider_image: string | null;
+}
+
 export interface EventsSlidersResponse {
     sliders: Array<EventSummary>,
     recommended: Array<EventSummary>,

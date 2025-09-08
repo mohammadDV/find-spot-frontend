@@ -10,7 +10,7 @@ interface GetAllEventsParams {
 
 export async function getAllEvents({
     page = 1,
-    count = 10,
+    count = 12,
     sort,
     column
 }: GetAllEventsParams): Promise<EventsResponse> {

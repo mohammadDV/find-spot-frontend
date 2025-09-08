@@ -1,5 +1,5 @@
 import { BusinessCard } from "@/app/_components/cards/BusinessCard";
-import { Map } from "@/app/_components/Map";
+import { Map } from "@/app/_components/map/Map";
 import { Pagination } from "@/app/_components/pagination/Pagination";
 import { TitleSection } from "@/app/_components/titleSection";
 import { cn, createFileUrl, isEmpty } from "@/lib/utils";
