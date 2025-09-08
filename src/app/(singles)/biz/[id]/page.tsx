@@ -1,5 +1,12 @@
-import Image from "next/image";
-import bizImg from "@/assets/images/biz.jpg";
+import { BusinessCard } from "@/app/_components/cards/BusinessCard";
+import { Map } from "@/app/_components/Map";
+import { TitleSection } from "@/app/_components/titleSection";
+import foodImg from "@/assets/images/food.jpg";
+import sampleAvatar from "@/assets/images/sample-avatar.png";
+import { cn, createFileUrl } from "@/lib/utils";
+import { Badge } from "@/ui/badge";
+import { Button } from "@/ui/button";
+import { Progress } from "@/ui/progress";
 import Star from "@/ui/star";
 import {
   ArchiveAdd,
@@ -15,25 +22,30 @@ import {
   ShieldTick,
   Star1,
 } from "iconsax-react";
-import { Badge } from "@/ui/badge";
 import { getTranslations } from "next-intl/server";
-import { Button } from "@/ui/button";
-import { Progress } from "@/ui/progress";
-import sampleAvatar from "@/assets/images/sample-avatar.png";
-import foodImg from "@/assets/images/food.jpg";
-import { TitleSection } from "@/app/_components/titleSection";
-import { BusinessCard } from "@/app/_components/cards/BusinessCard";
+import Image from "next/image";
+import { getBusiness } from "../_api/getBusiness";
 
-export default async function BizPage() {
+interface BizPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function BizPage({ params }: BizPageProps) {
   const tCommon = await getTranslations("common");
   const tPages = await getTranslations("pages");
+
+  const resolvedParams = await params;
+
+  const [businessData] = await Promise.all([getBusiness({ id: resolvedParams?.id || '' })])
 
   return (
     <>
       <section className="relative lg:h-[560px] w-full">
         <div className="absolute inset-0">
           <Image
-            src={bizImg}
+            src={createFileUrl(businessData.business?.image!)}
             alt=""
             priority
             width={1420}
@@ -46,35 +58,37 @@ export default async function BizPage() {
         <div className="relative container px-4 py-4 lg:py-0 mx-auto z-10 h-full">
           <div className="flex flex-col justify-end pb-2 lg:pb-11 items-start h-full">
             <h1 className="text-2xl lg:text-[40px] font-bold text-white">
-              رستوران مهمت افندی کادیکوی
+              {businessData.business.title}
             </h1>
             <div className="flex items-center gap-2 mt-6">
               <div className="flex items-center">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <Star key={i} className="size-4 lg:size-8" />
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    className={cn("size-4 lg:size-8", index < businessData.business.rate ? "fill-warning" : "fill-border")} />
                 ))}
               </div>
               <p className="text-sm lg:text-xl text-white">
-                (2.5 از مجموع 128 امتیاز)
+                ({businessData.business.rate} از مجموع {businessData.business.reviews_count} امتیاز)
               </p>
             </div>
             <div className="flex items-center gap-2 my-2 lg:my-4">
               <Location className="stroke-white size-4 lg:size-6" />
-              <p className="text-xs lg:text-lg text-white">Umraniye, carsi</p>
+              <p className="text-xs lg:text-lg text-white">{businessData.business.area.title}</p>
             </div>
             <div className="flex items-center gap-2">
               <ShieldTick className="stroke-success size-4 lg:size-6" />
               <p className="text-xs lg:text-xl font-bold text-white">₺₺</p>
             </div>
             <div className="flex items-center flex-wrap gap-2 my-2 lg:my-4">
-              <Badge variant={"secondary"}>قهوه</Badge>
-              <Badge variant={"secondary"}>کباب</Badge>
-              <Badge variant={"secondary"}>دسر ترکی</Badge>
+              {businessData.business.tags?.map(item => (
+                <Badge key={item.id} variant={"secondary"}>{item.title}</Badge>
+              ))}
             </div>
             <div className="flex items-center gap-2">
               <Clock className="stroke-white size-4 lg:size-6" />
               <p className="text-xs lg:text-lg text-white">
-                12:00 - 14:00 شنبه تا پنجشنبه
+                {businessData.business.opening_hours}
               </p>
             </div>
             <div className="mt-6 lg:mt-10 flex items-center lg:justify-end w-full gap-4">
@@ -141,15 +155,11 @@ export default async function BizPage() {
                 className="size-4 lg:size-6"
               />
               <h2 className="text-title lg:text-3xl font-bold">
-                رستوران مهمت افندی
+                {businessData.business.title}
               </h2>
             </div>
             <p className="mt-2 lg:mt-4 text-xs lg:text-lg text-title">
-              در اینجا، هر غذا داستانی دارد؛ داستانی از طعم‌های سنتی ترکی، از
-              دست‌پخت‌هایی که از دل فرهنگ و تاریخ آمده‌اند، و از مهربانی‌ای که
-              در هر بشقاب جاری‌ست. از کباب‌های آبدار گرفته تا پیش‌غذاهای رنگارنگ
-              و دسرهای وسوسه‌انگیز ترک، همه چیز با عشق آماده می‌شود . با همان
-              وسواسی که مادربزرگ‌ها برای عزیزترین‌هایشان غذا می‌پزند.
+              {businessData.business.description}
             </p>
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
@@ -162,47 +172,59 @@ export default async function BizPage() {
               <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.addressAndHour")}</h2>
             </div>
             <div className="flex flex-col-reverse lg:flex-row gap-3 lg:gap-6 mt-2 lg:mt-4">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d385399.3519135348!2d28.682539048623084!3d41.00485196902631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1ccfe98bc01b0d0!2zSXN0YW5idWwsIMSwc3RhbmJ1bCwgVMO8cmtpeWU!5e0!3m2!1sen!2s!4v1756486573705!5m2!1sen!2s"
-                allowFullScreen={true}
-                className="rounded-xl lg:w-[473px]"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+              <Map
+                lat={parseFloat(businessData.business.lat)}
+                long={parseFloat(businessData.business.long)}
+                className="rounded-xl lg:w-[473px] h-[300px]"
+              />
               <div className="flex-1 h-full bg-card rounded-xl p-4 flex flex-col gap-2 lg:gap-1.5">
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">شنبه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_saturday} صبح تا {businessData.business.to_saturday} شب
+                  </p>
                 </div>
                 <hr className="border-t border-border" />
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">یکشنبه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_sunday} صبح تا {businessData.business.to_sunday} شب
+                  </p>
                 </div>
                 <hr className="border-t border-border" />
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">دوشنبه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_monday} صبح تا {businessData.business.to_monday} شب
+                  </p>
                 </div>
                 <hr className="border-t border-border" />
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">سه‌شنبه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_tuesday} صبح تا {businessData.business.to_tuesday} شب
+                  </p>
                 </div>
                 <hr className="border-t border-border" />
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">چهارشنبه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_wednesday} صبح تا {businessData.business.to_wednesday} شب
+                  </p>
                 </div>
                 <hr className="border-t border-border" />
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">پنجشنبه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_thursday} صبح تا {businessData.business.to_thursday} شب
+                  </p>
                 </div>
                 <hr className="border-t border-border" />
                 <div className="flex items-center justify-between">
                   <p className="text-xs lg:text-lg text-title">جمعه</p>
-                  <p className="text-xs text-title">10 صبح تا 11 شب</p>
+                  <p className="text-sm text-title">
+                    {businessData.business.from_friday} صبح تا {businessData.business.to_friday} شب
+                  </p>
                 </div>
               </div>
             </div>
@@ -218,18 +240,11 @@ export default async function BizPage() {
             </div>
             <div className="flex mt-2 lg:mt-4">
               <div className="flex items-center flex-wrap gap-2">
-                <Badge variant={"grey"} className="text-sm">
-                  پارکینگ
-                </Badge>
-                <Badge variant={"grey"} className="text-sm">
-                  دسترسی به حمل و نقل عمومی
-                </Badge>
-                <Badge variant={"grey"} className="text-sm">
-                  پیک بیرون بر
-                </Badge>
-                <Badge variant={"grey"} className="text-sm">
-                  فضای باز
-                </Badge>
+                {businessData.business.facilities?.map(item => (
+                  <Badge key={item.id} variant={"grey"} className="text-sm">
+                    {item.title}
+                  </Badge>
+                ))}
               </div>
             </div>
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
@@ -444,7 +459,7 @@ export default async function BizPage() {
                   <Global className="stroke-title size-6" />
                   <p className="text-xs text-title">{tPages("biz.website")}</p>
                 </div>
-                <p className="text-sm text-title text-left">mehmet.efendi.tr</p>
+                <p className="text-sm text-title text-left">{businessData.business.website}</p>
               </div>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
@@ -453,7 +468,7 @@ export default async function BizPage() {
                     {tPages("biz.phoneNumber")}
                   </p>
                 </div>
-                <p className="text-sm text-title text-left">05379786435</p>
+                <p className="text-sm text-title text-left">{businessData.business.phone}</p>
               </div>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
@@ -461,8 +476,7 @@ export default async function BizPage() {
                   <p className="text-xs text-title">{tPages("biz.address")}</p>
                 </div>
                 <p className="text-sm text-title text-left">
-                  Mimar Hayrettin Mh. Divan-i Ali Sk. No:12/C 34126 Istanbul
-                  Turkey
+                  {businessData.business.address}
                 </p>
               </div>
             </div>

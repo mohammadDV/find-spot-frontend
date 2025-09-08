@@ -1,11 +1,11 @@
 "use client"
 
+import { BusinessCard } from "@/app/_components/cards/BusinessCard";
+import { peydaFont } from "@/constants/localfont";
 import { BusinessSummary } from "@/types/business.type";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { BusinessCard } from "@/app/_components/cards/BusinessCard";
-import { peydaFont } from "@/constants/localfont";
 
 const MapContainer = dynamic(() => import("react-leaflet").then(mod => ({ default: mod.MapContainer })), { ssr: false });
 const Marker = dynamic(() => import("react-leaflet").then(mod => ({ default: mod.Marker })), { ssr: false });
