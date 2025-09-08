@@ -3,7 +3,7 @@ import { Map } from "@/app/_components/Map";
 import { TitleSection } from "@/app/_components/titleSection";
 import foodImg from "@/assets/images/food.jpg";
 import sampleAvatar from "@/assets/images/sample-avatar.png";
-import { cn, createFileUrl } from "@/lib/utils";
+import { cn, createFileUrl, isEmpty } from "@/lib/utils";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import { Progress } from "@/ui/progress";
@@ -14,17 +14,19 @@ import {
   BookSaved,
   Call,
   Clock,
-  Gallery,
   Global,
   Like1,
   Location,
   Share,
   ShieldTick,
-  Star1,
+  Star1
 } from "iconsax-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import Link from "next/link";
 import { getBusiness } from "../_api/getBusiness";
+import { ImageGallery } from "../_components/ImageGallery";
+import { MenuViewer } from "../_components/MenuViewer";
 
 interface BizPageProps {
   params: Promise<{
@@ -39,6 +41,21 @@ export default async function BizPage({ params }: BizPageProps) {
   const resolvedParams = await params;
 
   const [businessData] = await Promise.all([getBusiness({ id: resolvedParams?.id || '' })])
+
+  const colorClasses = [
+    "bg-secondary",
+    "bg-[#DE3314]",
+    "bg-[#E14212]",
+    "bg-[#E86310]",
+    "bg-[#F59D0C]"
+  ];
+  const translationKeys = [
+    "biz.great",
+    "biz.good",
+    "biz.medium",
+    "biz.bad",
+    "biz.tooBad"
+  ];
 
   return (
     <>
@@ -78,7 +95,9 @@ export default async function BizPage({ params }: BizPageProps) {
             </div>
             <div className="flex items-center gap-2">
               <ShieldTick className="stroke-success size-4 lg:size-6" />
-              <p className="text-xs lg:text-xl font-bold text-white">₺₺</p>
+              <p className="text-xs lg:text-xl font-bold text-white">
+                {"₺".repeat(businessData.business.amount_type)}
+              </p>
             </div>
             <div className="flex items-center flex-wrap gap-2 my-2 lg:my-4">
               {businessData.business.tags?.map(item => (
@@ -92,22 +111,23 @@ export default async function BizPage({ params }: BizPageProps) {
               </p>
             </div>
             <div className="mt-6 lg:mt-10 flex items-center lg:justify-end w-full gap-4">
-              <Button
-                variant={"outline"}
-                size={"small"}
+              <Link
+                href={`https://www.google.com/maps?q=${businessData.business.lat},${businessData.business.long}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <Button
+                  variant={"outline"}
+                  size={"small"}
+                  className="border-white text-white px-4"
+                >
+                  <Location className="stroke-white size-3 lg:size-6" />
+                  {tCommon("buttons.map")}
+                </Button>
+              </Link>
+              {!isEmpty(businessData.business.files) && <ImageGallery
+                files={businessData.business.files}
                 className="border-white text-white px-4"
-              >
-                <Location className="stroke-white size-3 lg:size-6" />
-                {tCommon("buttons.map")}
-              </Button>
-              <Button
-                variant={"outline"}
-                size={"small"}
-                className="border-white text-white px-4"
-              >
-                <Gallery className="stroke-white size-3 lg:size-6" />
-                {tCommon("buttons.seeOtherImages")}
-              </Button>
+              />}
             </div>
           </div>
         </div>
@@ -124,13 +144,10 @@ export default async function BizPage({ params }: BizPageProps) {
                 <Star1 className="stroke-white size-4 lg:size-6" />
                 {tCommon("buttons.submitComment")}
               </Button>
-              <Button
-                variant={"outline"}
-                size={"medium"}
-                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
-                {tCommon("buttons.menu")}
-                <BookSaved className="stroke-primary size-4 lg:size-6" />
-              </Button>
+              {businessData.business.menu_image && <MenuViewer
+                menuImage={businessData.business.menu_image}
+                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5"
+              />}
               <Button
                 variant={"outline"}
                 size={"medium"}
@@ -259,63 +276,40 @@ export default async function BizPage({ params }: BizPageProps) {
             </div>
             <div className="flex items-center justify-between gap-3 lg:gap-6 mt-2 lg:mt-4">
               <div className="flex flex-col gap-2 lg:gap-4 flex-1">
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-10 lg:w-14">
-                    {tPages("biz.great")}
-                  </p>
-                  <Progress value={90} className="flex-1" indicatorColorClass="bg-secondary" />
-                  <p className="text-xs lg:text-lg text-title w-6 lg:w-7">
-                    142
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-10 lg:w-14">
-                    {tPages("biz.good")}
-                  </p>
-                  <Progress value={75} className="flex-1" indicatorColorClass="bg-[#DE3314]" />
-                  <p className="text-xs lg:text-lg text-title w-6 lg:w-7">
-                    12
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-10 lg:w-14">
-                    {tPages("biz.medium")}
-                  </p>
-                  <Progress value={60} className="flex-1" indicatorColorClass="bg-[#E14212]" />
-                  <p className="text-xs lg:text-lg text-title w-6 lg:w-7">
-                    2
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-10 lg:w-14">
-                    {tPages("biz.bad")}
-                  </p>
-                  <Progress value={45} className="flex-1" indicatorColorClass="bg-[#E86310]" />
-                  <p className="text-xs lg:text-lg text-title w-6 lg:w-7">
-                    3
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-10 lg:w-14">
-                    {tPages("biz.tooBad")}
-                  </p>
-                  <Progress value={20} className="flex-1" indicatorColorClass="bg-[#F59D0C]" />
-                  <p className="text-xs lg:text-lg text-title w-6 lg:w-7">
-                    15
-                  </p>
-                </div>
+                {businessData.reviews.map((review, index) => {
+                  return (
+                    <div key={index} className="flex items-center justify-between gap-2.5">
+                      <p className="text-xs lg:text-lg text-title w-10 lg:w-14">
+                        {tPages(translationKeys[index] || "biz.great")}
+                      </p>
+                      <Progress
+                        value={review.percentage}
+                        className="flex-1"
+                        indicatorColorClass={colorClasses[index] || "bg-secondary"}
+                      />
+                      <p className="text-xs lg:text-lg text-title w-6 lg:w-7">
+                        {review.count}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <p className="text-xs lg:text-sm text-black">
-                  خیلی خوب
+                  {businessData.business.rate >= 4 ? tPages("biz.tooBad") :
+                    businessData.business.rate >= 3 ? tPages("biz.good") :
+                      businessData.business.rate >= 2 ? tPages("biz.medium") :
+                        businessData.business.rate >= 1 ? tPages("biz.bad") : tPages("biz.noScoreYet")}
                 </p>
                 <div className="flex items-center">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <Star key={i} className="size-4 lg:size-8" />
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <Star
+                      key={index}
+                      className={cn("size-4 lg:size-8", index < businessData.business.rate ? "fill-warning" : "fill-border")} />
                   ))}
                 </div>
                 <p className="text-xs lg:text-sm text-black">
-                  (2.5 از مجموع 128 امتیاز)
+                  ({businessData.business.rate} از مجموع {businessData.business.reviews_count} امتیاز)
                 </p>
               </div>
             </div>
@@ -329,47 +323,22 @@ export default async function BizPage({ params }: BizPageProps) {
               />
               <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.servicesQuality")}</h2>
             </div>
-            <div className="mt-2 lg:mt-4 flex items-center justify-between gap-3 lg:gap-6">
-              <div className="flex flex-col w-1/2 gap-3 lg:gap-6">
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-12 lg:w-20 text-center">
-                    کیفیت غذا
-                  </p>
-                  <Progress value={80} className="flex-1" />
-                  <p className="text-2xs lg:text-lg text-title w-6 lg:w-7">
-                    4.5
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-12 lg:w-20 text-center">
-                    فضای آرام
-                  </p>
-                  <Progress value={80} className="flex-1" />
-                  <p className="text-2xs lg:text-lg text-title w-6 lg:w-7">
-                    4.5
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col w-1/2 gap-3 lg:gap-6">
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-12 lg:w-20 text-center">
-                    کیفیت غذا
-                  </p>
-                  <Progress value={80} className="flex-1" />
-                  <p className="text-2xs lg:text-lg text-title w-6 lg:w-7">
-                    4.5
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2.5">
-                  <p className="text-xs lg:text-lg text-title w-12 lg:w-20 text-center">
-                    فضای آرام
-                  </p>
-                  <Progress value={80} className="flex-1" />
-                  <p className="text-2xs lg:text-lg text-title w-6 lg:w-7">
-                    4.5
-                  </p>
-                </div>
-              </div>
+            <div className="mt-2 lg:mt-4 grid grid-cols-2 gap-3 lg:gap-6">
+              {businessData.quality_services.map((service, index) => {
+                const progressValue = Math.min((service.count / Math.max(...businessData.quality_services.map(s => s.count))) * 100, 100);
+                const rating = (service.count * 5 / Math.max(...businessData.quality_services.map(s => s.count))).toFixed(1);
+                return (
+                  <div key={index} className="flex items-center justify-between gap-2.5">
+                    <p className="text-xs lg:text-lg text-title w-12 lg:w-20 text-center">
+                      {service.title}
+                    </p>
+                    <Progress value={progressValue} className="flex-1" />
+                    <p className="text-2xs lg:text-lg text-title w-6 lg:w-7">
+                      {rating}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
             <div className="flex items-center gap-4 mt-4 lg:mt-8">
               <div className="flex items-center gap-1 lg:gap-2">
