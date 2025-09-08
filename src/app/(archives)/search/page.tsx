@@ -4,6 +4,7 @@ import { getBusinesses } from "./_api/getBusinesses";
 import { SearchFilters } from "./_components/filters/SearchFilters";
 import { SearchCard } from "./_components/searchCard/SearchCard";
 import { SortFilter } from "./_components/filters/SortFilter";
+import { SearchMap } from "./_components/map";
 
 interface SearchPageProps {
     searchParams: Promise<{
@@ -85,7 +86,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         />
                     )}
                 </div>
-                <div className="bg-border lg:w-1/3 rounded-2xl">
+                <div className="lg:w-1/3">
+                    <SearchMap items={searchData.data || []} />
                 </div>
             </div>
         </div>

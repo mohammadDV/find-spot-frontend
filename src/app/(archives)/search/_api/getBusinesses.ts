@@ -42,7 +42,7 @@ export async function getBusinesses({
 
     if (filters && filters.length > 0) {
         filters.forEach(filter => {
-            searchParams.append('filter[]', filter);
+            searchParams.append('filters[]', filter);
         });
     }
 
