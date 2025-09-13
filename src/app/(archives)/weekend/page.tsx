@@ -2,9 +2,12 @@ import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { Carousel } from "@/app/_components/carousel";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import { getWeekends } from "./_api/getWeekends";
 
 export default async function WeekendPage() {
     const t = await getTranslations("pages");
+
+    const weekendsData = await getWeekends();
 
     return (
         <>
@@ -22,30 +25,25 @@ export default async function WeekendPage() {
                     </h2>
                 </div>
             </div>
-            <div className="my-6 lg:my-10">
-                <Carousel
-                    slides={Array.from({ length: 6 }, (_, i) => <BusinessCard key={i} />)}
-                    desktopSlidesPerView={4}
-                    mobileSlidesPerView={2.3}
-                    title="رستوران‌ها"
-                />
-            </div>
-            <div className="my-6 lg:my-10">
-                <Carousel
-                    slides={Array.from({ length: 6 }, (_, i) => <BusinessCard key={i} />)}
-                    desktopSlidesPerView={4}
-                    mobileSlidesPerView={2.3}
-                    title="کنسرت ها"
-                />
-            </div>
-            <div className="my-6 lg:my-10">
-                <Carousel
-                    slides={Array.from({ length: 6 }, (_, i) => <BusinessCard key={i} />)}
-                    desktopSlidesPerView={4}
-                    mobileSlidesPerView={2.3}
-                    title="کنسرت ها"
-                />
-            </div>
+            {Object.values(weekendsData.data)?.map(row => (
+                <div className="my-6 lg:my-10" key={row.title}>
+                    <Carousel
+                        slides={row.businesses?.map(item => (
+                            <BusinessCard
+                                key={item.id}
+                                id={item.id}
+                                image={item.image}
+                                title={item.title}
+                                rate={item.rate}
+                                start_amount={item.start_amount}
+                            />
+                        ))}
+                        desktopSlidesPerView={4}
+                        mobileSlidesPerView={2.3}
+                        title={row.title}
+                    />
+                </div>
+            ))}
         </>
     )
 }

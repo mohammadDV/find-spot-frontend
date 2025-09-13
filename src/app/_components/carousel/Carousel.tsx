@@ -46,12 +46,12 @@ export const Carousel = ({
                             height={24}
                             className="size-4 lg:size-6"
                         />
-                        <h2 className="text-title lg:text-3xl font-bold">{title}</h2>
+                        <h2 className="text-title lg:text-2xl font-bold">{title}</h2>
                     </div>}
                     <div className="h-0.5 rounded-full w-9 lg:w-12 bg-hint"></div>
                 </div>
                 <div className="flex items-center justify-end gap-4">
-                    {(!disableNavigation || slides?.length > (desktopSlidesPerView || 3)) && (
+                    {(!disableNavigation && slides?.length > (desktopSlidesPerView || 3)) && (
                         <div className="flex items-center gap-3 lg:gap-4">
                             <button
                                 onClick={handlePrevSlide}
