@@ -1,14 +1,14 @@
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { cn, createFileUrl } from "@/lib/utils";
 import Star from "@/ui/star";
-import { Location } from "iconsax-react";
+import { Calendar, Location } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 
 interface BusinessCardProps {
   id: number;
   title: string;
-  start_amount?: number | string;
+  start_amount?: number;
   image: string | null;
   rate?: number;
   location?: string;
@@ -45,7 +45,7 @@ export const BusinessCard = ({
           {title}
         </h3>
         {start_date && <div className="flex items-center gap-2 mb-1 lg:my-2">
-          <Location className="stroke-title size-3 lg:size-6" />
+          <Calendar className="stroke-title size-3 lg:size-6" />
           <p className="text-2xs lg:text-xs text-title">{start_date + " تا " + end_date}</p>
         </div>}
         {location && <div className="flex items-center gap-2 mb-1 lg:my-2">
@@ -58,14 +58,17 @@ export const BusinessCard = ({
               <Star key={index} className={cn("size-3 lg:size-4", index < rate ? "fill-warning" : "fill-border")} />
             ))}
           </div>
-          {/* <p className="text-2xs lg:text-xs text-description">
-            (از ۱۲۸ امتیاز)
-          </p> */}
         </div>}
-        {start_amount && <div className="flex items-center justify-between mt-3 lg:mt-4">
+        {(start_amount !== null && start_amount !== undefined) && <div className="flex items-center justify-between mt-3 lg:mt-4">
           <p className="text-2xs lg:text-sm text-title">{t("currency.startAmount")}</p>
           <p className="text-primary text-2xs lg:text-base">
-            {start_amount}
+            {start_amount > 0
+              ? (
+                <>{start_amount} {t("currency.lira")}</>
+              )
+              : (
+                t("currency.free")
+              )}
           </p>
         </div>}
       </div>

@@ -7,7 +7,7 @@ export interface EventSummary {
     start_date: string;
     end_date: string;
     link: string;
-    amount: string;
+    amount: number;
     lat: string;
     long: string;
     image: string;
@@ -21,7 +21,7 @@ export interface Event {
     description: string | null;
     link: string | null;
     address: string | null;
-    amount: string;
+    amount: number;
     lat: string;
     long: string;
     image: string | null;

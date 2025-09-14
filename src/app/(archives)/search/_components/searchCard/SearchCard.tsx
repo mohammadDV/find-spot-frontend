@@ -33,22 +33,18 @@ export const SearchCard = ({ data }: SearchCardProps) => {
               <Star key={index} className={cn("size-3 lg:size-4", index < data.rate ? "fill-warning" : "fill-border")} />
             ))}
           </div>
-          {/* <p className="text-2xs lg:text-xs text-description">
-            (از ۱۲۸ امتیاز)
-          </p> */}
         </div>
         <div className="flex items-center gap-2">
           <Location className="stroke-title size-3 lg:size-6" />
-          <p className="text-2xs lg:text-xs text-title">عومرانیه، چارشی</p>
+          <p className="text-2xs lg:text-xs text-title">{data.area.title}</p>
         </div>
-        <p className="text-description text-2xs lg:text-lg lg:leading-6">
-          دنبال ته‌چین خوشمزه یا دیزی اصیل ایرانی هستی؟ این لیست بهت کمک می‌کنه
-          بهترین رستوران‌های ایرانی استانبول رو پیدا کنی.
+        <p className="text-description text-2xs lg:text-lg lg:leading-6 line-clamp-2">
+          {data.description}
         </p>
         <div className="flex items-center flex-wrap gap-2">
-          <Badge variant={"secondary"}>قهوه</Badge>
-          <Badge variant={"secondary"}>کباب</Badge>
-          <Badge variant={"secondary"}>دسر ترکی</Badge>
+          {data.tags?.map(tag => (
+            <Badge key={tag.id} variant={"secondary"}>{tag.title}</Badge>
+          ))}
         </div>
         <div className="flex items-center justify-between">
           <p className="text-2xs lg:text-sm text-title">{t("currency.startAmount")}</p>

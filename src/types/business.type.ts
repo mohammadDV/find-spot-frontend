@@ -30,11 +30,13 @@ export interface BusinessSummary {
     long: string;
     image: string;
     rate: number;
+    description: string | null;
     area: {
         id: number;
         title: string;
         image: string | null
-    }
+    },
+    tags: BusinessOption[];
 }
 
 export interface Business {

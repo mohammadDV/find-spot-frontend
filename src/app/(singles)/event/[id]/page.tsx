@@ -9,6 +9,7 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import { getEvent } from "../_api/getEvents";
+import { getSimilarEvents } from "../_api/getSimilarEvents";
 
 interface EventPageProps {
     params: Promise<{
@@ -22,8 +23,9 @@ export default async function EventPage({ params }: EventPageProps) {
 
     const resolvedParams = await params;
 
-    const [eventData] = await Promise.all([
+    const [eventData, similarEventsData] = await Promise.all([
         getEvent({ id: resolvedParams?.id }),
+        getSimilarEvents({ id: resolvedParams?.id })
     ]);
 
     return (
@@ -170,8 +172,15 @@ export default async function EventPage({ params }: EventPageProps) {
                 <div className="mt-4 lg:mt-10 container mx-auto">
                     <TitleSection title={tPages("event.similarEvents")} link="/" />
                     <div className="mt-4 lg:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
-                        {Array.from({ length: 3 }, (_, i) => (
-                            <BusinessCard key={i} />
+                        {similarEventsData?.slice(0, 3)?.map(item => (
+                            <BusinessCard
+                                key={item.id}
+                                id={item.id}
+                                title={item.title}
+                                image={item.image}
+                                start_date={item.start_date}
+                                end_date={item.end_date}
+                                start_amount={item.amount} />
                         ))}
                     </div>
                 </div>
