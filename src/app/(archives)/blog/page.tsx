@@ -1,13 +1,33 @@
 import { HorizontalPostCard } from "@/app/_components/cards/HorizontalPostCard";
 import { VerticalPostCard } from "@/app/_components/cards/VerticalPostCard";
+import { Pagination } from "@/app/_components/pagination";
 import { TitleSection } from "@/app/_components/titleSection";
 import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { getPopularPosts } from "./_api/getPopularPosts";
+import { getPosts } from "./_api/getPosts";
 
-export default async function BlogPage() {
+interface BlogPageProps {
+    searchParams: Promise<{
+        page?: string;
+    }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
     const t = await getTranslations("pages");
     const isMobile = await isMobileDevice();
+
+    const resolvedSearchParams = await searchParams;
+    const page = parseInt(resolvedSearchParams?.page || "1");
+
+    const [
+        postsData,
+        popularPostsData
+    ] = await Promise.all([
+        getPosts({ page }),
+        getPopularPosts({})
+    ])
 
     return (
         <>
@@ -20,9 +40,9 @@ export default async function BlogPage() {
                                 {t("blog.mostViews")}
                             </h2>
                             <div className="flex flex-col gap-2">
-                                {Array.from({ length: 6 }, (_, i) => (
-                                    <Link key={i} href={"/"} className="text-description text-lg hover:text-primary">
-                                        جورج راسل: من قهرمان جهان خواهم شد، به من ایمان بیاورید.
+                                {popularPostsData.data?.map(post => (
+                                    <Link key={post.id} href={`/post/${post.id}`} className="text-description text-lg hover:text-primary">
+                                        {post.title}
                                     </Link>
                                 ))}
                             </div>
@@ -31,13 +51,22 @@ export default async function BlogPage() {
                     <div className="lg:w-3/4">
                         <div className="flex flex-col gap-3 lg:gap-6">
                             {isMobile
-                                ? Array.from({ length: 4 }, (_, i) => (
-                                    <VerticalPostCard key={i} />
+                                ? postsData?.data?.map(post => (
+                                    <VerticalPostCard key={post.id} data={post} />
                                 ))
-                                : Array.from({ length: 4 }, (_, i) => (
-                                    <HorizontalPostCard key={i} />
+                                : postsData?.data?.map(post => (
+                                    <HorizontalPostCard key={post.id} data={post} />
                                 ))}
                         </div>
+                        {postsData && postsData.last_page > 1 && (
+                            <Pagination
+                                currentPage={postsData.current_page}
+                                lastPage={postsData.last_page}
+                                links={postsData.links}
+                                total={postsData.total}
+                                routeUrl="/blog"
+                            />
+                        )}
                     </div>
                 </div>
             </div>
