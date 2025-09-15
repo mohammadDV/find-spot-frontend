@@ -114,3 +114,8 @@ export interface BusinessesSearchResponse {
     to: number;
     total: number;
 }
+
+export interface SearchSuggestionsResponse {
+    businesses: BusinessSummary[];
+    categories: Category[];
+}

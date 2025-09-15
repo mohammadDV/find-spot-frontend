@@ -12,6 +12,7 @@ interface GetBusinessesParams {
     long?: string;
     sort?: string;
     column?: string;
+    query?: string;
 }
 
 export async function getBusinesses({
@@ -24,7 +25,8 @@ export async function getBusinesses({
     lat,
     long,
     sort,
-    column
+    column,
+    query
 }: GetBusinessesParams): Promise<BusinessesSearchResponse> {
     const searchParams = new URLSearchParams({
         count: count.toString(),
@@ -39,6 +41,7 @@ export async function getBusinesses({
     if (long) searchParams.set("long", long);
     if (sort) searchParams.set("sort", sort);
     if (column) searchParams.set("column", column);
+    if (query) searchParams.set("query", query);
 
     if (filters && filters.length > 0) {
         filters.forEach(filter => {

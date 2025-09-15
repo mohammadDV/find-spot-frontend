@@ -2,15 +2,14 @@ import {
   useCommonTranslation,
   usePagesTranslation,
 } from "@/hooks/useTranslation";
-import { Button } from "@/ui/button";
 import {
   Car,
   HambergerMenu,
   Health,
   House,
   Reserve,
-  SearchNormal1,
 } from "iconsax-react";
+import { SearchSuggestions } from "./SearchSuggestions";
 
 const Hero = () => {
   const tCommon = useCommonTranslation();
@@ -55,17 +54,8 @@ const Hero = () => {
             </p>
           </div>
         </div>
-        <div className="w-full p-6 rounded-3xl shadow-[0px_4px_20px_0px_#00000010] backdrop-blur-sm lg:backdrop-blur-md bg-white/15 mt-10 lg:mt-3 border border-white/30 flex flex-col lg:flex-row items-center justify-between gap-4">
-          <div className="relative flex-1 w-full lg:w-auto">
-            <SearchNormal1 className="size-6 stroke-white absolute right-3 top-3 rotate-90" />
-            <input
-              className="w-full border border-white/60 rounded-xl outline-none px-3 py-[11px] pr-11 bg-transparent text-white"
-              placeholder={tCommon("buttons.search")}
-            />
-          </div>
-          <Button variant={"secondary"} size={"medium"} className="w-full lg:w-auto">
-            {tCommon("buttons.search")}
-          </Button>
+        <div className="w-full p-6 rounded-3xl shadow-[0px_4px_20px_0px_#00000010] backdrop-blur-sm lg:backdrop-blur-md bg-white/15 mt-10 lg:mt-3 border border-white/30">
+          <SearchSuggestions />
         </div>
       </div>
     </div>

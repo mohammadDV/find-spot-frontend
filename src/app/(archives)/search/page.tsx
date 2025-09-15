@@ -18,6 +18,7 @@ interface SearchPageProps {
         long?: string;
         sort?: string;
         column?: string;
+        query?: string;
     }>
 }
 
@@ -33,6 +34,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const long = resolvedSearchParams?.long;
     const sort = resolvedSearchParams?.sort;
     const column = resolvedSearchParams?.column;
+    const query = resolvedSearchParams?.query;
 
     const filtersParam = resolvedSearchParams?.filters;
     const filters = Array.isArray(filtersParam)
@@ -50,7 +52,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         lat,
         long,
         sort,
-        column
+        column,
+        query
     })
 
     return (

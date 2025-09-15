@@ -4,7 +4,9 @@
     "specialOffers": "پیشنهادهای ویژه",
     "weekend": "آخر هفته چیکار کنیم",
     "categories": "دسته‌بندی‌ها",
-    "news": "اخبار"
+    "news": "اخبار",
+    "searching": "در حال جست‌وجو...",
+    "businesses": "کسب و کار ها"
   },
   "search": {
     "filters": "فیلتر",
