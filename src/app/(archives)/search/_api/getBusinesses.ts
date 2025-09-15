@@ -16,7 +16,7 @@ interface GetBusinessesParams {
 
 export async function getBusinesses({
     page = 1,
-    count = 10,
+    count = 8,
     category,
     filters,
     amount_type,

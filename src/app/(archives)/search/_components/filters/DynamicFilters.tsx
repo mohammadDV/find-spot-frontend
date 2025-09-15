@@ -4,7 +4,7 @@ import { usePagesTranslation } from "@/hooks/useTranslation";
 import { useFetchData } from "@/hooks/useFetchData";
 import { Button } from "@/ui/button";
 import { Checkbox } from "@/ui/checkbox";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/ui/sheet";
 import { ArrowDown2, HambergerMenu } from "iconsax-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -96,8 +96,8 @@ export const DynamicFilters = () => {
     }
 
     return (
-        <Popover>
-            <PopoverTrigger asChild>
+        <Sheet>
+            <SheetTrigger asChild>
                 <Button variant={"primary"} size={"small"} className="rounded-lg lg:text-sm">
                     <HambergerMenu className="size-4 lg:size-6 stroke-white" />
                     {t("search.filters")}
@@ -108,9 +108,12 @@ export const DynamicFilters = () => {
                     )}
                     <ArrowDown2 className="size-4 stroke-white mr-1" />
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-4">
-                <div className="space-y-3">
+            </SheetTrigger>
+            <SheetContent side="right">
+                <SheetHeader>
+                    <SheetTitle>{t("search.filters")}</SheetTitle>
+                </SheetHeader>
+                <div className="space-y-3 px-4">
                     {filtersData.data.map((option) => (
                         <div key={option.id} className="flex items-center">
                             <Checkbox
@@ -129,7 +132,7 @@ export const DynamicFilters = () => {
                         </div>
                     ))}
                 </div>
-            </PopoverContent>
-        </Popover>
+            </SheetContent>
+        </Sheet>
     );
 };

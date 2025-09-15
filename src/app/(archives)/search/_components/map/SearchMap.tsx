@@ -40,14 +40,14 @@ export const SearchMap = ({ items }: SearchMapProps) => {
     };
 
     if (!isClient || !defaultIcon) {
-        return <div className="w-full h-[600px] bg-gray-200 flex items-center justify-center rounded-2xl">در حال بارگذاری نقشه...</div>;
+        return <div className="w-full h-[150px] lg:h-[600px] bg-gray-200 flex items-center justify-center rounded-2xl">در حال بارگذاری نقشه...</div>;
     }
 
     return (
         <MapContainer
             center={getDefaultCenter()}
             zoom={12}
-            className="w-full lg:h-[600px] rounded-2xl z-20 sticky top-28"
+            className="w-full h-[150px] lg:h-[600px] rounded-2xl z-20 sticky top-28"
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/">OSM</a>'

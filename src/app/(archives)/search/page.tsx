@@ -5,6 +5,7 @@ import { SearchFilters } from "./_components/filters/SearchFilters";
 import { SearchCard } from "./_components/searchCard/SearchCard";
 import { SortFilter } from "./_components/filters/SortFilter";
 import { SearchMap } from "./_components/map";
+import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
 
 interface SearchPageProps {
     searchParams: Promise<{
@@ -21,6 +22,7 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
+    const isMobile = await isMobileDevice();
     const resolvedSearchParams = await searchParams;
 
     const page = parseInt(resolvedSearchParams?.page || "1");
@@ -68,15 +70,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         </div>
                         <SortFilter />
                     </div>
-                    <div className="mt-5 lg:mt-8 flex flex-wrap items-center gap-2 lg:gap-4">
+                    <div className="mt-4 lg:mt-8 flex flex-wrap items-center gap-2 lg:gap-4">
                         <SearchFilters />
                     </div>
-                    <div className="grid grid-cols-2 lg:flex flex-col gap-4 lg:gap-6 mt-8">
+                    {isMobile && (
+                        <div className="mt-4">
+                            <SearchMap items={searchData.data || []} />
+                        </div>
+                    )}
+                    <div className="grid grid-cols-2 lg:flex flex-col gap-4 lg:gap-6 mt-4 lg:mt-8">
                         {searchData.data?.map(item => (
                             <SearchCard key={item.id} data={item} />
                         ))}
                     </div>
-                    {searchData.data && searchData.total > 10 && (
+                    {searchData.data && searchData.total > 8 && (
                         <Pagination
                             currentPage={searchData.current_page}
                             lastPage={searchData.last_page}
@@ -86,10 +93,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         />
                     )}
                 </div>
-                <div className="lg:w-1/3">
-                    <SearchMap items={searchData.data || []} />
-                </div>
+                {!isMobile && (
+                    <div className="lg:w-1/3">
+                        <SearchMap items={searchData.data || []} />
+                    </div>
+                )}
             </div>
-        </div>
+        </div >
     )
 }
