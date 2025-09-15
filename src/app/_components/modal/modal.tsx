@@ -94,7 +94,7 @@ const Modal = ({
     const sizeClasses = {
         small: "sm:max-w-sm",
         medium: "sm:max-w-lg",
-        large: "sm:max-w-2xl",
+        large: "sm:max-w-4xl",
     };
 
     const content = (

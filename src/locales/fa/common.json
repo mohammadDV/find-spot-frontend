@@ -38,10 +38,10 @@
   },
   "categories": {
     "all": "دسته‌بندی‌ها",
-    "restaurants": "رستوران‌ها",
-    "house": "خانه و کاشانه",
+    "restaurants": "رستوران و کافه",
+    "house": "خدمات منزل",
     "vehicle": "خودرو",
-    "health": "سلامت"
+    "health": "زیبایی و سلامت"
   },
   "footer": {
     "customerServices": "خدمات مشتریان",

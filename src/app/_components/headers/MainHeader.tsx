@@ -16,7 +16,7 @@ export const MainHeader = () => {
     {
       id: 2,
       title: t("navigation.searchMap"),
-      link: "/search-map",
+      link: "/search",
     },
     {
       id: 3,
@@ -26,7 +26,7 @@ export const MainHeader = () => {
     {
       id: 4,
       title: t("navigation.news"),
-      link: "/news",
+      link: "/blog",
     },
   ];
 

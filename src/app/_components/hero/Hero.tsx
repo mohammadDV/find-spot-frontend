@@ -4,12 +4,13 @@ import {
 } from "@/hooks/useTranslation";
 import {
   Car,
-  HambergerMenu,
   Health,
   House,
   Reserve,
 } from "iconsax-react";
 import { SearchSuggestions } from "./SearchSuggestions";
+import { CategorySelector } from "./CategorySelector";
+import Link from "next/link";
 
 const Hero = () => {
   const tCommon = useCommonTranslation();
@@ -23,36 +24,31 @@ const Hero = () => {
           {tPages("home.title")}
         </h1>
         <div className="hidden lg:flex items-center w-full justify-between lg:mt-8">
-          <div className="flex items-center gap-2">
-            <HambergerMenu className="size-4 stroke-white" />
-            <p className="text-xl font-light text-white">
-              {tCommon("categories.all")}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
+          <CategorySelector />
+          <Link href={"/search?category=2"} className="flex items-center cursor-pointer gap-2 z-10">
             <Reserve className="size-4 stroke-white" />
             <p className="text-xl font-light text-white">
               {tCommon("categories.restaurants")}
             </p>
-          </div>
-          <div className="flex items-center gap-2">
+          </Link>
+          <Link href={"/search?category=13"} className="flex items-center cursor-pointer gap-2 z-10">
             <House className="size-4 stroke-white" />
             <p className="text-xl font-light text-white">
               {tCommon("categories.house")}
             </p>
-          </div>
-          <div className="flex items-center gap-2">
+          </Link>
+          <Link href={"/search?category=10"} className="flex items-center cursor-pointer gap-2 z-10">
             <Car className="size-4 stroke-white" />
             <p className="text-xl font-light text-white">
               {tCommon("categories.vehicle")}
             </p>
-          </div>
-          <div className="flex items-center gap-2">
+          </Link>
+          <Link href={"/search?category=3"} className="flex items-center cursor-pointer gap-2 z-10">
             <Health className="size-4 stroke-white" />
             <p className="text-xl font-light text-white">
               {tCommon("categories.health")}
             </p>
-          </div>
+          </Link>
         </div>
         <div className="w-full p-6 rounded-3xl shadow-[0px_4px_20px_0px_#00000010] backdrop-blur-sm lg:backdrop-blur-md bg-white/15 mt-10 lg:mt-3 border border-white/30">
           <SearchSuggestions />
