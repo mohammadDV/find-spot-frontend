@@ -15,7 +15,22 @@
     "ticketing": "تهیه بلیط"
   },
   "messages": {
-    "noResults": "نتیجه‌ای یافت نشد"
+    "noResults": "نتیجه‌ای یافت نشد",
+    "dataProblem": "مشکل در دریافت اطلاعات"
+  },
+  "validation": {
+    "required": {
+      "email": "ایمیل الزامی است",
+      "password": "رمز عبور الزامی است",
+      "passwordConfirmation": "تکرار رمز عبور الزامی است"
+    },
+    "invalid": {
+      "email": "فرمت ایمیل نامعتبر است",
+      "passwordRequirements": "رمز عبور باید حداقل ۸ کاراکتر و شامل حروف کوچک، بزرگ و عدد باشد",
+      "passwordMatch": "رمز عبور و تکرار آن مطابقت ندارند",
+      "passwordMin": "رمز عبور باید حداقل 8 کاراگتر باشد.",
+      "passwordChar": "رمز عبور باید شامل یک حرف کوچک و یک حرف بزرگ باشد."
+    }
   },
   "brand": {
     "name": "فینیبو",
@@ -35,7 +50,14 @@
     "makeup": "آرایشگری",
     "restaurant": "رستوران و کافه",
     "jobs": "فرصت‌های شغلی",
-    "support": "پشتیبانی"
+    "support": "پشتیبانی",
+    "privacy": "حریم شخصی",
+    "rules": "قوانین و مقررات"
+  },
+  "inputs": {
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "passwordConfirmation": "تکرار رمز عبور"
   },
   "categories": {
     "all": "دسته‌بندی‌ها",

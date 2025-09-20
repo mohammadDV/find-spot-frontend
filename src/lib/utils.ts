@@ -17,3 +17,12 @@ export const isEmpty = (value: any): boolean => {
 };
 
 export const createFileUrl = (url: string) => `${FILE_URL}/${url}`;
+
+export const convertPersianToEnglish = (str: string): string => {
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+  const englishDigits = "0123456789";
+
+  return str.replace(/[۰-۹]/g, (char) => {
+    return englishDigits[persianDigits.indexOf(char)];
+  });
+};
