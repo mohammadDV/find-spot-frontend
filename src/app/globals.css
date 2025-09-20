@@ -190,3 +190,23 @@ body {
 .leaflet-popup-content {
   margin: 0 !important;
 }
+
+.toaster {
+  font-family: var(--font-peyda) !important;
+}
+
+.toaster [data-sonner-toast][data-type="success"] svg {
+  color: var(--success);
+}
+
+.toaster [data-sonner-toast][data-type="error"] svg {
+  color: var(--error);
+}
+
+.toaster [data-sonner-toast][data-type="warning"] svg {
+  color: var(--warning);
+}
+
+.toaster [data-sonner-toast][data-type="info"] svg {
+  color: var(--info);
+}

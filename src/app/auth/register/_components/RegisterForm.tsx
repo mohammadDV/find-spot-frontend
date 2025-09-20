@@ -2,6 +2,7 @@
 
 import { RHFInput } from "@/app/_components/hookForm/RHFInput";
 import { RHFPasswordInput } from "@/app/_components/hookForm/RHFPasswordInput";
+import { StatusCode } from "@/constants/enums";
 import { regex } from "@/constants/regex";
 import { useCommonTranslation, usePagesTranslation } from "@/hooks/useTranslation";
 import { useZodForm } from "@/hooks/useZodForm";
@@ -9,9 +10,9 @@ import { Button } from "@/ui/button";
 import { TickCircle } from "iconsax-react";
 import { useActionState, useEffect, useTransition } from "react";
 import { FormProvider } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { registerAction, RegisterService } from "../_api/registerAction";
-import { StatusCode } from "@/constants/enums";
 
 export const RegisterForm = () => {
     const tPages = usePagesTranslation();
@@ -48,7 +49,7 @@ export const RegisterForm = () => {
 
     useEffect(() => {
         if (!!formState && formState.status === StatusCode.Failed) {
-            alert(!!formState?.errors ? tPages("auth.registerError") : tPages("auth.registerFailed"));
+            toast.error(!!formState?.errors ? tPages("auth.registerError") : tPages("auth.registerFailed"));
 
             if (formState.errors) {
                 Object.entries(formState.errors).forEach(([fieldName, fieldErrors]) => {

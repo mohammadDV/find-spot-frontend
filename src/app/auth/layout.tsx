@@ -33,7 +33,7 @@ export default async function AuthLayout({
         return (
             <>
                 <MainHeader />
-                <div className="bg-[url(/images/auth-background.jpg)] relative bg-cover pt-10 bg-center flex flex-col items-center justify-center min-h-svh -mt-24">
+                <div className="bg-[url(/images/auth-background.jpg)] relative bg-cover pt-12 bg-center flex flex-col items-center justify-center min-h-svh -mt-24">
                     <div className="absolute inset-0 bg-black/20"></div>
                     <div className="relative z-10 max-w-6xl mx-auto flex h-full gap-24">
                         <div className="bg-white w-[482px] rounded-xl p-8">
