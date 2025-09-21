@@ -33,7 +33,7 @@ export const CheckVerification = () => {
             try {
                 const res = await checkVerificationAction();
                 if (res?.verify_email) {
-                    router.replace(backUrl || "/complete-register")
+                    router.replace(backUrl || "/auth/complete-register")
                 } else setIsLoading(false);
             } catch (error) {
                 setIsLoading(false);
