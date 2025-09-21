@@ -16,7 +16,8 @@
   },
   "messages": {
     "noResults": "نتیجه‌ای یافت نشد",
-    "dataProblem": "مشکل در دریافت اطلاعات"
+    "dataProblem": "مشکل در دریافت اطلاعات",
+    "error": "خطای ناشناخته رخ داده است"
   },
   "validation": {
     "required": {
