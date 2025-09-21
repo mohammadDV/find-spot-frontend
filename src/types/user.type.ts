@@ -7,3 +7,11 @@ export interface UserInfo {
     rate: number;
     point: number | null;
 }
+
+export interface UserData {
+    is_admin?: boolean;
+    verify_email: boolean;
+    verify_access: boolean;
+    customer_number: string;
+    user: UserInfo;
+}
