@@ -12,7 +12,8 @@
     "menu": "منو",
     "share": "اشتراک گذاری",
     "save": "ذخیره",
-    "ticketing": "تهیه بلیط"
+    "ticketing": "تهیه بلیط",
+    "confirm": "تایید"
   },
   "messages": {
     "loading": "در حال بارگذاری...",

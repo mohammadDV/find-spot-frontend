@@ -79,6 +79,12 @@
     "resendLink": "ارسال مجدد لینک تایید",
     "resendLinkSuccess": "لینک تایید با موفقیت ارسال شد!",
     "profile": "پروفایل",
-    "makeProfile": "ساخت پروفایل"
+    "makeProfile": "ساخت پروفایل",
+    "forgotPasswordDescription": "برای بازیابی رمز عبور، ایمیل خود را وارد کنید.",
+    "resetLinkSent": "لینک بازنشانی ارسال شد!",
+    "resetLinkSentDescription": "لینک بازنشانی رمز عبور به ایمیل شما ارسال شد. لطفاً ایمیل خود را بررسی کنید و روی لینک کلیک کنید.",
+    "sendResetLink": "ارسال لینک بازنشانی",
+    "newPassword": "رمز عبور جدید",
+    "newPasswordDescription": "لطفا رمز عبور جدید خود را وارد کنید."
   }
 }
