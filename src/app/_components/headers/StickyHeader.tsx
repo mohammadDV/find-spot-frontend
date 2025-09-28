@@ -62,9 +62,11 @@ export const StickyHeader = () => {
                             </li>
                         ))}
                     </ul>
-                    <Button variant={"primary"} size={"medium"} className="hidden lg:block">
-                        {t("buttons.login")}
-                    </Button>
+                    <Link href={"/auth/login"}>
+                        <Button variant={"primary"} size={"medium"} className="hidden lg:block">
+                            {t("buttons.login")}
+                        </Button>
+                    </Link>
                     <HambergerMenu className="lg:hidden size-6 stroke-black" />
                 </div>
             </div>

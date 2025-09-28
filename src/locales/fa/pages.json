@@ -86,5 +86,8 @@
     "sendResetLink": "ارسال لینک بازنشانی",
     "newPassword": "رمز عبور جدید",
     "newPasswordDescription": "لطفا رمز عبور جدید خود را وارد کنید."
+  },
+  "profile": {
+    "title": "پروفایل"
   }
 }

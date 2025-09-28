@@ -59,9 +59,11 @@ export const MainHeader = () => {
             {t("buttons.convertCurrency")}
             <ArrowDown2 className="stroke-white size-4" />
           </Button>
-          <Button variant={"white"} size={"medium"}>
-            {t("buttons.login")}
-          </Button>
+          <Link href={"/auth/login"}>
+            <Button variant={"white"} size={"medium"}>
+              {t("buttons.login")}
+            </Button>
+          </Link>
         </div>
         <HambergerMenu className="lg:hidden size-6 stroke-white" />
       </div>
