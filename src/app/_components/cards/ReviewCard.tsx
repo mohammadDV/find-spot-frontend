@@ -5,7 +5,7 @@ import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import { Star } from "@/ui/star";
 import { usePagesTranslation } from "@/hooks/useTranslation";
-import { Like1 } from "iconsax-react";
+import { Like1, Trash } from "iconsax-react";
 import Image from "next/image";
 import { cn, createFileUrl } from "@/lib/utils";
 import { useState } from "react";
@@ -14,9 +14,11 @@ import "yet-another-react-lightbox/styles.css";
 
 interface ReviewCardProps {
     review: Review;
+    enableLike?: boolean;
+    enableDeactivation?: boolean
 }
 
-export const ReviewCard = ({ review }: ReviewCardProps) => {
+export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCardProps) => {
     const tPages = usePagesTranslation();
     const [lightboxOpen, setLightboxOpen] = useState(false);
 
@@ -40,13 +42,17 @@ export const ReviewCard = ({ review }: ReviewCardProps) => {
                     />
                     <div className="flex flex-col gap-1.5">
                         <p className="text-title font-medium">{review.user.nickname}</p>
-                        <p className="text-title text-xs">{review.user.point || 0} نظر</p>
+                        <p className="text-title text-xs">{review.user.point || 0} {tPages("profile.myReviews.comment")}</p>
                     </div>
                 </div>
-                <Button variant={"link"} size={"small"} className="!px-2">
+                {enableLike && <Button variant={"link"} size={"small"} className="!px-2">
                     {tPages("biz.likeComment")}
                     <Like1 className="stroke-primary size-4" />
-                </Button>
+                </Button>}
+                {enableDeactivation && <Button variant={"link"} size={"small"} className="!px-2 text-secondary">
+                    {tPages("profile.myReviews.deactivate")}
+                    <Trash className="stroke-secondary size-4" />
+                </Button>}
             </div>
             <div className="flex items-center gap-2 mt-3 lg:mt-6">
                 <div className="flex items-center">

@@ -22,7 +22,7 @@ export const ProfileSidebar = ({ userData }: ProfileSidebarProps) => {
     const pathname = usePathname();
 
     return (
-        <div className="lg:w-[473px] lg:shrink-0 mt-4 lg:mt-0">
+        <div className="lg:w-[473px] lg:shrink-0">
             <div className="shadow-card bg-white rounded-xl p-6 flex items-center justify-between">
                 <div className="flex-1 flex items-center gap-2.5 p-2">
                     <img

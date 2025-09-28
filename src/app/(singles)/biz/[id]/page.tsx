@@ -25,7 +25,7 @@ import { getBusinessReviews } from "../_api/getBusinessReviews";
 import { getSimilarBusinesses } from "../_api/getSimilarBusinesses";
 import { ImageGallery } from "../_components/ImageGallery";
 import { MenuViewer } from "../_components/MenuViewer";
-import { ReviewCard } from "../_components/ReviewCard";
+import { ReviewCard } from "../../../_components/cards/ReviewCard";
 import { ReviewSortFilter } from "../_components/ReviewSortFilter";
 
 interface BizPageProps {
@@ -369,7 +369,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
                   height={24}
                   className="size-4 lg:size-6"
                 />
-                <h2 className="text-title lg:text-3xl font-bold">
+                <h2 className="text-title lg:text-2xl font-bold">
                   {tPages("biz.comments")}
                 </h2>
               </div>
@@ -379,7 +379,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             </div>
             <div className="mt-3 lg:mt-6 flex flex-col gap-2 lg:gap-6">
               {reviewsData.data.map((review) => (
-                <ReviewCard key={review.id} review={review} />
+                <ReviewCard key={review.id} review={review} enableLike />
               ))}
             </div>
             {reviewsData.last_page > 1 && (

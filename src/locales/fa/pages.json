@@ -88,6 +88,14 @@
     "newPasswordDescription": "لطفا رمز عبور جدید خود را وارد کنید."
   },
   "profile": {
-    "title": "پروفایل"
+    "title": "پروفایل",
+    "myReviews": {
+      "title": "نظرات",
+      "deactivate": "غیر فعال کردن",
+      "comment": "نظر",
+      "noReviews": "نظری یافت نشد!",
+      "noReviewsDescription": "شما هنوز هیچ نظری ثبت نکردید! می‌توانید کسب و کار مورد نظر خود را جست و جو کرده و نظرتان را ثبت کنید.",
+      "submitFirst": "ثبت اولین نظر"
+    }
   }
 }

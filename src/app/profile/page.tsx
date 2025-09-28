@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { ProfileSidebar } from "./_components/sidebar";
 import { getUserData } from "@/lib/getUserDataFromHeaders";
 
-export default async function Profile() {
+export default async function ProfilePage() {
     const userData = await getUserData();
     const isMobile = await isMobileDevice();
     const t = await getTranslations("pages");

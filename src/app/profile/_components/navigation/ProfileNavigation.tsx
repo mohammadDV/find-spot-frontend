@@ -13,7 +13,7 @@ export const ProfileNavigation = ({ title }: ProfileNavigationProps) => {
     const goToPrevPageHandler = () => router.back();
 
     return (
-        <div className="py-3 mt-1 flex items-center justify-between">
+        <div className="py-3 mt-1 flex items-center justify-between mb-4">
             <p className="text-lg text-title">
                 {title}
             </p>
