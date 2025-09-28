@@ -1,16 +1,19 @@
 "use client";
 
+import { useCommonTranslation, usePagesTranslation } from "@/hooks/useTranslation";
+import { cn, createFileUrl } from "@/lib/utils";
 import { Review } from "@/types/review.type";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import { Star } from "@/ui/star";
-import { usePagesTranslation } from "@/hooks/useTranslation";
-import { Like1, Trash } from "iconsax-react";
+import { Like1, TickCircle, Trash } from "iconsax-react";
 import Image from "next/image";
-import { cn, createFileUrl } from "@/lib/utils";
 import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import { reviewChangeStatus } from "./reviewChangeStatus";
+import { StatusCode } from "@/constants/enums";
+import { useRouter } from "next/navigation";
 
 interface ReviewCardProps {
     review: Review;
@@ -19,8 +22,11 @@ interface ReviewCardProps {
 }
 
 export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCardProps) => {
+    const router = useRouter();
     const tPages = usePagesTranslation();
+    const tCommon = useCommonTranslation();
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const imageFiles = review.files
         ?.filter(file => file.type === "image")
@@ -29,8 +35,22 @@ export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCar
             alt: `Review image ${file.id}`
         })) || [];
 
+    const changeStatusHandler = async () => {
+        setIsLoading(true);
+        try {
+            const res = await reviewChangeStatus(review.id);
+            if (res.status === StatusCode.Success) {
+                router.refresh();
+            }
+        } catch (error) {
+            tCommon("messages.dataProblem")
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return (
-        <div className="p-3 lg:p-6 border-b border-border">
+        <div className={cn("p-3 lg:p-6 border-b border-border", review.status === "cancelled" && "bg-red-50")}>
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                     <Image
@@ -45,14 +65,27 @@ export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCar
                         <p className="text-title text-xs">{review.user.point || 0} {tPages("profile.myReviews.comment")}</p>
                     </div>
                 </div>
-                {enableLike && <Button variant={"link"} size={"small"} className="!px-2">
-                    {tPages("biz.likeComment")}
-                    <Like1 className="stroke-primary size-4" />
-                </Button>}
-                {enableDeactivation && <Button variant={"link"} size={"small"} className="!px-2 text-secondary">
-                    {tPages("profile.myReviews.deactivate")}
-                    <Trash className="stroke-secondary size-4" />
-                </Button>}
+                {enableLike && (
+                    <Button variant={"link"} size={"small"} className="!px-2">
+                        {tPages("biz.likeComment")}
+                        <Like1 className="stroke-primary size-4" />
+                    </Button>
+                )}
+                {enableDeactivation && (
+                    <Button
+                        variant={"link"}
+                        size={"small"}
+                        onClick={changeStatusHandler}
+                        disabled={isLoading}
+                        className={cn("!px-2", review.status === "cancelled" ? "text-primary" : "text-secondary")}>
+                        {review.status === "cancelled"
+                            ? tPages("profile.myReviews.activate")
+                            : tPages("profile.myReviews.deactivate")}
+                        {review.status === "cancelled"
+                            ? <TickCircle className="stroke-primary size-4" />
+                            : <Trash className="stroke-secondary size-4" />}
+                    </Button>
+                )}
             </div>
             <div className="flex items-center gap-2 mt-3 lg:mt-6">
                 <div className="flex items-center">

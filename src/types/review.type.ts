@@ -3,7 +3,7 @@ import { QualityService } from "./business.type";
 import { FileType } from "./file.type";
 import { UserInfo } from "./user.type";
 
-export type ReviewStatus = 'approved';
+export type ReviewStatus = 'approved' | "cancelled";
 
 export interface Review {
     id: number;
