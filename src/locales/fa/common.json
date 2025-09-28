@@ -13,7 +13,9 @@
     "share": "اشتراک گذاری",
     "save": "ذخیره",
     "ticketing": "تهیه بلیط",
-    "confirm": "تایید"
+    "confirm": "تایید",
+    "cancel": "انصراف",
+    "yes": "بله"
   },
   "messages": {
     "loading": "در حال بارگذاری...",

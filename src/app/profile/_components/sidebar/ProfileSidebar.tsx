@@ -6,6 +6,7 @@ import { UserData } from "@/types/user.type";
 import { ArrowLeft2, Edit } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogoutButton } from "../logout";
 
 interface ProfileSidebarProps {
     userData?: UserData | null;
@@ -64,6 +65,7 @@ export const ProfileSidebar = ({ userData }: ProfileSidebarProps) => {
                         <ArrowLeft2 className="stroke-title size-6" />
                     </Link>
                 ))}
+                <LogoutButton />
             </div>
         </div>
     )

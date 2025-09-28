@@ -1,18 +1,18 @@
-import { ArchiveAdd, I24Support, Messages } from "iconsax-react";
-import { MenuItem } from "../profile/_components/sidebar";
+import { ArchiveAdd, I24Support, Messages1 } from "iconsax-react";
 import { Settings2 } from "lucide-react";
+import { MenuItem } from "../profile/_components/sidebar";
 
 export const profileMenuData: MenuItem[] = [
     {
         id: 1,
         title: "کسب و کار من",
-        icon: Messages,
+        icon: Messages1,
         link: "/profile/biz"
     },
     {
         id: 2,
         title: "نظرات",
-        icon: Messages,
+        icon: Messages1,
         link: "/profile/reviews"
     },
     {

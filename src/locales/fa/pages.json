@@ -89,6 +89,9 @@
   },
   "profile": {
     "title": "پروفایل",
+    "logout": "خروج",
+    "logoutAccount": "خروج از حساب کاربری",
+    "logoutConfirm": "آیا از خروج خود مطمئن هستید؟",
     "myReviews": {
       "title": "نظرات",
       "deactivate": "غیر فعال کردن",
