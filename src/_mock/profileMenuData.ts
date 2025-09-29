@@ -1,6 +1,6 @@
+import { MenuItem } from "@/app/profile/_components/sidebar";
 import { ArchiveAdd, I24Support, Messages1 } from "iconsax-react";
 import { Settings2 } from "lucide-react";
-import { MenuItem } from "../profile/_components/sidebar";
 
 export const profileMenuData: MenuItem[] = [
     {
@@ -37,6 +37,6 @@ export const profileMenuData: MenuItem[] = [
         id: 6,
         title: "تنظیمات",
         icon: Settings2,
-        link: "/profile/settings"
+        link: "/profile/account"
     },
 ]

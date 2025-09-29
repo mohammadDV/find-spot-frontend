@@ -1,12 +1,12 @@
 "use client"
 
-import { profileMenuData } from "@/app/_mock/profileMenuData";
 import { cn, createFileUrl } from "@/lib/utils";
 import { UserData } from "@/types/user.type";
 import { ArrowLeft2, Edit } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoutButton } from "../logout";
+import { profileMenuData } from "@/_mock/profileMenuData";
 
 interface ProfileSidebarProps {
     userData?: UserData | null;
@@ -44,7 +44,7 @@ export const ProfileSidebar = ({ userData }: ProfileSidebarProps) => {
                         </p>
                     </div>
                 </div>
-                <Link href={"/profile/settings"}>
+                <Link href={"/profile/account"}>
                     <Edit className="stroke-title size-6" />
                 </Link>
             </div>

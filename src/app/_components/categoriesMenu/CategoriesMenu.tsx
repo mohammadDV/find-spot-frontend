@@ -1,4 +1,4 @@
-import { categories } from "@/app/_mock/categories";
+import { categories } from "@/_mock/categories";
 import {
   NavigationMenu,
   NavigationMenuContent,
