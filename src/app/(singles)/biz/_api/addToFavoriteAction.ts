@@ -10,7 +10,7 @@ interface AddToFavoriteResponse {
     favorite: FavoriteStatus;
 }
 
-export const addToFavoriteAction = async (id: number): Promise<AddToFavoriteResponse> => {
+export const addBizToFavoriteAction = async (id: number): Promise<AddToFavoriteResponse> => {
     const t = await getTranslations("common");
     try {
         return await getFetchAuth<AddToFavoriteResponse>(`/profile/businesses/${id}/favorite`);

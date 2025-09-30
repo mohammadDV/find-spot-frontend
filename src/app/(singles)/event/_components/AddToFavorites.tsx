@@ -7,7 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { FavoriteStatus } from "@/constants/enums";
 import { cn } from "@/lib/utils";
-import { addToFavoriteAction } from "../_api/addToFavoriteAction";
+import { addEventToFavoriteAction } from "../_api/addToFavoriteAction";
 
 interface AddToFavoritesProps {
     id: number
@@ -21,7 +21,7 @@ export const AddToFavorites = ({ id }: AddToFavoritesProps) => {
     const addToFavoriteHandler = async () => {
         setIsLoading(true);
         try {
-            const res = await addToFavoriteAction(id);
+            const res = await addEventToFavoriteAction(id);
             setFavoriteStatus(res.favorite);
         } catch (error) {
             toast.error(t("messages.error"))

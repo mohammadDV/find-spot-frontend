@@ -4,10 +4,10 @@ import { useCommonTranslation } from "@/hooks/useTranslation"
 import { Button } from "@/ui/button"
 import { ArchiveAdd } from "iconsax-react";
 import { useState } from "react";
-import { addToFavoriteAction } from "../_api/addToFavoriteAction";
 import { toast } from "sonner";
 import { FavoriteStatus } from "@/constants/enums";
 import { cn } from "@/lib/utils";
+import { addBizToFavoriteAction } from "../_api/addToFavoriteAction";
 
 interface AddToFavoritesProps {
     id: number
@@ -21,7 +21,7 @@ export const AddToFavorites = ({ id }: AddToFavoritesProps) => {
     const addToFavoriteHandler = async () => {
         setIsLoading(true);
         try {
-            const res = await addToFavoriteAction(id);
+            const res = await addBizToFavoriteAction(id);
             setFavoriteStatus(res.favorite);
         } catch (error) {
             toast.error(t("messages.error"))

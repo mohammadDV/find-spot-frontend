@@ -1,15 +1,15 @@
-import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
-import { getTranslations } from "next-intl/server";
-import { getMyFavorites } from "../_api/getMyFavorites";
-import { BusinessesSearchResponse } from './../../../../types/business.type';
-import { EventsResponse } from './../../../../types/event.type';
-import { ProfileNavigation } from "../../_components/navigation";
 import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { Pagination } from "@/app/_components/pagination";
 import noFavoritesImg from "@/assets/images/no-favorites.png";
+import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
+import { Button } from "@/ui/button";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/ui/button";
+import { ProfileNavigation } from "../../_components/navigation";
+import { getMyFavorites } from "../_api/getMyFavorites";
+import { BusinessesSearchResponse } from './../../../../types/business.type';
+import { EventsResponse } from './../../../../types/event.type';
 
 export type FavoriteType = "events" | "businesses"
 
@@ -56,6 +56,7 @@ export default async function favoritesPage({
                                     title={favorite.title}
                                     image={favorite.image}
                                     location={favorite.area?.title}
+                                    favoriteMode="businesses"
                                     rate={favorite.rate}
                                     start_amount={favorite.start_amount}
                                 />
@@ -69,6 +70,7 @@ export default async function favoritesPage({
                                     id={favorite.id}
                                     title={favorite.title}
                                     image={favorite.image}
+                                    favoriteMode="events"
                                     start_date={favorite.start_date}
                                     start_amount={favorite.amount}
                                     end_date={favorite.end_date}
