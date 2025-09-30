@@ -26,7 +26,7 @@ export default async function ProfileLayout({
             )}
             <div className="lg:mt-10 md:flex justify-between items-start mx-auto gap-10 container px-4">
                 {!isMobile && <ProfileSidebar userData={userData} />}
-                <div className="flex-1 lg:overflow-auto">
+                <div className="flex-1">
                     {children}
                 </div>
             </div>

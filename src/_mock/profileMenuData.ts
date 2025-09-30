@@ -19,13 +19,13 @@ export const profileMenuData: MenuItem[] = [
         id: 3,
         title: "کسب و کارهای ذخیره شده",
         icon: ArchiveAdd,
-        link: "/profile/saved-biz"
+        link: "/profile/favorites/businesses"
     },
     {
         id: 4,
         title: "رویدادهای ذخیره شده",
         icon: ArchiveAdd,
-        link: "/profile/saved-events"
+        link: "/profile/favorites/events"
     },
     {
         id: 5,
