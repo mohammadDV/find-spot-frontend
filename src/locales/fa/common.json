@@ -16,7 +16,8 @@
     "confirm": "تایید",
     "cancel": "انصراف",
     "yes": "بله",
-    "saveChanges": "ذخیره تغییرات"
+    "saveChanges": "ذخیره تغییرات",
+    "remove": "حذف"
   },
   "messages": {
     "loading": "در حال بارگذاری...",

@@ -4,12 +4,13 @@ import { TitleSection } from "@/app/_components/titleSection";
 import { createFileUrl } from "@/lib/utils";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
-import { ArchiveAdd, Call, Global, Location, Share, Star1 } from "iconsax-react";
+import { Call, Global, Location, Share, Star1 } from "iconsax-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import { getEvent } from "../_api/getEvents";
 import { getSimilarEvents } from "../_api/getSimilarEvents";
+import { AddToFavorites } from "../_components/AddToFavorites";
 
 interface EventPageProps {
     params: Promise<{
@@ -89,13 +90,7 @@ export default async function EventPage({ params }: EventPageProps) {
                                 {tCommon("buttons.share")}
                                 <Share className="stroke-primary size-4 lg:size-6" />
                             </Button>
-                            <Button
-                                variant={"outline"}
-                                size={"medium"}
-                                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
-                                {tCommon("buttons.save")}
-                                <ArchiveAdd className="stroke-primary size-4 lg:size-6" />
-                            </Button>
+                            <AddToFavorites id={eventData.id} />
                         </div>
                         <div className="flex items-center gap-2 mt-4 lg:mt-8">
                             <Image
