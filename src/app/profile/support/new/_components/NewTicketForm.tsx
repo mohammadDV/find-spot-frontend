@@ -2,7 +2,7 @@
 
 import { useCommonTranslation, usePagesTranslation } from "@/hooks/useTranslation";
 import { useActionState, useEffect, useTransition } from "react";
-import { createTicketAction, CreateTicketResponse } from "../../_api/createTicketAction";
+import { createTicketAction, CreateTicketResponse } from "../_api/createTicketAction";
 import { useFetchData } from "@/hooks/useFetchData";
 import { TicketSubject } from "@/types/support.type";
 import z from "zod";

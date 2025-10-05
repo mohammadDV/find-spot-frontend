@@ -126,7 +126,12 @@
       "ticketSubject": "موضوع درخواست",
       "ticketFile": "فایل (اختیاری)",
       "ticketContent": "متن درخواست",
-      "sendRequest": "ارسال درخواست"
+      "sendRequest": "ارسال درخواست",
+      "ticketDetails": "جزئیات تیکت",
+      "trackingNumber": "شماره پیگیری:",
+      "ticketType": "نوع تیکت:",
+      "date": "تاریخ:",
+      "downloadFile": "دانلود فایل"
     }
   }
 }

@@ -43,7 +43,7 @@ export default async function SupportPage({ searchParams }: SupportPageProps) {
                             {ticketsData.data?.map(ticket => (
                                 <Link
                                     key={ticket.id}
-                                    href={`/support/${ticket.id}`}
+                                    href={`/profile/support/${ticket.id}`}
                                     className="p-4 lg:p-6 rounded-xl bg-card flex items-center justify-between">
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-sm text-title font-medium">
