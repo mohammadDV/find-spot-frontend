@@ -93,7 +93,9 @@
     "selectVideo": "انتخاب ویدیو",
     "selectFile": "انتخاب فایل",
     "itemSelected": "فایل انتخاب شده",
-    "writeAndAdd": "نوشتن و افزودن"
+    "writeAndAdd": "نوشتن و افزودن",
+    "from": "از",
+    "to": "تا"
   },
   "categories": {
     "all": "دسته‌بندی‌ها",

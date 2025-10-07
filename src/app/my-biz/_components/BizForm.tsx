@@ -19,8 +19,10 @@ import { RHFUpload } from "@/app/_components/hookForm/RHFUpload";
 import { Category } from "@/types/category.type";
 import { RHFComboboxMulti } from "@/app/_components/hookForm/RHFComboboxMulti";
 import { RHFCreateList } from "@/app/_components/hookForm/RHFCreateList";
+import { RHFMap } from "@/app/_components/hookForm/RHFMap";
 import { getFilters, getFacilities } from "../_api/getFilters";
 import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
+import { RHFWorkingHours } from "@/app/_components/hookForm/RHFWorkingHours";
 
 const amountTypeOptions: OptionTypes[] = [
     {
@@ -90,16 +92,24 @@ export const BizForm = () => {
         country_id: z.string().min(1, tCommon("validation.required.thisField")),
         city_id: z.string().min(1, tCommon("validation.required.thisField")),
         area_id: z.string().min(1, tCommon("validation.required.thisField")),
-        image: z.string().min(1, tCommon("validation.required.thisField")),
-        menu_image: z.string().optional(),
-        video: z.string().optional(),
-        files: z.any().optional(),
         website: z.string().optional(),
         facebook: z.string().optional(),
         instagram: z.string().optional(),
         youtube: z.string().optional(),
         tiktok: z.string().optional(),
         whatsapp: z.string().optional(),
+        location: z.array(z.number()).length(2, tCommon("validation.required.thisField")),
+        saturday: z.object({ from: z.number(), to: z.number() }),
+        sunday: z.object({ from: z.number(), to: z.number() }),
+        monday: z.object({ from: z.number(), to: z.number() }),
+        tuesday: z.object({ from: z.number(), to: z.number() }),
+        wednesday: z.object({ from: z.number(), to: z.number() }),
+        thursday: z.object({ from: z.number(), to: z.number() }),
+        friday: z.object({ from: z.number(), to: z.number() }),
+        image: z.string().min(1, tCommon("validation.required.thisField")),
+        menu_image: z.string().optional(),
+        video: z.string().optional(),
+        files: z.any().optional()
     });
 
     type BizFormData = z.infer<typeof bizSchema>;
@@ -120,15 +130,24 @@ export const BizForm = () => {
             country_id: '',
             city_id: '',
             area_id: '',
-            image: '',
-            menu_image: '',
-            video: '',
             website: '',
             facebook: '',
             instagram: '',
             youtube: '',
             tiktok: '',
             whatsapp: '',
+            location: [41.0082, 28.9784],
+            saturday: { from: 0, to: 0 },
+            sunday: { from: 0, to: 0 },
+            monday: { from: 0, to: 0 },
+            tuesday: { from: 0, to: 0 },
+            wednesday: { from: 0, to: 0 },
+            thursday: { from: 0, to: 0 },
+            friday: { from: 0, to: 0 },
+            image: '',
+            menu_image: '',
+            video: '',
+            files: [],
         }
     });
 
@@ -371,6 +390,10 @@ export const BizForm = () => {
                             name="address"
                             label={tPages("myBiz.address")}
                         />
+                        <RHFMap
+                            name="location"
+                            label={tPages("myBiz.location")}
+                        />
                         <RHFCombobox
                             name="amount_type"
                             label={tPages("myBiz.amountType")}
@@ -416,6 +439,41 @@ export const BizForm = () => {
                             label={tPages("myBiz.tags")}
                             maxCount={4}
                         />
+                    </div>
+                    <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">
+                        <h2 className="text-2xl text-title font-bold">
+                            {tPages("myBiz.time")}
+                        </h2>
+                        <div className="flex flex-col gap-2">
+                            <RHFWorkingHours
+                                name="saturday"
+                                label={tPages("myBiz.saturday")}
+                            />
+                            <RHFWorkingHours
+                                name="sunday"
+                                label={tPages("myBiz.sunday")}
+                            />
+                            <RHFWorkingHours
+                                name="monday"
+                                label={tPages("myBiz.monday")}
+                            />
+                            <RHFWorkingHours
+                                name="tuesday"
+                                label={tPages("myBiz.tuesday")}
+                            />
+                            <RHFWorkingHours
+                                name="wednesday"
+                                label={tPages("myBiz.wednesday")}
+                            />
+                            <RHFWorkingHours
+                                name="thursday"
+                                label={tPages("myBiz.thursday")}
+                            />
+                            <RHFWorkingHours
+                                name="friday"
+                                label={tPages("myBiz.friday")}
+                            />
+                        </div>
                     </div>
                     <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">
                         <h2 className="text-2xl text-title font-bold">

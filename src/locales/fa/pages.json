@@ -151,6 +151,7 @@
     "phoneNumber": "تلفن تماس *",
     "email": "ایمیل *",
     "address": "آدرس *",
+    "location": "موقعیت مکانی",
     "amountType": "نوع مبلغ *",
     "startAmount": "شروع قیمت از *",
     "country": "کشور *",
@@ -168,6 +169,14 @@
     "tiktok": "تیک تاک",
     "whatsapp": "واتساپ",
     "submitBiz": "ثبت کسب و کار",
-    "imageAndVideo": "تصاویر و ویدیو"
+    "imageAndVideo": "تصاویر و ویدیو",
+    "time": "زمان",
+    "saturday": "شنبه",
+    "sunday": "یکشنبه",
+    "monday": "دوشنبه",
+    "tuesday": "سه شنبه",
+    "wednesday": "چهارشنبه",
+    "thursday": "پنجشنبه",
+    "friday": "جمعه"
   }
 }

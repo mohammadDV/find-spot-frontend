@@ -22,9 +22,11 @@ interface ComboboxProps {
     placeholder?: string;
     className?: string;
     loading?: boolean;
+    disabled?: boolean;
+    hideClear?: boolean;
 }
 
-export function Combobox({ options, value, onChange, placeholder, id, className, loading }: ComboboxProps) {
+export function Combobox({ options, value, onChange, placeholder, id, className, loading, disabled, hideClear }: ComboboxProps) {
     const t = useCommonTranslation();
     const [open, setOpen] = React.useState(false)
     const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -67,12 +69,13 @@ export function Combobox({ options, value, onChange, placeholder, id, className,
                     ref={buttonRef}
                     variant="outline"
                     role="combobox"
+                    disabled={disabled}
                     aria-expanded={open}
                     className={cn("w-full justify-between h-12 border border-input rounded-xl text-sm text-title font-normal bg-input px-3", className)}
                 >
                     {selected ? selected.label : <span className="text-muted-foreground">{placeholder}</span>}
                     <div className="flex items-center gap-1.5">
-                        {selected && (
+                        {(!hideClear && selected) && (
                             <span
                                 onClick={handleClearValue}
                                 role="button"
