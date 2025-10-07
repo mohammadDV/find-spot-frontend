@@ -18,7 +18,9 @@ import { getAreas, getCities } from "../_api/getLocations";
 import { RHFUpload } from "@/app/_components/hookForm/RHFUpload";
 import { Category } from "@/types/category.type";
 import { RHFComboboxMulti } from "@/app/_components/hookForm/RHFComboboxMulti";
+import { RHFCreateList } from "@/app/_components/hookForm/RHFCreateList";
 import { getFilters, getFacilities } from "../_api/getFilters";
+import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
 
 const amountTypeOptions: OptionTypes[] = [
     {
@@ -76,6 +78,7 @@ export const BizForm = () => {
         categories: z.array(z.string()).min(1, tCommon("validation.required.thisField")),
         filters: z.array(z.string()).optional(),
         facilities: z.array(z.string()).optional(),
+        tags: z.array(z.string()).max(4, tCommon("validation.invalid.maxItems")),
         description: z.string().min(1, tCommon("validation.required.thisField")),
         phone: z.string().min(1, tCommon("validation.required.mobile"))
             .regex(regex.phone, tCommon("validation.invalid.mobile")),
@@ -90,6 +93,7 @@ export const BizForm = () => {
         image: z.string().min(1, tCommon("validation.required.thisField")),
         menu_image: z.string().optional(),
         video: z.string().optional(),
+        files: z.any().optional(),
         website: z.string().optional(),
         facebook: z.string().optional(),
         instagram: z.string().optional(),
@@ -106,6 +110,7 @@ export const BizForm = () => {
             categories: [],
             filters: [],
             facilities: [],
+            tags: [],
             description: '',
             phone: '',
             email: '',
@@ -406,6 +411,11 @@ export const BizForm = () => {
                             label={tPages("myBiz.whatsapp")}
                             type="text"
                         />
+                        <RHFCreateList
+                            name="tags"
+                            label={tPages("myBiz.tags")}
+                            maxCount={4}
+                        />
                     </div>
                     <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">
                         <h2 className="text-2xl text-title font-bold">
@@ -425,6 +435,10 @@ export const BizForm = () => {
                             name="video"
                             label={tPages("myBiz.video")}
                             uploadType="video"
+                        />
+                        <RHFUploadMulti
+                            name="files"
+                            label={tPages("myBiz.files")}
                         />
                     </div>
 
