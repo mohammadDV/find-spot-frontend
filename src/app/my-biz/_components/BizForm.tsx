@@ -16,6 +16,9 @@ import { FormProvider } from "react-hook-form";
 import z from "zod";
 import { getAreas, getCities } from "../_api/getLocations";
 import { RHFUpload } from "@/app/_components/hookForm/RHFUpload";
+import { Category } from "@/types/category.type";
+import { RHFComboboxMulti } from "@/app/_components/hookForm/RHFComboboxMulti";
+import { getFilters, getFacilities } from "../_api/getFilters";
 
 const amountTypeOptions: OptionTypes[] = [
     {
@@ -48,19 +51,31 @@ export const BizForm = () => {
 
     const [cities, setCities] = useState<any[]>([]);
     const [areas, setAreas] = useState<any[]>([]);
-    const [loadingCities, setLoadingCities] = useState(false);
-    const [loadingAreas, setLoadingAreas] = useState(false);
+    const [loadingCities, setLoadingCities] = useState<boolean>(false);
+    const [loadingAreas, setLoadingAreas] = useState<boolean>(false);
+    const [filtersOptions, setFiltersOptions] = useState<OptionTypes[]>([]);
+    const [facilitiesOptions, setFacilitiesOptions] = useState<OptionTypes[]>([]);
+    const [loadingFilters, setLoadingFilters] = useState<boolean>(false);
+    const [loadingFacilities, setLoadingFacilities] = useState<boolean>(false);
 
-    const { response: countriesResponse } = useFetchData<Country[]>("/countries");
+    const { response: countriesResponse, loading: loadingCountries } = useFetchData<Country[]>("/countries");
+    const { response: categoriesResponse, loading: loadingCategories } = useFetchData<Category[]>("/active-categories");
 
     const countryOptions = countriesResponse?.map(country => ({
         label: country.title,
         value: country.id.toString(),
     })) || [];
 
+    const categoryOptions = categoriesResponse?.map(category => ({
+        label: category.title,
+        value: category.id.toString(),
+    })) || [];
+
     const bizSchema = z.object({
         title: z.string().min(1, tCommon("validation.required.thisField")),
-        // categories: z.array(z.number()).min(1, tCommon("validation.required.thisField")),
+        categories: z.array(z.string()).min(1, tCommon("validation.required.thisField")),
+        filters: z.array(z.string()).optional(),
+        facilities: z.array(z.string()).optional(),
         description: z.string().min(1, tCommon("validation.required.thisField")),
         phone: z.string().min(1, tCommon("validation.required.mobile"))
             .regex(regex.phone, tCommon("validation.invalid.mobile")),
@@ -88,7 +103,9 @@ export const BizForm = () => {
     const form = useZodForm(bizSchema, {
         defaultValues: {
             title: '',
-            // categories: [],
+            categories: [],
+            filters: [],
+            facilities: [],
             description: '',
             phone: '',
             email: '',
@@ -112,6 +129,7 @@ export const BizForm = () => {
 
     const watchedCountryId = form.watch("country_id");
     const watchedCityId = form.watch("city_id");
+    const watchedCategories = form.watch("categories");
 
     const cityOptions = cities?.map(city => ({
         label: city.title,
@@ -122,6 +140,68 @@ export const BizForm = () => {
         label: area.title,
         value: area.id.toString(),
     })) || [];
+
+    useEffect(() => {
+        const fetchFiltersAndFacilities = async () => {
+            const ids = (watchedCategories || [])
+                .map((c: string) => parseInt(c))
+                .filter((n: number) => Number.isFinite(n));
+
+            if (ids.length === 0) {
+                setFiltersOptions([]);
+                setFacilitiesOptions([]);
+                form.setValue("filters", []);
+                form.setValue("facilities", []);
+                return;
+            }
+
+            setLoadingFilters(true);
+            setLoadingFacilities(true);
+
+            try {
+                const [filtersLists, facilitiesLists] = await Promise.all([
+                    Promise.all(ids.map((id) => getFilters(id))),
+                    Promise.all(ids.map((id) => getFacilities(id))),
+                ]);
+
+                const mergeOptions = (lists: Array<{ data: Array<{ id: number; title: string; value: string }> }>) => {
+                    const map = new Map<string, OptionTypes>();
+                    lists.forEach((res) => {
+                        (res?.data || []).forEach((opt) => {
+                            if (!map.has(opt.value)) {
+                                map.set(opt.value, { label: opt.title, value: opt.value });
+                            }
+                        });
+                    });
+                    return Array.from(map.values());
+                };
+
+                const newFiltersOptions = mergeOptions(filtersLists);
+                const newFacilitiesOptions = mergeOptions(facilitiesLists);
+
+                setFiltersOptions(newFiltersOptions);
+                setFacilitiesOptions(newFacilitiesOptions);
+
+                const currentFilters = form.getValues("filters") || [];
+                const currentFacilities = form.getValues("facilities") || [];
+
+                const prunedFilters = currentFilters.filter((v: string) => newFiltersOptions.some((o) => o.value === v));
+                const prunedFacilities = currentFacilities.filter((v: string) => newFacilitiesOptions.some((o) => o.value === v));
+
+                form.setValue("filters", prunedFilters, { shouldValidate: false });
+                form.setValue("facilities", prunedFacilities, { shouldValidate: false });
+            } catch (error) {
+                console.error("Error fetching filters/facilities:", error);
+                setFiltersOptions([]);
+                setFacilitiesOptions([]);
+            } finally {
+                setLoadingFilters(false);
+                setLoadingFacilities(false);
+            }
+        };
+
+        fetchFiltersAndFacilities();
+    }, [JSON.stringify(watchedCategories)]);
 
     useEffect(() => {
         const fetchOriginCities = async () => {
@@ -232,6 +312,24 @@ export const BizForm = () => {
                             label={tPages("myBiz.mainTitle")}
                             type="text"
                         />
+                        <RHFComboboxMulti
+                            name="categories"
+                            label={tPages("myBiz.category")}
+                            options={categoryOptions}
+                            loading={loadingCategories}
+                        />
+                        <RHFComboboxMulti
+                            name="filters"
+                            label={tPages("myBiz.filters")}
+                            options={filtersOptions}
+                            loading={loadingFilters}
+                        />
+                        <RHFComboboxMulti
+                            name="facilities"
+                            label={tPages("myBiz.facilities")}
+                            options={facilitiesOptions}
+                            loading={loadingFacilities}
+                        />
                         <RHFTextarea
                             name="description"
                             label={tPages("myBiz.description")}
@@ -250,6 +348,7 @@ export const BizForm = () => {
                             name="country_id"
                             label={tPages("myBiz.country")}
                             options={countryOptions}
+                            loading={loadingCountries}
                         />
                         <RHFCombobox
                             name="city_id"

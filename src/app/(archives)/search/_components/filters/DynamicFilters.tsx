@@ -8,16 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/ui
 import { ArrowDown2, HambergerMenu } from "iconsax-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-
-interface FilterOption {
-    id: number;
-    title: string;
-    value: string;
-}
-
-interface FiltersResponse {
-    data: FilterOption[];
-}
+import { FiltersResponse } from "@/types/category.type";
 
 export const DynamicFilters = () => {
     const searchParams = useSearchParams();
