@@ -139,5 +139,31 @@
       "noBizDescription": "شما هنوز هیچ کسب و کاری ایجاد نکردید! می‌توانید همین حالا کسب و کار مورد نظر خود را ثبت کرده و فینیبویی شوید!",
       "createBiz": "ثبت کسب و کار"
     }
+  },
+  "myBiz": {
+    "title": "ساخت کسب و کار",
+    "bizInformation": "اطلاعات کسب و کار",
+    "mainTitle": "عنوان اصلی *",
+    "bizCategory": "نوع کسب و کار *",
+    "description": "متن *",
+    "phoneNumber": "تلفن تماس *",
+    "email": "ایمیل *",
+    "address": "آدرس *",
+    "amountType": "نوع مبلغ *",
+    "startAmount": "شروع قیمت از *",
+    "country": "کشور *",
+    "city": "شهر *",
+    "area": "منطقه *",
+    "image": "عکس بنر *",
+    "menuImage": "تصویر منو",
+    "video": "ویدیو",
+    "website": "لینک وبسایت",
+    "facebook": "فیسبوک",
+    "instagram": "اینستاگرام",
+    "youtube": "یوتیوب",
+    "tiktok": "تیک تاک",
+    "whatsapp": "واتساپ",
+    "submitBiz": "ثبت کسب و کار",
+    "imageAndVideo": "تصاویر و ویدیو"
   }
 }
