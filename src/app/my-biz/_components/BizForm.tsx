@@ -23,6 +23,9 @@ import { RHFMap } from "@/app/_components/hookForm/RHFMap";
 import { getFilters, getFacilities } from "../_api/getFilters";
 import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
 import { RHFWorkingHours } from "@/app/_components/hookForm/RHFWorkingHours";
+import { getChildCategories } from "../_api/getChildCategories";
+import { Badge } from "@/ui/badge";
+import { CloseCircle } from "iconsax-react";
 
 const amountTypeOptions: OptionTypes[] = [
     {
@@ -43,7 +46,7 @@ const amountTypeOptions: OptionTypes[] = [
     },
 ]
 
-export const BizForm = () => {
+export const BizForm = ({ defaultData }: { defaultData?: any }) => {
     const router = useRouter();
     const tCommon = useCommonTranslation();
     const tPages = usePagesTranslation();
@@ -61,9 +64,31 @@ export const BizForm = () => {
     const [facilitiesOptions, setFacilitiesOptions] = useState<OptionTypes[]>([]);
     const [loadingFilters, setLoadingFilters] = useState<boolean>(false);
     const [loadingFacilities, setLoadingFacilities] = useState<boolean>(false);
+    const [childCategories, setChildCategories] = useState<Category[]>([]);
+    const [loadingChildCategories, setLoadingChildCategories] = useState<boolean>(false);
+    const [selectedCategories, setSelectedCategories] = useState<Array<{ id: number, title: string }>>([]);
 
     const { response: countriesResponse, loading: loadingCountries } = useFetchData<Country[]>("/countries");
     const { response: categoriesResponse, loading: loadingCategories } = useFetchData<Category[]>("/active-categories");
+
+    const processDefaultCategories = (apiCategories: any[]) => {
+        if (!apiCategories || !categoriesResponse) return { parent: [], child: [] };
+
+        const parentCategoryIds = categoriesResponse.map(cat => cat.id);
+        const parent: string[] = [];
+        const child: string[] = [];
+
+        apiCategories.forEach(category => {
+            const categoryId = category.id.toString();
+            if (parentCategoryIds.includes(category.id)) {
+                parent.push(categoryId);
+            } else {
+                child.push(categoryId);
+            }
+        });
+
+        return { parent, child };
+    };
 
     const countryOptions = countriesResponse?.map(country => ({
         label: country.title,
@@ -75,8 +100,15 @@ export const BizForm = () => {
         value: category.id.toString(),
     })) || [];
 
+    const childCategoryOptions = childCategories?.map(category => ({
+        label: category.title,
+        value: category.id.toString(),
+    })) || [];
+
     const bizSchema = z.object({
         title: z.string().min(1, tCommon("validation.required.thisField")),
+        parent_categories: z.array(z.string()).optional(),
+        child_categories: z.array(z.string()).optional(),
         categories: z.array(z.string()).min(1, tCommon("validation.required.thisField")),
         filters: z.array(z.string()).optional(),
         facilities: z.array(z.string()).optional(),
@@ -114,45 +146,51 @@ export const BizForm = () => {
 
     type BizFormData = z.infer<typeof bizSchema>;
 
+    const processedCategories = defaultData?.categories ? processDefaultCategories(defaultData.categories) : { parent: [], child: [] };
+
     const form = useZodForm(bizSchema, {
         defaultValues: {
-            title: '',
+            title: defaultData?.title || '',
+            parent_categories: [],
+            child_categories: [],
             categories: [],
-            filters: [],
-            facilities: [],
-            tags: [],
-            description: '',
-            phone: '',
-            email: '',
-            address: '',
-            amount_type: '',
-            start_amount: '',
-            country_id: '',
-            city_id: '',
-            area_id: '',
-            website: '',
-            facebook: '',
-            instagram: '',
-            youtube: '',
-            tiktok: '',
-            whatsapp: '',
-            location: [41.0082, 28.9784],
-            saturday: { from: 0, to: 0 },
-            sunday: { from: 0, to: 0 },
-            monday: { from: 0, to: 0 },
-            tuesday: { from: 0, to: 0 },
-            wednesday: { from: 0, to: 0 },
-            thursday: { from: 0, to: 0 },
-            friday: { from: 0, to: 0 },
-            image: '',
-            menu_image: '',
-            video: '',
-            files: [],
+            filters: defaultData?.filters || [],
+            facilities: defaultData?.facilities || [],
+            tags: defaultData?.tags || [],
+            description: defaultData?.description || '',
+            phone: defaultData?.phone || '',
+            email: defaultData?.email || '',
+            address: defaultData?.address || '',
+            amount_type: defaultData?.amount_type || '',
+            start_amount: defaultData?.start_amount || '',
+            country_id: defaultData?.country_id?.toString() || '',
+            city_id: defaultData?.city_id?.toString() || '',
+            area_id: defaultData?.area_id?.toString() || '',
+            website: defaultData?.website || '',
+            facebook: defaultData?.facebook || '',
+            instagram: defaultData?.instagram || '',
+            youtube: defaultData?.youtube || '',
+            tiktok: defaultData?.tiktok || '',
+            whatsapp: defaultData?.whatsapp || '',
+            location: defaultData?.location || [41.0082, 28.9784],
+            saturday: defaultData?.saturday || { from: 0, to: 0 },
+            sunday: defaultData?.sunday || { from: 0, to: 0 },
+            monday: defaultData?.monday || { from: 0, to: 0 },
+            tuesday: defaultData?.tuesday || { from: 0, to: 0 },
+            wednesday: defaultData?.wednesday || { from: 0, to: 0 },
+            thursday: defaultData?.thursday || { from: 0, to: 0 },
+            friday: defaultData?.friday || { from: 0, to: 0 },
+            image: defaultData?.image || '',
+            menu_image: defaultData?.menu_image || '',
+            video: defaultData?.video || '',
+            files: defaultData?.files || [],
         }
     });
 
     const watchedCountryId = form.watch("country_id");
     const watchedCityId = form.watch("city_id");
+    const watchedParentCategories = form.watch("parent_categories");
+    const watchedChildCategories = form.watch("child_categories");
     const watchedCategories = form.watch("categories");
 
     const cityOptions = cities?.map(city => ({
@@ -164,6 +202,80 @@ export const BizForm = () => {
         label: area.title,
         value: area.id.toString(),
     })) || [];
+
+    useEffect(() => {
+        const fetchChildCategories = async () => {
+            if (!watchedParentCategories || watchedParentCategories.length === 0) {
+                setChildCategories([]);
+                form.setValue("child_categories", []);
+                return;
+            }
+
+            setLoadingChildCategories(true);
+            try {
+                const childCategoriesLists = await Promise.all(
+                    watchedParentCategories.map((parentId: string) =>
+                        getChildCategories(parseInt(parentId))
+                    )
+                );
+
+                const allChildCategories = childCategoriesLists.flat();
+                const uniqueChildCategories = allChildCategories.filter(
+                    (category, index, self) =>
+                        index === self.findIndex(c => c.id === category.id)
+                );
+
+                setChildCategories(uniqueChildCategories);
+
+                const currentChildCategories = form.getValues("child_categories") || [];
+                const validChildCategories = currentChildCategories.filter((childId: string) =>
+                    uniqueChildCategories.some(c => c.id.toString() === childId)
+                );
+                form.setValue("child_categories", validChildCategories);
+            } catch (error) {
+                console.error("Error fetching child categories:", error);
+                setChildCategories([]);
+            } finally {
+                setLoadingChildCategories(false);
+            }
+        };
+
+        fetchChildCategories();
+    }, [JSON.stringify(watchedParentCategories), form]);
+
+    useEffect(() => {
+        const parentIds = watchedParentCategories || [];
+        const childIds = watchedChildCategories || [];
+        const combinedIds = [...parentIds, ...childIds];
+
+        form.setValue("categories", combinedIds, { shouldValidate: false });
+
+        const parentCategoriesForBadges = parentIds.map((id: string) => {
+            const category = categoriesResponse?.find(c => c.id.toString() === id);
+            return category ? { id: category.id, title: category.title, isParent: true } : null;
+        }).filter(Boolean);
+
+        const childCategoriesForBadges = childIds.map((id: string) => {
+            const category = childCategories.find(c => c.id.toString() === id);
+            return category ? { id: category.id, title: category.title, isParent: false } : null;
+        }).filter(Boolean);
+
+        setSelectedCategories([
+            ...parentCategoriesForBadges.filter(Boolean),
+            ...childCategoriesForBadges.filter(Boolean)
+        ] as { id: number; title: string; isParent?: boolean }[]);
+    }, [JSON.stringify(watchedParentCategories), JSON.stringify(watchedChildCategories), categoriesResponse, childCategories, form]);
+
+    const handleRemoveCategory = (categoryId: number) => {
+        const parentCategories = form.getValues("parent_categories") || [];
+        const childCategories = form.getValues("child_categories") || [];
+
+        const updatedParentCategories = parentCategories.filter((id: string) => parseInt(id) !== categoryId);
+        const updatedChildCategories = childCategories.filter((id: string) => parseInt(id) !== categoryId);
+
+        form.setValue("parent_categories", updatedParentCategories);
+        form.setValue("child_categories", updatedChildCategories);
+    };
 
     useEffect(() => {
         const fetchFiltersAndFacilities = async () => {
@@ -308,7 +420,19 @@ export const BizForm = () => {
     // }, [formState, form]);
 
     const onSubmit = async (data: BizFormData) => {
-        console.log(data)
+        const combinedCategories = [
+            ...(data.parent_categories || []),
+            ...(data.child_categories || [])
+        ];
+
+        const categoryIds = [...new Set(combinedCategories.map(id => parseInt(id)))];
+
+        const submissionData = {
+            ...data,
+            categories: categoryIds
+        };
+
+        console.log(submissionData);
         // const formData = new FormData();
         // formData.append("first_name", data.first_name);
         // formData.append("last_name", data.last_name);
@@ -335,24 +459,6 @@ export const BizForm = () => {
                             name="title"
                             label={tPages("myBiz.mainTitle")}
                             type="text"
-                        />
-                        <RHFComboboxMulti
-                            name="categories"
-                            label={tPages("myBiz.category")}
-                            options={categoryOptions}
-                            loading={loadingCategories}
-                        />
-                        <RHFComboboxMulti
-                            name="filters"
-                            label={tPages("myBiz.filters")}
-                            options={filtersOptions}
-                            loading={loadingFilters}
-                        />
-                        <RHFComboboxMulti
-                            name="facilities"
-                            label={tPages("myBiz.facilities")}
-                            options={facilitiesOptions}
-                            loading={loadingFacilities}
                         />
                         <RHFTextarea
                             name="description"
@@ -438,6 +544,52 @@ export const BizForm = () => {
                             name="tags"
                             label={tPages("myBiz.tags")}
                             maxCount={4}
+                        />
+                    </div>
+                    <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">
+                        <h2 className="text-2xl text-title font-bold">
+                            {tPages("myBiz.categoriesAndFacilities")}
+                        </h2>
+                        <RHFComboboxMulti
+                            name="parent_categories"
+                            label={tPages("myBiz.parentCategory")}
+                            options={categoryOptions}
+                            loading={loadingCategories}
+                        />
+                        <RHFComboboxMulti
+                            name="child_categories"
+                            label={tPages("myBiz.childCategory")}
+                            options={childCategoryOptions}
+                            loading={loadingChildCategories}
+                            disabled={!watchedParentCategories || watchedParentCategories.length === 0}
+                        />
+                        {selectedCategories.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                                {selectedCategories.map((category) => (
+                                    <Badge key={category.id} variant="grey">
+                                        <span
+                                            role="button"
+                                            className="cursor-pointer text-title"
+                                            onClick={() => handleRemoveCategory(category.id)}
+                                        >
+                                            <CloseCircle className="size-4 stroke-primary" />
+                                        </span>
+                                        <span className="text-xs lg:text-sm text-primary truncate max-w-40">{category.title}</span>
+                                    </Badge>
+                                ))}
+                            </div>
+                        )}
+                        <RHFComboboxMulti
+                            name="filters"
+                            label={tPages("myBiz.filters")}
+                            options={filtersOptions}
+                            loading={loadingFilters}
+                        />
+                        <RHFComboboxMulti
+                            name="facilities"
+                            label={tPages("myBiz.facilities")}
+                            options={facilitiesOptions}
+                            loading={loadingFacilities}
                         />
                     </div>
                     <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">

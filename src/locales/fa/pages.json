@@ -145,6 +145,8 @@
     "bizInformation": "اطلاعات کسب و کار",
     "mainTitle": "عنوان اصلی *",
     "category": "نوع کسب و کار *",
+    "parentCategory": "دسته‌بندی اصلی",
+    "childCategory": "زیر دسته‌بندی",
     "filters": "فیلتر ها",
     "facilities": "امکانات",
     "description": "متن *",
@@ -177,6 +179,7 @@
     "tuesday": "سه شنبه",
     "wednesday": "چهارشنبه",
     "thursday": "پنجشنبه",
-    "friday": "جمعه"
+    "friday": "جمعه",
+    "categoriesAndFacilities": "دسته بندی و امکانات"
   }
 }
