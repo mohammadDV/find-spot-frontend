@@ -75,10 +75,10 @@ export const RHFWorkingHours: React.FC<RHFWorkingHoursProps> = ({ name, label, c
                                         onCheckedChange={(checked: boolean) => setEnabled(checked)}
                                         disabled={disabled}
                                     />
-                                    {label && <FormLabel className="text-lg text-title">{label}</FormLabel>}
+                                    {label && <FormLabel className="text-sm lg:text-lg text-title">{label}</FormLabel>}
                                 </div>
                                 <div className="flex items-center gap-2 w-full">
-                                    <p className="text-lg text-title">
+                                    <p className="text-sm lg:text-lg text-title">
                                         {t("inputs.from")}
                                     </p>
                                     <div className="flex-1">
@@ -90,7 +90,7 @@ export const RHFWorkingHours: React.FC<RHFWorkingHoursProps> = ({ name, label, c
                                             disabled={disabled || !enabled}
                                         />
                                     </div>
-                                    <p className="text-lg text-title">
+                                    <p className="text-sm lg:text-lg text-title">
                                         {t("inputs.to")}
                                     </p>
                                     <div className="flex-1">

@@ -1,31 +1,33 @@
 "use client"
 
 import { OptionTypes, RHFCombobox } from "@/app/_components/hookForm/RHFCombobox";
+import { RHFComboboxMulti } from "@/app/_components/hookForm/RHFComboboxMulti";
+import { RHFCreateList } from "@/app/_components/hookForm/RHFCreateList";
 import { RHFInput } from "@/app/_components/hookForm/RHFInput";
+import { RHFMap } from "@/app/_components/hookForm/RHFMap";
 import { RHFTextarea } from "@/app/_components/hookForm/RHFTextarea";
+import { RHFUpload } from "@/app/_components/hookForm/RHFUpload";
+import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
+import { RHFWorkingHours } from "@/app/_components/hookForm/RHFWorkingHours";
 import { regex } from "@/constants/regex";
 import { useFetchData } from "@/hooks/useFetchData";
 import { useCommonTranslation, usePagesTranslation } from "@/hooks/useTranslation";
 import { useZodForm } from "@/hooks/useZodForm";
+import { Category } from "@/types/category.type";
 import { Country } from "@/types/location.type";
+import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
-import Link from "next/link";
+import { CloseCircle } from "iconsax-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, useTransition } from "react";
 import { FormProvider } from "react-hook-form";
 import z from "zod";
-import { getAreas, getCities } from "../_api/getLocations";
-import { RHFUpload } from "@/app/_components/hookForm/RHFUpload";
-import { Category } from "@/types/category.type";
-import { RHFComboboxMulti } from "@/app/_components/hookForm/RHFComboboxMulti";
-import { RHFCreateList } from "@/app/_components/hookForm/RHFCreateList";
-import { RHFMap } from "@/app/_components/hookForm/RHFMap";
-import { getFilters, getFacilities } from "../_api/getFilters";
-import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
-import { RHFWorkingHours } from "@/app/_components/hookForm/RHFWorkingHours";
 import { getChildCategories } from "../_api/getChildCategories";
-import { Badge } from "@/ui/badge";
-import { CloseCircle } from "iconsax-react";
+import { getFacilities, getFilters } from "../_api/getFilters";
+import { getAreas, getCities } from "../_api/getLocations";
+import { createBusinessAction, CreateBusinessResponse } from "../_api/createBusinessAction";
+import { StatusCode } from "@/constants/enums";
+import { toast } from "sonner";
 
 const amountTypeOptions: OptionTypes[] = [
     {
@@ -51,10 +53,10 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
     const tCommon = useCommonTranslation();
     const tPages = usePagesTranslation();
     const [isPending, startTransition] = useTransition();
-    // const [formState, formAction] = useActionState<AccountService | null, FormData>(
-    //     accountAction,
-    //     null
-    // );
+    const [formState, formAction] = useActionState<CreateBusinessResponse | null, FormData>(
+        createBusinessAction,
+        null
+    );
 
     const [cities, setCities] = useState<any[]>([]);
     const [areas, setAreas] = useState<any[]>([]);
@@ -279,11 +281,9 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
 
     useEffect(() => {
         const fetchFiltersAndFacilities = async () => {
-            const ids = (watchedCategories || [])
-                .map((c: string) => parseInt(c))
-                .filter((n: number) => Number.isFinite(n));
+            const categoryIds = selectedCategories.map(cat => cat.id);
 
-            if (ids.length === 0) {
+            if (categoryIds.length === 0) {
                 setFiltersOptions([]);
                 setFacilitiesOptions([]);
                 form.setValue("filters", []);
@@ -295,34 +295,29 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
             setLoadingFacilities(true);
 
             try {
-                const [filtersLists, facilitiesLists] = await Promise.all([
-                    Promise.all(ids.map((id) => getFilters(id))),
-                    Promise.all(ids.map((id) => getFacilities(id))),
+                const [filtersResponse, facilitiesResponse] = await Promise.all([
+                    getFilters(categoryIds),
+                    getFacilities(categoryIds),
                 ]);
 
-                const mergeOptions = (lists: Array<{ data: Array<{ id: number; title: string; value: string }> }>) => {
-                    const map = new Map<string, OptionTypes>();
-                    lists.forEach((res) => {
-                        (res?.data || []).forEach((opt) => {
-                            if (!map.has(opt.value)) {
-                                map.set(opt.value, { label: opt.title, value: opt.value });
-                            }
-                        });
-                    });
-                    return Array.from(map.values());
-                };
+                const filtersOptions = filtersResponse.data.map(filter => ({
+                    label: filter.title,
+                    value: filter.id.toString()
+                }));
 
-                const newFiltersOptions = mergeOptions(filtersLists);
-                const newFacilitiesOptions = mergeOptions(facilitiesLists);
+                const facilitiesOptions = facilitiesResponse.data.map(facility => ({
+                    label: facility.title,
+                    value: facility.id.toString()
+                }));
 
-                setFiltersOptions(newFiltersOptions);
-                setFacilitiesOptions(newFacilitiesOptions);
+                setFiltersOptions(filtersOptions);
+                setFacilitiesOptions(facilitiesOptions);
 
                 const currentFilters = form.getValues("filters") || [];
                 const currentFacilities = form.getValues("facilities") || [];
 
-                const prunedFilters = currentFilters.filter((v: string) => newFiltersOptions.some((o) => o.value === v));
-                const prunedFacilities = currentFacilities.filter((v: string) => newFacilitiesOptions.some((o) => o.value === v));
+                const prunedFilters = currentFilters.filter((v: string) => filtersOptions.some((o) => o.value === v));
+                const prunedFacilities = currentFacilities.filter((v: string) => facilitiesOptions.some((o) => o.value === v));
 
                 form.setValue("filters", prunedFilters, { shouldValidate: false });
                 form.setValue("facilities", prunedFacilities, { shouldValidate: false });
@@ -337,7 +332,7 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         };
 
         fetchFiltersAndFacilities();
-    }, [JSON.stringify(watchedCategories)]);
+    }, [JSON.stringify(selectedCategories)]);
 
     useEffect(() => {
         const fetchOriginCities = async () => {
@@ -397,54 +392,90 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         fetchOriginAreas();
     }, [watchedCityId, form]);
 
-    // useEffect(() => {
-    //     if (!!formState && formState.status === StatusCode.Failed) {
-    //         toast.error(!!formState?.errors
-    //             ? t("messages.errorFields")
-    //             : formState?.message || t("messages.error"));
+    useEffect(() => {
+        console.log(formState)
+        if (!!formState && formState.status === StatusCode.Failed) {
+            toast.error(!!formState?.errors
+                ? tCommon("messages.errorFields")
+                : formState?.message || tCommon("messages.error"));
 
-    //         if (formState.errors) {
-    //             Object.entries(formState.errors).forEach(([fieldName, fieldErrors]) => {
-    //                 if (fieldErrors && fieldErrors.length > 0) {
-    //                     form.setError(fieldName as keyof AccountFormData, {
-    //                         type: "server",
-    //                         message: fieldErrors[0]
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //     } else if (!!formState && formState.status === StatusCode.Success) {
-    //         toast.success(formState?.message || t("messages.updated"));
-    //         router.refresh();
-    //     }
-    // }, [formState, form]);
+            if (formState.errors) {
+                Object.entries(formState.errors).forEach(([fieldName, fieldErrors]) => {
+                    if (fieldErrors && fieldErrors.length > 0) {
+                        form.setError(fieldName as keyof BizFormData, {
+                            type: "server",
+                            message: fieldErrors[0]
+                        });
+                    }
+                });
+            }
+        } else if (!!formState && formState.status === StatusCode.Success) {
+            toast.success(formState?.message || tCommon("messages.updated"));
+            // router.refresh();
+        }
+    }, [formState, form]);
 
     const onSubmit = async (data: BizFormData) => {
-        const combinedCategories = [
-            ...(data.parent_categories || []),
-            ...(data.child_categories || [])
-        ];
+        const formData = new FormData();
 
-        const categoryIds = [...new Set(combinedCategories.map(id => parseInt(id)))];
+        // Basic fields
+        formData.append("title", data.title);
+        formData.append("description", data.description);
+        formData.append("phone", data.phone);
+        formData.append("email", data.email);
+        formData.append("address", data.address);
+        formData.append("amount_type", data.amount_type);
+        formData.append("start_amount", data.start_amount);
+        formData.append("country_id", data.country_id);
+        formData.append("city_id", data.city_id);
+        formData.append("area_id", data.area_id);
 
-        const submissionData = {
-            ...data,
-            categories: categoryIds
-        };
+        // Optional social media fields
+        formData.append("website", data.website || "");
+        formData.append("facebook", data.facebook || "");
+        formData.append("instagram", data.instagram || "");
+        formData.append("youtube", data.youtube || "");
+        formData.append("tiktok", data.tiktok || "");
+        formData.append("whatsapp", data.whatsapp || "");
 
-        console.log(submissionData);
-        // const formData = new FormData();
-        // formData.append("first_name", data.first_name);
-        // formData.append("last_name", data.last_name);
-        // formData.append("nickname", data.nickname);
-        // formData.append("mobile", data.mobile);
-        // formData.append("country_id", "1");
-        // formData.append("city_id", "1");
-        // formData.append("profile_photo_path", data.profile_photo_path || "");
+        // Location coordinates
+        formData.append("lat", data.location[0].toString());
+        formData.append("long", data.location[1].toString());
 
-        // startTransition(async () => {
-        //     await formAction(formData);
-        // });
+        // Working hours - transform from object format to individual fields
+        formData.append("from_monday", data.monday.from.toString());
+        formData.append("to_monday", data.monday.to.toString());
+        formData.append("from_tuesday", data.tuesday.from.toString());
+        formData.append("to_tuesday", data.tuesday.to.toString());
+        formData.append("from_wednesday", data.wednesday.from.toString());
+        formData.append("to_wednesday", data.wednesday.to.toString());
+        formData.append("from_thursday", data.thursday.from.toString());
+        formData.append("to_thursday", data.thursday.to.toString());
+        formData.append("from_friday", data.friday.from.toString());
+        formData.append("to_friday", data.friday.to.toString());
+        formData.append("from_saturday", data.saturday.from.toString());
+        formData.append("to_saturday", data.saturday.to.toString());
+        formData.append("from_sunday", data.sunday.from.toString());
+        formData.append("to_sunday", data.sunday.to.toString());
+
+        // Media files
+        formData.append("image", data.image);
+        formData.append("menu_image", data.menu_image || "");
+        formData.append("video", data.video || "");
+
+        // Use selectedCategories for categories array
+        const categoriesArray = selectedCategories.map(cat => cat.id);
+        formData.append("categories", JSON.stringify(categoriesArray));
+
+        // Arrays
+        formData.append("tags", JSON.stringify(data.tags || []));
+        formData.append("facilities", JSON.stringify(data.facilities?.map(f => parseInt(f)) || []));
+        formData.append("filters", JSON.stringify(data.filters?.map(f => parseInt(f)) || []));
+        formData.append("files", JSON.stringify(data.files || []));
+
+        startTransition(async () => {
+            await formAction(formData);
+        });
     };
 
     return (
@@ -540,11 +571,6 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
                             label={tPages("myBiz.whatsapp")}
                             type="text"
                         />
-                        <RHFCreateList
-                            name="tags"
-                            label={tPages("myBiz.tags")}
-                            maxCount={4}
-                        />
                     </div>
                     <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">
                         <h2 className="text-2xl text-title font-bold">
@@ -590,6 +616,11 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
                             label={tPages("myBiz.facilities")}
                             options={facilitiesOptions}
                             loading={loadingFacilities}
+                        />
+                        <RHFCreateList
+                            name="tags"
+                            label={tPages("myBiz.tags")}
+                            maxCount={4}
                         />
                     </div>
                     <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">

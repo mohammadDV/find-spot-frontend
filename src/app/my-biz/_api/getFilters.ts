@@ -1,10 +1,12 @@
-import { getFetch } from "@/core/publicService";
-import { FiltersResponse } from "@/types/category.type";
+import { postFetch } from "@/core/publicService";
+import { FilterFacilityResponse, FilterFacilityRequest } from "@/types/filter-facility.type";
 
-export const getFilters = async (categoryId: number): Promise<FiltersResponse> => {
-    return await getFetch(`/categories/${categoryId}/filters`);
+export const getFilters = async (categories: number[]): Promise<FilterFacilityResponse> => {
+    const requestBody: FilterFacilityRequest = { categories };
+    return await postFetch(`/categories/filters`, requestBody);
 }
 
-export const getFacilities = async (categoryId: number): Promise<FiltersResponse> => {
-    return await getFetch(`/categories/${categoryId}/facilities`);
+export const getFacilities = async (categories: number[]): Promise<FilterFacilityResponse> => {
+    const requestBody: FilterFacilityRequest = { categories };
+    return await postFetch(`/categories/facilities`, requestBody);
 }
