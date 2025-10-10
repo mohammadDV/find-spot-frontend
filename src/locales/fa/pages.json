@@ -141,7 +141,8 @@
     }
   },
   "myBiz": {
-    "title": "ساخت کسب و کار",
+    "addTitle": "ساخت کسب و کار",
+    "editTitle": "ویرایش کسب و کار",
     "bizInformation": "اطلاعات کسب و کار",
     "mainTitle": "عنوان اصلی *",
     "category": "نوع کسب و کار *",
@@ -171,6 +172,7 @@
     "tiktok": "تیک تاک",
     "whatsapp": "واتساپ",
     "submitBiz": "ثبت کسب و کار",
+    "updateBiz": "ویرایش کسب و کار",
     "imageAndVideo": "تصاویر و ویدیو",
     "time": "زمان",
     "saturday": "شنبه",

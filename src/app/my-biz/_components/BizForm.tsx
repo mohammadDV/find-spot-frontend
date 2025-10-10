@@ -9,25 +9,25 @@ import { RHFTextarea } from "@/app/_components/hookForm/RHFTextarea";
 import { RHFUpload } from "@/app/_components/hookForm/RHFUpload";
 import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
 import { RHFWorkingHours } from "@/app/_components/hookForm/RHFWorkingHours";
+import { StatusCode } from "@/constants/enums";
 import { regex } from "@/constants/regex";
 import { useFetchData } from "@/hooks/useFetchData";
 import { useCommonTranslation, usePagesTranslation } from "@/hooks/useTranslation";
 import { useZodForm } from "@/hooks/useZodForm";
+import { BusinessEditResponse } from "@/types/business.type";
 import { Category } from "@/types/category.type";
 import { Country } from "@/types/location.type";
-import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
-import { CloseCircle } from "iconsax-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, useTransition } from "react";
 import { FormProvider } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
+import { createBusinessAction, CreateBusinessResponse } from "../_api/createBusinessAction";
+import { editBusinessAction, EditBusinessResponse } from "../_api/editBusinessAction";
 import { getChildCategories } from "../_api/getChildCategories";
 import { getFacilities, getFilters } from "../_api/getFilters";
 import { getAreas, getCities } from "../_api/getLocations";
-import { createBusinessAction, CreateBusinessResponse } from "../_api/createBusinessAction";
-import { StatusCode } from "@/constants/enums";
-import { toast } from "sonner";
 
 const amountTypeOptions: OptionTypes[] = [
     {
@@ -48,13 +48,19 @@ const amountTypeOptions: OptionTypes[] = [
     },
 ]
 
-export const BizForm = ({ defaultData }: { defaultData?: any }) => {
+interface BizFormProps {
+    defaultData?: BusinessEditResponse;
+    id: string;
+}
+
+export const BizForm = ({ defaultData, id }: BizFormProps) => {
     const router = useRouter();
     const tCommon = useCommonTranslation();
     const tPages = usePagesTranslation();
+    const isEditMode = id !== "create";
     const [isPending, startTransition] = useTransition();
-    const [formState, formAction] = useActionState<CreateBusinessResponse | null, FormData>(
-        createBusinessAction,
+    const [formState, formAction] = useActionState<CreateBusinessResponse | EditBusinessResponse | null, FormData>(
+        isEditMode ? editBusinessAction.bind(null, id) : createBusinessAction,
         null
     );
 
@@ -68,7 +74,7 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
     const [loadingFacilities, setLoadingFacilities] = useState<boolean>(false);
     const [childCategories, setChildCategories] = useState<Category[]>([]);
     const [loadingChildCategories, setLoadingChildCategories] = useState<boolean>(false);
-    const [selectedCategories, setSelectedCategories] = useState<Array<{ id: number, title: string }>>([]);
+    const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
     const { response: countriesResponse, loading: loadingCountries } = useFetchData<Country[]>("/countries");
     const { response: categoriesResponse, loading: loadingCategories } = useFetchData<Category[]>("/active-categories");
@@ -111,7 +117,6 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         title: z.string().min(1, tCommon("validation.required.thisField")),
         parent_categories: z.array(z.string()).optional(),
         child_categories: z.array(z.string()).optional(),
-        categories: z.array(z.string()).min(1, tCommon("validation.required.thisField")),
         filters: z.array(z.string()).optional(),
         facilities: z.array(z.string()).optional(),
         tags: z.array(z.string()).max(4, tCommon("validation.invalid.maxItems")),
@@ -155,33 +160,32 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
             title: defaultData?.title || '',
             parent_categories: [],
             child_categories: [],
-            categories: [],
-            filters: defaultData?.filters || [],
-            facilities: defaultData?.facilities || [],
-            tags: defaultData?.tags || [],
+            filters: [],
+            facilities: [],
+            tags: defaultData?.tags?.map(tag => tag.title) || [],
             description: defaultData?.description || '',
             phone: defaultData?.phone || '',
             email: defaultData?.email || '',
             address: defaultData?.address || '',
-            amount_type: defaultData?.amount_type || '',
-            start_amount: defaultData?.start_amount || '',
-            country_id: defaultData?.country_id?.toString() || '',
-            city_id: defaultData?.city_id?.toString() || '',
-            area_id: defaultData?.area_id?.toString() || '',
+            amount_type: defaultData?.amount_type?.toString() || '',
+            start_amount: defaultData?.start_amount?.toString() || '',
+            country_id: defaultData?.area?.city?.country?.id?.toString() || '',
+            city_id: defaultData?.area?.city?.id?.toString() || '',
+            area_id: defaultData?.area?.id?.toString() || '',
             website: defaultData?.website || '',
             facebook: defaultData?.facebook || '',
             instagram: defaultData?.instagram || '',
             youtube: defaultData?.youtube || '',
             tiktok: defaultData?.tiktok || '',
             whatsapp: defaultData?.whatsapp || '',
-            location: defaultData?.location || [41.0082, 28.9784],
-            saturday: defaultData?.saturday || { from: 0, to: 0 },
-            sunday: defaultData?.sunday || { from: 0, to: 0 },
-            monday: defaultData?.monday || { from: 0, to: 0 },
-            tuesday: defaultData?.tuesday || { from: 0, to: 0 },
-            wednesday: defaultData?.wednesday || { from: 0, to: 0 },
-            thursday: defaultData?.thursday || { from: 0, to: 0 },
-            friday: defaultData?.friday || { from: 0, to: 0 },
+            location: defaultData ? [parseFloat(defaultData.lat), parseFloat(defaultData.long)] : [41.0082, 28.9784],
+            saturday: defaultData ? { from: defaultData.from_saturday, to: defaultData.to_saturday } : { from: 0, to: 0 },
+            sunday: defaultData ? { from: defaultData.from_sunday, to: defaultData.to_sunday } : { from: 0, to: 0 },
+            monday: defaultData ? { from: defaultData.from_monday, to: defaultData.to_monday } : { from: 0, to: 0 },
+            tuesday: defaultData ? { from: defaultData.from_tuesday, to: defaultData.to_tuesday } : { from: 0, to: 0 },
+            wednesday: defaultData ? { from: defaultData.from_wednesday, to: defaultData.to_wednesday } : { from: 0, to: 0 },
+            thursday: defaultData ? { from: defaultData.from_thursday, to: defaultData.to_thursday } : { from: 0, to: 0 },
+            friday: defaultData ? { from: defaultData.from_friday, to: defaultData.to_friday } : { from: 0, to: 0 },
             image: defaultData?.image || '',
             menu_image: defaultData?.menu_image || '',
             video: defaultData?.video || '',
@@ -193,7 +197,6 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
     const watchedCityId = form.watch("city_id");
     const watchedParentCategories = form.watch("parent_categories");
     const watchedChildCategories = form.watch("child_categories");
-    const watchedCategories = form.watch("categories");
 
     const cityOptions = cities?.map(city => ({
         label: city.title,
@@ -204,6 +207,28 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         label: area.title,
         value: area.id.toString(),
     })) || [];
+
+    useEffect(() => {
+        if (defaultData?.categories && categoriesResponse && !isInitialized) {
+            const processedCategories = processDefaultCategories(defaultData.categories);
+
+            form.setValue("parent_categories", processedCategories.parent);
+            form.setValue("child_categories", processedCategories.child);
+            
+            setIsInitialized(true);
+        }
+    }, [defaultData, categoriesResponse, form, isInitialized]);
+
+    useEffect(() => {
+        if (isInitialized && defaultData) {
+            if (defaultData.filters) {
+                form.setValue("filters", defaultData.filters.map(filter => filter.id.toString()));
+            }
+            if (defaultData.facilities) {
+                form.setValue("facilities", defaultData.facilities.map(facility => facility.id.toString()));
+            }
+        }
+    }, [isInitialized, defaultData, form]);
 
     useEffect(() => {
         const fetchChildCategories = async () => {
@@ -245,29 +270,6 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         fetchChildCategories();
     }, [JSON.stringify(watchedParentCategories), form]);
 
-    useEffect(() => {
-        const parentIds = watchedParentCategories || [];
-        const childIds = watchedChildCategories || [];
-        const combinedIds = [...parentIds, ...childIds];
-
-        form.setValue("categories", combinedIds, { shouldValidate: false });
-
-        const parentCategoriesForBadges = parentIds.map((id: string) => {
-            const category = categoriesResponse?.find(c => c.id.toString() === id);
-            return category ? { id: category.id, title: category.title, isParent: true } : null;
-        }).filter(Boolean);
-
-        const childCategoriesForBadges = childIds.map((id: string) => {
-            const category = childCategories.find(c => c.id.toString() === id);
-            return category ? { id: category.id, title: category.title, isParent: false } : null;
-        }).filter(Boolean);
-
-        setSelectedCategories([
-            ...parentCategoriesForBadges.filter(Boolean),
-            ...childCategoriesForBadges.filter(Boolean)
-        ] as { id: number; title: string; isParent?: boolean }[]);
-    }, [JSON.stringify(watchedParentCategories), JSON.stringify(watchedChildCategories), categoriesResponse, childCategories, form]);
-
     const handleRemoveCategory = (categoryId: number) => {
         const parentCategories = form.getValues("parent_categories") || [];
         const childCategories = form.getValues("child_categories") || [];
@@ -281,13 +283,17 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
 
     useEffect(() => {
         const fetchFiltersAndFacilities = async () => {
-            const categoryIds = selectedCategories.map(cat => cat.id);
+            const parentIds = watchedParentCategories || [];
+            const childIds = watchedChildCategories || [];
+            const categoryIds = [...parentIds, ...childIds].map(id => parseInt(id));
 
             if (categoryIds.length === 0) {
-                setFiltersOptions([]);
-                setFacilitiesOptions([]);
-                form.setValue("filters", []);
-                form.setValue("facilities", []);
+                if (!defaultData || (defaultData && categoriesResponse)) {
+                    setFiltersOptions([]);
+                    setFacilitiesOptions([]);
+                    form.setValue("filters", []);
+                    form.setValue("facilities", []);
+                }
                 return;
             }
 
@@ -332,7 +338,7 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         };
 
         fetchFiltersAndFacilities();
-    }, [JSON.stringify(selectedCategories)]);
+    }, [JSON.stringify(watchedParentCategories), JSON.stringify(watchedChildCategories), form, defaultData, categoriesResponse]);
 
     useEffect(() => {
         const fetchOriginCities = async () => {
@@ -344,10 +350,9 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
                 try {
                     const response: any = await getCities(parseInt(watchedCountryId));
                     setCities(response || []);
-
-                    // if (projectData?.o_city_id && response?.some((c: any) => c.id === projectData.o_city_id)) {
-                    //     form.setValue("o_city_id", projectData.o_city_id.toString());
-                    // }
+                    if (defaultData?.city_id && response?.some((c: any) => c.id === defaultData.city_id)) {
+                        form.setValue("city_id", defaultData.city_id.toString());
+                    }
                 } catch (error) {
                     console.error("Error fetching origin cities:", error);
                     setCities([]);
@@ -374,9 +379,9 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
                     const response: any = await getAreas(parseInt(watchedCityId));
                     setAreas(response || []);
 
-                    // if (projectData?.area_id && response?.some((c: any) => c.id === projectData.area_id)) {
-                    //     form.setValue("area_id", projectData.area_id.toString());
-                    // }
+                    if (defaultData?.area_id && response?.some((c: any) => c.id === defaultData.area_id)) {
+                        form.setValue("area_id", defaultData.area_id.toString());
+                    }
                 } catch (error) {
                     console.error("Error fetching origin areas:", error);
                     setAreas([]);
@@ -393,7 +398,6 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
     }, [watchedCityId, form]);
 
     useEffect(() => {
-        console.log(formState)
         if (!!formState && formState.status === StatusCode.Failed) {
             toast.error(!!formState?.errors
                 ? tCommon("messages.errorFields")
@@ -411,7 +415,7 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
             }
         } else if (!!formState && formState.status === StatusCode.Success) {
             toast.success(formState?.message || tCommon("messages.updated"));
-            // router.refresh();
+            router.refresh();
         }
     }, [formState, form]);
 
@@ -463,8 +467,10 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
         formData.append("menu_image", data.menu_image || "");
         formData.append("video", data.video || "");
 
-        // Use selectedCategories for categories array
-        const categoriesArray = selectedCategories.map(cat => cat.id);
+        // Combine parent_categories and child_categories for categories array
+        const parentIds = data.parent_categories?.map(id => parseInt(id)) || [];
+        const childIds = data.child_categories?.map(id => parseInt(id)) || [];
+        const categoriesArray = [...parentIds, ...childIds];
         formData.append("categories", JSON.stringify(categoriesArray));
 
         // Arrays
@@ -589,22 +595,6 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
                             loading={loadingChildCategories}
                             disabled={!watchedParentCategories || watchedParentCategories.length === 0}
                         />
-                        {selectedCategories.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                                {selectedCategories.map((category) => (
-                                    <Badge key={category.id} variant="grey">
-                                        <span
-                                            role="button"
-                                            className="cursor-pointer text-title"
-                                            onClick={() => handleRemoveCategory(category.id)}
-                                        >
-                                            <CloseCircle className="size-4 stroke-primary" />
-                                        </span>
-                                        <span className="text-xs lg:text-sm text-primary truncate max-w-40">{category.title}</span>
-                                    </Badge>
-                                ))}
-                            </div>
-                        )}
                         <RHFComboboxMulti
                             name="filters"
                             label={tPages("myBiz.filters")}
@@ -690,7 +680,7 @@ export const BizForm = ({ defaultData }: { defaultData?: any }) => {
                             isLoading={isPending}
                             type="submit"
                         >
-                            {tPages("myBiz.submitBiz")}
+                            {isEditMode ? tPages("myBiz.updateBiz") : tPages("myBiz.submitBiz")}
                         </Button>
                     </div>
                 </form>
