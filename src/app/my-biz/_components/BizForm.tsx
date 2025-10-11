@@ -51,9 +51,68 @@ const amountTypeOptions: OptionTypes[] = [
 interface BizFormProps {
     defaultData?: BusinessEditResponse;
     id: string;
+    onValuesChange?: (values: BizFormData) => void;
 }
 
-export const BizForm = ({ defaultData, id }: BizFormProps) => {
+export const createBizSchema = (tCommon: (key: string) => string) =>
+    z.object({
+        title: z.string().min(1, tCommon("validation.required.thisField")),
+        parent_categories: z.array(z.string()).optional(),
+        child_categories: z.array(z.string()).optional(),
+        filters: z.array(z.string()).optional(),
+        facilities: z.array(z.string()).optional(),
+        tags: z
+            .array(z.string())
+            .max(4, tCommon("validation.invalid.maxItems"))
+            .optional(),
+
+        description: z.string().min(1, tCommon("validation.required.thisField")),
+
+        phone: z
+            .string()
+            .min(1, tCommon("validation.required.mobile"))
+            .regex(regex.phone, tCommon("validation.invalid.mobile")),
+
+        email: z
+            .string()
+            .min(1, tCommon("validation.required.email"))
+            .email(tCommon("validation.invalid.email")),
+
+        address: z.string().min(1, tCommon("validation.required.thisField")),
+        amount_type: z.string().min(1, tCommon("validation.required.thisField")),
+        start_amount: z.string().min(1, tCommon("validation.required.thisField")),
+        country_id: z.string().min(1, tCommon("validation.required.thisField")),
+        city_id: z.string().min(1, tCommon("validation.required.thisField")),
+        area_id: z.string().min(1, tCommon("validation.required.thisField")),
+
+        website: z.string().optional(),
+        facebook: z.string().optional(),
+        instagram: z.string().optional(),
+        youtube: z.string().optional(),
+        tiktok: z.string().optional(),
+        whatsapp: z.string().optional(),
+
+        location: z
+            .array(z.number())
+            .length(2, tCommon("validation.required.thisField")),
+
+        saturday: z.object({ from: z.number(), to: z.number() }),
+        sunday: z.object({ from: z.number(), to: z.number() }),
+        monday: z.object({ from: z.number(), to: z.number() }),
+        tuesday: z.object({ from: z.number(), to: z.number() }),
+        wednesday: z.object({ from: z.number(), to: z.number() }),
+        thursday: z.object({ from: z.number(), to: z.number() }),
+        friday: z.object({ from: z.number(), to: z.number() }),
+
+        image: z.string().min(1, tCommon("validation.required.thisField")),
+        menu_image: z.string().optional(),
+        video: z.string().optional(),
+        files: z.any().optional(),
+    });
+
+export type BizFormData = z.infer<ReturnType<typeof createBizSchema>>;
+
+export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
     const router = useRouter();
     const tCommon = useCommonTranslation();
     const tPages = usePagesTranslation();
@@ -75,6 +134,8 @@ export const BizForm = ({ defaultData, id }: BizFormProps) => {
     const [childCategories, setChildCategories] = useState<Category[]>([]);
     const [loadingChildCategories, setLoadingChildCategories] = useState<boolean>(false);
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
+
+    const bizSchema = createBizSchema(tCommon);
 
     const { response: countriesResponse, loading: loadingCountries } = useFetchData<Country[]>("/countries");
     const { response: categoriesResponse, loading: loadingCategories } = useFetchData<Category[]>("/active-categories");
@@ -113,47 +174,7 @@ export const BizForm = ({ defaultData, id }: BizFormProps) => {
         value: category.id.toString(),
     })) || [];
 
-    const bizSchema = z.object({
-        title: z.string().min(1, tCommon("validation.required.thisField")),
-        parent_categories: z.array(z.string()).optional(),
-        child_categories: z.array(z.string()).optional(),
-        filters: z.array(z.string()).optional(),
-        facilities: z.array(z.string()).optional(),
-        tags: z.array(z.string()).max(4, tCommon("validation.invalid.maxItems")),
-        description: z.string().min(1, tCommon("validation.required.thisField")),
-        phone: z.string().min(1, tCommon("validation.required.mobile"))
-            .regex(regex.phone, tCommon("validation.invalid.mobile")),
-        email: z.string().min(1, tCommon("validation.required.email"))
-            .email(tCommon("validation.invalid.email")),
-        address: z.string().min(1, tCommon("validation.required.thisField")),
-        amount_type: z.string().min(1, tCommon("validation.required.thisField")),
-        start_amount: z.string().min(1, tCommon("validation.required.thisField")),
-        country_id: z.string().min(1, tCommon("validation.required.thisField")),
-        city_id: z.string().min(1, tCommon("validation.required.thisField")),
-        area_id: z.string().min(1, tCommon("validation.required.thisField")),
-        website: z.string().optional(),
-        facebook: z.string().optional(),
-        instagram: z.string().optional(),
-        youtube: z.string().optional(),
-        tiktok: z.string().optional(),
-        whatsapp: z.string().optional(),
-        location: z.array(z.number()).length(2, tCommon("validation.required.thisField")),
-        saturday: z.object({ from: z.number(), to: z.number() }),
-        sunday: z.object({ from: z.number(), to: z.number() }),
-        monday: z.object({ from: z.number(), to: z.number() }),
-        tuesday: z.object({ from: z.number(), to: z.number() }),
-        wednesday: z.object({ from: z.number(), to: z.number() }),
-        thursday: z.object({ from: z.number(), to: z.number() }),
-        friday: z.object({ from: z.number(), to: z.number() }),
-        image: z.string().min(1, tCommon("validation.required.thisField")),
-        menu_image: z.string().optional(),
-        video: z.string().optional(),
-        files: z.any().optional()
-    });
-
     type BizFormData = z.infer<typeof bizSchema>;
-
-    const processedCategories = defaultData?.categories ? processDefaultCategories(defaultData.categories) : { parent: [], child: [] };
 
     const form = useZodForm(bizSchema, {
         defaultValues: {
@@ -193,6 +214,14 @@ export const BizForm = ({ defaultData, id }: BizFormProps) => {
         }
     });
 
+    useEffect(() => {
+        if (!onValuesChange) return;
+        const subscription = form.watch((value) => {
+            onValuesChange(value as BizFormData);
+        });
+        return () => subscription.unsubscribe();
+    }, [form, onValuesChange]);
+
     const watchedCountryId = form.watch("country_id");
     const watchedCityId = form.watch("city_id");
     const watchedParentCategories = form.watch("parent_categories");
@@ -214,7 +243,7 @@ export const BizForm = ({ defaultData, id }: BizFormProps) => {
 
             form.setValue("parent_categories", processedCategories.parent);
             form.setValue("child_categories", processedCategories.child);
-            
+
             setIsInitialized(true);
         }
     }, [defaultData, categoriesResponse, form, isInitialized]);
@@ -415,7 +444,7 @@ export const BizForm = ({ defaultData, id }: BizFormProps) => {
             }
         } else if (!!formState && formState.status === StatusCode.Success) {
             toast.success(formState?.message || tCommon("messages.updated"));
-            router.refresh();
+            router.push("/profile/biz")
         }
     }, [formState, form]);
 
