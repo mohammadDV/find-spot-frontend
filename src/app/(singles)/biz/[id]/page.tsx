@@ -192,6 +192,15 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             <p className="mt-2 lg:mt-4 text-xs lg:text-lg text-title">
               {businessData.business.description}
             </p>
+            {businessData.business?.video && (
+              <div className="mt-2 lg:mt-4">
+                <video
+                  controls
+                  className="w-full rounded-xl"
+                  src={createFileUrl(businessData.business.video)}
+                />
+              </div>
+            )}
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
                 src={"/images/finybo-icon.svg"}

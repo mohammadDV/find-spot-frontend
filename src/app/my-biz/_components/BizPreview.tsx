@@ -11,15 +11,21 @@ import { ArchiveAdd, BookSaved, Call, Gallery, Global, Location, Share, ShieldTi
 import Image from "next/image";
 import Link from "next/link";
 import { BizFormData } from "./BizForm";
+import type { OptionTypes } from "@/app/_components/hookForm/RHFCombobox";
 
 interface BizPreviewProps {
     bizData?: BusinessEditResponse;
     formValues: BizFormData | null
+    areaOptions?: OptionTypes[];
+    facilitiesOptions?: OptionTypes[];
 }
 
-export const BizPreview = ({ bizData, formValues }: BizPreviewProps) => {
+export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOptions = [] }: BizPreviewProps) => {
     const tCommon = useCommonTranslation();
     const tPages = usePagesTranslation();
+
+    const areaLabel = areaOptions.find((o) => o.value === (formValues?.area_id || ""))?.label || formValues?.area_id || "";
+    const facilityLabels = (formValues?.facilities || []).map((id) => facilitiesOptions.find((o) => o.value === id)?.label || id);
 
     return (
         <div className="flex-1">
@@ -57,7 +63,7 @@ export const BizPreview = ({ bizData, formValues }: BizPreviewProps) => {
                         </div>
                         <div className="flex items-center gap-2 my-2 lg:my-4">
                             <Location className="stroke-white size-4 lg:size-6" />
-                            <p className="text-xs lg:text-lg text-white">{formValues?.area_id}</p>
+                            <p className="text-xs lg:text-lg text-white">{areaLabel}</p>
                         </div>
                         <div className="flex items-center gap-2">
                             <ShieldTick className="stroke-success size-4 lg:size-6" />
@@ -140,9 +146,18 @@ export const BizPreview = ({ bizData, formValues }: BizPreviewProps) => {
                                 {formValues?.title}
                             </h2>
                         </div>
-                        <p className="mt-2 lg:mt-4 text-xs lg:text-sm text-title">
+                        <p className="mt-2 text-xs lg:text-sm text-title">
                             {formValues?.description}
                         </p>
+                        {formValues?.video && (
+                            <div className="mt-2 lg:mt-4">
+                                <video
+                                    controls
+                                    className="w-full rounded-xl"
+                                    src={createFileUrl(formValues.video)}
+                                />
+                            </div>
+                        )}
                         <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
                             <Image
                                 src={"/images/finybo-icon.svg"}
@@ -236,7 +251,7 @@ export const BizPreview = ({ bizData, formValues }: BizPreviewProps) => {
                         </div>
                         <div className="flex mt-2 lg:mt-4">
                             <div className="flex items-center flex-wrap gap-2">
-                                {formValues?.facilities?.map(item => (
+                                {facilityLabels?.map(item => (
                                     <Badge key={item} variant={"grey"} className="text-sm">
                                         {item}
                                     </Badge>

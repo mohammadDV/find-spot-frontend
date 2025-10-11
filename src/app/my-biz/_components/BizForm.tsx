@@ -19,7 +19,7 @@ import { Category } from "@/types/category.type";
 import { Country } from "@/types/location.type";
 import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState, useTransition } from "react";
+import { useActionState, useEffect, useMemo, useState, useTransition } from "react";
 import { FormProvider } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -52,6 +52,7 @@ interface BizFormProps {
     defaultData?: BusinessEditResponse;
     id: string;
     onValuesChange?: (values: BizFormData) => void;
+    onOptionsChange?: (meta: { areaOptions: OptionTypes[]; facilitiesOptions: OptionTypes[] }) => void;
 }
 
 export const createBizSchema = (tCommon: (key: string) => string) =>
@@ -112,7 +113,7 @@ export const createBizSchema = (tCommon: (key: string) => string) =>
 
 export type BizFormData = z.infer<ReturnType<typeof createBizSchema>>;
 
-export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
+export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: BizFormProps) => {
     const router = useRouter();
     const tCommon = useCommonTranslation();
     const tPages = usePagesTranslation();
@@ -232,10 +233,16 @@ export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
         value: city.id.toString(),
     })) || [];
 
-    const areaOptions = areas?.map(area => ({
-        label: area.title,
-        value: area.id.toString(),
-    })) || [];
+    const areaOptions = useMemo(() => (
+        areas?.map(area => ({
+            label: area.title,
+            value: area.id.toString(),
+        })) || []
+    ), [areas]);
+
+    useEffect(() => {
+        onOptionsChange?.({ areaOptions, facilitiesOptions });
+    }, [areaOptions, facilitiesOptions, onOptionsChange]);
 
     useEffect(() => {
         if (defaultData?.categories && categoriesResponse && !isInitialized) {
@@ -298,17 +305,6 @@ export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
 
         fetchChildCategories();
     }, [JSON.stringify(watchedParentCategories), form]);
-
-    const handleRemoveCategory = (categoryId: number) => {
-        const parentCategories = form.getValues("parent_categories") || [];
-        const childCategories = form.getValues("child_categories") || [];
-
-        const updatedParentCategories = parentCategories.filter((id: string) => parseInt(id) !== categoryId);
-        const updatedChildCategories = childCategories.filter((id: string) => parseInt(id) !== categoryId);
-
-        form.setValue("parent_categories", updatedParentCategories);
-        form.setValue("child_categories", updatedChildCategories);
-    };
 
     useEffect(() => {
         const fetchFiltersAndFacilities = async () => {
@@ -451,7 +447,6 @@ export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
     const onSubmit = async (data: BizFormData) => {
         const formData = new FormData();
 
-        // Basic fields
         formData.append("title", data.title);
         formData.append("description", data.description);
         formData.append("phone", data.phone);
@@ -463,7 +458,6 @@ export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
         formData.append("city_id", data.city_id);
         formData.append("area_id", data.area_id);
 
-        // Optional social media fields
         formData.append("website", data.website || "");
         formData.append("facebook", data.facebook || "");
         formData.append("instagram", data.instagram || "");
@@ -471,11 +465,9 @@ export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
         formData.append("tiktok", data.tiktok || "");
         formData.append("whatsapp", data.whatsapp || "");
 
-        // Location coordinates
         formData.append("lat", data.location[0].toString());
         formData.append("long", data.location[1].toString());
 
-        // Working hours - transform from object format to individual fields
         formData.append("from_monday", data.monday.from.toString());
         formData.append("to_monday", data.monday.to.toString());
         formData.append("from_tuesday", data.tuesday.from.toString());
@@ -491,18 +483,15 @@ export const BizForm = ({ defaultData, id, onValuesChange }: BizFormProps) => {
         formData.append("from_sunday", data.sunday.from.toString());
         formData.append("to_sunday", data.sunday.to.toString());
 
-        // Media files
         formData.append("image", data.image);
         formData.append("menu_image", data.menu_image || "");
         formData.append("video", data.video || "");
 
-        // Combine parent_categories and child_categories for categories array
         const parentIds = data.parent_categories?.map(id => parseInt(id)) || [];
         const childIds = data.child_categories?.map(id => parseInt(id)) || [];
         const categoriesArray = [...parentIds, ...childIds];
         formData.append("categories", JSON.stringify(categoriesArray));
 
-        // Arrays
         formData.append("tags", JSON.stringify(data.tags || []));
         formData.append("facilities", JSON.stringify(data.facilities?.map(f => parseInt(f)) || []));
         formData.append("filters", JSON.stringify(data.filters?.map(f => parseInt(f)) || []));
