@@ -35,8 +35,8 @@ export const profileMenuData: MenuItem[] = [
     },
     {
         id: 6,
-        title: "تنظیمات",
+        title: "تغییر رمز عبور",
         icon: Settings2,
-        link: "/profile/account"
+        link: "/profile/change-password"
     },
 ]

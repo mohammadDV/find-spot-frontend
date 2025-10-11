@@ -44,7 +44,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
                         : (<div className="w-full h-full bg-neutral-50"></div>)}
                     <div className="absolute inset-0 bg-black/40"></div>
                 </div>
-                <div className="relative px-20 py-10 mx-auto z-10 h-full">
+                <div className="relative px-16 py-10 mx-auto z-10 h-full">
                     <div className="flex flex-col justify-center pb-2 items-start h-full">
                         <h1 className="text-2xl lg:text-[32px] font-bold text-white">
                             {formValues?.title}
@@ -261,7 +261,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
                     </div>
 
                     <div className="hidden lg:block lg:w-1/3">
-                        <div className="w-full shadow-card rounded-lg p-5 flex flex-col gap-5 sticky top-28">
+                        <div className="w-full shadow-card rounded-lg p-5 flex flex-col gap-5">
                             <div className="flex items-start justify-between gap-3">
                                 <div className="flex items-center gap-2">
                                     <Global className="stroke-title size-5" />
