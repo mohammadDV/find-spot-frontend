@@ -16,6 +16,7 @@ import { Footer } from "./_components/footer/Footer";
 import { MainHeader } from "./_components/headers/MainHeader";
 import Hero from "./_components/hero/Hero";
 import { TitleSection } from "./_components/titleSection";
+import { getUserData } from "@/lib/getUserDataFromHeaders";
 
 interface FeaturedBusinessesService {
   status: StatusCode;
@@ -42,6 +43,7 @@ async function getEventsSliders(): Promise<EventsSlidersResponse> {
 }
 
 export default async function Home() {
+  const userData = await getUserData();
   const tPages = await getTranslations("pages");
   const tCommon = await getTranslations("common");
   const isMobile = await isMobileDevice();
@@ -60,7 +62,7 @@ export default async function Home() {
 
   return (
     <>
-      <MainHeader />
+      <MainHeader userData={userData} />
       <main>
         <Hero />
         {isMobile && (

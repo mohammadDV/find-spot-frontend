@@ -4,15 +4,21 @@ import { HambergerMenu } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 import { StickyHeaderSearch } from "./StickyHeaderSearch";
+import { UserData } from "@/types/user.type";
+import { isEmpty } from "@/lib/utils";
 
-export const StickyHeader = () => {
+export interface StickyHeaderProps {
+    userData?: UserData | null;
+}
+
+export const StickyHeader = ({ userData }: StickyHeaderProps) => {
     const t = useCommonTranslation();
 
     const menuData = [
         {
             id: 1,
             title: t("navigation.submitBusiness"),
-            link: "/submit-business",
+            link: "/my-biz/create",
         },
         {
             id: 2,
@@ -52,9 +58,9 @@ export const StickyHeader = () => {
                             </li>
                         ))}
                     </ul>
-                    <Link href={"/auth/login"}>
+                    <Link href={(!!userData && !isEmpty(userData) ? "/profile/biz" : "/auth/login")}>
                         <Button variant={"primary"} size={"medium"} className="hidden lg:block">
-                            {t("buttons.login")}
+                            {(!!userData && !isEmpty(userData) ? t("buttons.profile") : t("buttons.login"))}
                         </Button>
                     </Link>
                     <HambergerMenu className="lg:hidden size-6 stroke-black" />

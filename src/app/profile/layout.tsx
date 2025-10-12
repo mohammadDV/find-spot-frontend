@@ -1,9 +1,9 @@
 import { getUserData } from "@/lib/getUserDataFromHeaders";
-import CategoriesMenu from "../_components/categoriesMenu/CategoriesMenu";
 import { Footer } from "../_components/footer/Footer";
 import { StickyHeader } from "../_components/headers/StickyHeader";
 import { ProfileSidebar } from "./_components/sidebar";
 import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
+import { CategoriesMenu } from "../_components/categoriesMenu";
 
 export default async function ProfileLayout({
     children,
@@ -19,7 +19,7 @@ export default async function ProfileLayout({
                 <></>
             ) : (
                 <>
-                    <StickyHeader />
+                    <StickyHeader userData={userData} />
                     <CategoriesMenu />
                     <hr className="hidden lg:block border-t border-border mt-6" />
                 </>

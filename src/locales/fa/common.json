@@ -18,7 +18,8 @@
     "yes": "بله",
     "saveChanges": "ذخیره تغییرات",
     "remove": "حذف",
-    "add": "افزودن"
+    "add": "افزودن",
+    "profile": "پروفایل"
   },
   "messages": {
     "loading": "در حال بارگذاری...",
@@ -103,7 +104,8 @@
     "restaurants": "رستوران و کافه",
     "house": "خدمات منزل",
     "vehicle": "خودرو",
-    "health": "زیبایی و سلامت"
+    "health": "زیبایی و سلامت",
+    "tourism": "گردشگری و اقامت"
   },
   "footer": {
     "customerServices": "خدمات مشتریان",

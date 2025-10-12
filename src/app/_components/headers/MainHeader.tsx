@@ -1,17 +1,23 @@
 import { useCommonTranslation } from "@/hooks/useTranslation";
+import { isEmpty } from "@/lib/utils";
+import { UserData } from "@/types/user.type";
 import { Button } from "@/ui/button";
 import { ArrowDown2, Coin1, HambergerMenu } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export const MainHeader = () => {
+export interface MainHeaderProps {
+  userData?: UserData | null;
+}
+
+export const MainHeader = ({ userData }: MainHeaderProps) => {
   const t = useCommonTranslation();
 
   const menuData = [
     {
       id: 1,
       title: t("navigation.submitBusiness"),
-      link: "/submit-business",
+      link: "/my-biz/create",
     },
     {
       id: 2,
@@ -59,9 +65,9 @@ export const MainHeader = () => {
             {t("buttons.convertCurrency")}
             <ArrowDown2 className="stroke-white size-4" />
           </Button>
-          <Link href={"/auth/login"}>
+          <Link href={(!!userData && !isEmpty(userData) ? "/profile/biz" : "/auth/login")}>
             <Button variant={"white"} size={"medium"}>
-              {t("buttons.login")}
+              {(!!userData && !isEmpty(userData) ? t("buttons.profile") : t("buttons.login"))}
             </Button>
           </Link>
         </div>

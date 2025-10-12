@@ -1,3 +1,4 @@
+import { getUserData } from "@/lib/getUserDataFromHeaders";
 import { Footer } from "../_components/footer/Footer";
 import { StickyHeader } from "../_components/headers/StickyHeader";
 
@@ -6,9 +7,11 @@ export default async function ArchivesLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const userData = await getUserData();
+
   return (
     <>
-      <StickyHeader />
+      <StickyHeader userData={userData} />
       {children}
       <Footer />
     </>
