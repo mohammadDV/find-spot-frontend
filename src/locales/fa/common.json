@@ -19,7 +19,8 @@
     "saveChanges": "ذخیره تغییرات",
     "remove": "حذف",
     "add": "افزودن",
-    "profile": "پروفایل"
+    "profile": "پروفایل",
+    "back": "بازگشت"
   },
   "messages": {
     "loading": "در حال بارگذاری...",

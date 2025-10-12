@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { isEmpty } from "@/lib/utils";
 import { UserData } from "@/types/user.type";
@@ -5,6 +8,7 @@ import { Button } from "@/ui/button";
 import { ArrowDown2, Coin1, HambergerMenu } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FastAccessModal } from "../common/FastAccessModal";
 
 export interface MainHeaderProps {
   userData?: UserData | null;
@@ -12,6 +16,7 @@ export interface MainHeaderProps {
 
 export const MainHeader = ({ userData }: MainHeaderProps) => {
   const t = useCommonTranslation();
+  const [isFastAccessOpen, setIsFastAccessOpen] = useState(false);
 
   const menuData = [
     {
@@ -71,7 +76,10 @@ export const MainHeader = ({ userData }: MainHeaderProps) => {
             </Button>
           </Link>
         </div>
-        <HambergerMenu className="lg:hidden size-6 stroke-white" />
+        <button aria-label="Open menu" className="lg:hidden" onClick={() => setIsFastAccessOpen(true)}>
+          <HambergerMenu className="size-6 stroke-white" />
+        </button>
+        <FastAccessModal open={isFastAccessOpen} onOpenChange={setIsFastAccessOpen} userData={userData} />
       </div>
     </header>
   );

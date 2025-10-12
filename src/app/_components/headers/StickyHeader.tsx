@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/ui/button";
 import { HambergerMenu } from "iconsax-react";
@@ -6,6 +9,7 @@ import Link from "next/link";
 import { StickyHeaderSearch } from "./StickyHeaderSearch";
 import { UserData } from "@/types/user.type";
 import { isEmpty } from "@/lib/utils";
+import { FastAccessModal } from "../common/FastAccessModal";
 
 export interface StickyHeaderProps {
     userData?: UserData | null;
@@ -13,6 +17,7 @@ export interface StickyHeaderProps {
 
 export const StickyHeader = ({ userData }: StickyHeaderProps) => {
     const t = useCommonTranslation();
+    const [isFastAccessOpen, setIsFastAccessOpen] = useState(false);
 
     const menuData = [
         {
@@ -63,7 +68,10 @@ export const StickyHeader = ({ userData }: StickyHeaderProps) => {
                             {(!!userData && !isEmpty(userData) ? t("buttons.profile") : t("buttons.login"))}
                         </Button>
                     </Link>
-                    <HambergerMenu className="lg:hidden size-6 stroke-black" />
+                    <button aria-label="Open menu" className="lg:hidden" onClick={() => setIsFastAccessOpen(true)}>
+                        <HambergerMenu className="size-6 stroke-black" />
+                    </button>
+                    <FastAccessModal open={isFastAccessOpen} onOpenChange={setIsFastAccessOpen} userData={userData} />
                 </div>
             </div>
         </header>

@@ -18,7 +18,9 @@ export default async function ProfileLayout({
     return (
         <>
             {isMobile ? (
-                isMobile && <ProfileNavigation title={t("myBiz.title")} />
+                <div className="px-4">
+                    <ProfileNavigation title={t("myBiz.addTitle")} />
+                </div>
             ) : (
                 <>
                     <StickyHeader userData={userData} />

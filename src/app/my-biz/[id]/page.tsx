@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { TitleSection } from "../../_components/titleSection";
 import { BizWrapper } from "../_components/BizWrapper";
 import { getBusinessEdit } from "../_api/getBusinessEdit";
+import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
 
 interface MyBizPageProps {
     params: Promise<{
@@ -10,6 +11,7 @@ interface MyBizPageProps {
 }
 
 export default async function MyBizPage({ params }: MyBizPageProps) {
+    const isMobile = await isMobileDevice();
     const t = await getTranslations("pages");
     const resolvedParams = await params;
     let bizData;
@@ -19,8 +21,8 @@ export default async function MyBizPage({ params }: MyBizPageProps) {
     }
 
     return (
-        <div className="container px-4 mx-auto mt-10">
-            <TitleSection title={resolvedParams.id == "create" ? t("myBiz.addTitle") : t("myBiz.editTitle")} />
+        <div className="container lg:px-4 mx-auto lg:mt-10">
+            {!isMobile && <TitleSection title={resolvedParams.id == "create" ? t("myBiz.addTitle") : t("myBiz.editTitle")} />}
             <BizWrapper bizData={bizData} id={resolvedParams.id} />
         </div>
     )
