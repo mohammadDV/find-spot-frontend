@@ -7,7 +7,9 @@ export function middleware(request: NextRequest) {
 
     const isProfilePath =
         request.nextUrl.pathname === "/profile" ||
-        request.nextUrl.pathname.startsWith("/profile/");
+        request.nextUrl.pathname.startsWith("/profile/") ||
+        request.nextUrl.pathname === "/my-biz" ||
+        request.nextUrl.pathname.startsWith("/my-biz/");
 
     const isAuthPath =
         request.nextUrl.pathname === "/auth/login" ||

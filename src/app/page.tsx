@@ -17,6 +17,7 @@ import { MainHeader } from "./_components/headers/MainHeader";
 import Hero from "./_components/hero/Hero";
 import { TitleSection } from "./_components/titleSection";
 import { getUserData } from "@/lib/getUserDataFromHeaders";
+import { BottomNavigation } from "./_components/bottomNavigation";
 
 interface FeaturedBusinessesService {
   status: StatusCode;
@@ -156,6 +157,7 @@ export default async function Home() {
           )}
         </div>
       </main>
+      {isMobile && <BottomNavigation userData={userData} />}
       <Footer />
     </>
   );
