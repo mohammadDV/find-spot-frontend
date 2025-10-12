@@ -81,7 +81,7 @@ export const createBizSchema = (tCommon: (key: string) => string) =>
 
         address: z.string().min(1, tCommon("validation.required.thisField")),
         amount_type: z.string().min(1, tCommon("validation.required.thisField")),
-        start_amount: z.string().min(1, tCommon("validation.required.thisField")),
+        start_amount: z.string().optional(),
         country_id: z.string().min(1, tCommon("validation.required.thisField")),
         city_id: z.string().min(1, tCommon("validation.required.thisField")),
         area_id: z.string().min(1, tCommon("validation.required.thisField")),
@@ -453,7 +453,7 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
         formData.append("email", data.email);
         formData.append("address", data.address);
         formData.append("amount_type", data.amount_type);
-        formData.append("start_amount", data.start_amount);
+        formData.append("start_amount", data.start_amount || "");
         formData.append("country_id", data.country_id);
         formData.append("city_id", data.city_id);
         formData.append("area_id", data.area_id);

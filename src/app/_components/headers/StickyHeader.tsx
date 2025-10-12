@@ -28,7 +28,7 @@ export const StickyHeader = ({ userData }: StickyHeaderProps) => {
         {
             id: 2,
             title: t("navigation.searchMap"),
-            link: "/search",
+            link: "/map",
         },
         {
             id: 3,

@@ -132,13 +132,13 @@ export const Footer = () => {
               <p className="my-2 text-2xs lg:text-sm text-text">+5379746381</p>
             </div>
             <div>
-              <Image
+              {/* <Image
                 src={mapImg}
                 alt="map"
                 width={205}
                 height={144}
                 className="rounded-2xl"
-              />
+              /> */}
               <div className="mt-2 flex items-center justify-end gap-2 p-2">
                 <Image
                   src={instagramIcon}

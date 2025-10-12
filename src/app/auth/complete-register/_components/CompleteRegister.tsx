@@ -67,7 +67,7 @@ export const CompleteRegister = () => {
                 if (!res?.verify_email) {
                     router.replace("/auth/check-verification")
                 } else if (res?.verify_access) {
-                    router.replace("/profile")
+                    router.replace("/")
                 } else setIsLoading(false);
             } catch (error) {
                 setIsLoading(false);
@@ -92,7 +92,7 @@ export const CompleteRegister = () => {
                 });
             }
         } else if (!!formState && formState.status === StatusCode.Success) {
-            window.location.href = "/profile";
+            window.location.href = "/";
         }
     }, [formState, form]);
 

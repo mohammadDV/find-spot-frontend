@@ -1,5 +1,7 @@
 import { Pagination } from "@/app/_components/pagination";
 import Image from "next/image";
+import noBizImg from "@/assets/images/no-biz.png";
+import { getTranslations } from "next-intl/server";
 import { getBusinesses } from "./_api/getBusinesses";
 import { SearchFilters } from "./_components/filters/SearchFilters";
 import { SearchCard } from "./_components/searchCard/SearchCard";
@@ -24,6 +26,7 @@ interface SearchPageProps {
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
     const isMobile = await isMobileDevice();
+    const t = await getTranslations("pages");
     const resolvedSearchParams = await searchParams;
 
     const page = parseInt(resolvedSearchParams?.page || "1");
@@ -57,7 +60,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     })
 
     return (
-        <div className="my-8 lg:my-10 container mx-auto px-4">
+        <div className="my-4 lg:my-10 container mx-auto px-4">
             <div className="lg:flex justify-between gap-10">
                 <div className="lg:w-3/4">
                     <div className="flex items-center justify-between">
@@ -79,6 +82,19 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     {isMobile && (
                         <div className="mt-4">
                             <SearchMap items={searchData.data || []} />
+                        </div>
+                    )}
+                    {(!searchData.data || searchData.total === 0) && (
+                        <div className="lg:max-w-xl mx-auto mt-8 lg:mt-12">
+                            <Image
+                                src={noBizImg}
+                                alt="No Reviews"
+                                width={331}
+                                height={307}
+                                className="mx-auto w-2/3 lg:w-auto" />
+                            <h3 className="mt-6 lg:mt-8 text-center text-2xl lg:text-3xl text-title font-bold">
+                                {t("profile.biz.noBiz")}
+                            </h3>
                         </div>
                     )}
                     <div className="grid grid-cols-2 lg:flex flex-col gap-4 lg:gap-6 mt-4 lg:mt-8">

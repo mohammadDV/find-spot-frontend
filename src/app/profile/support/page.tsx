@@ -87,7 +87,7 @@ export default async function SupportPage({ searchParams }: SupportPageProps) {
                         <p className="text-sm lg:text-xl text-title text-center my-6">
                             {t("profile.support.noMessageDescription")}
                         </p>
-                        <Link href={"/support/new"} className="text-center block">
+                        <Link href={"/profile/support/new"} className="text-center block">
                             <Button variant={"secondary"} size={"medium"}>
                                 {t("profile.support.createTicket")}
                             </Button>

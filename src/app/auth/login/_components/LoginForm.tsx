@@ -60,7 +60,7 @@ const LoginForm = () => {
                 window.location.href = "/auth/check-verification";
             } else if (!formState?.verify_access) {
                 window.location.href = "/auth/complete-register";
-            } else window.location.href = "/profile";
+            } else window.location.href = "/";
         }
     }, [formState, form]);
 

@@ -2,6 +2,7 @@
 
 import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { peydaFont } from "@/constants/localfont";
+import { cn } from "@/lib/utils";
 import { BusinessSummary } from "@/types/business.type";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
@@ -14,9 +15,10 @@ const TileLayer = dynamic(() => import("react-leaflet").then(mod => ({ default: 
 
 interface SearchMapProps {
     items: BusinessSummary[];
+    className?: string
 }
 
-export const SearchMap = ({ items }: SearchMapProps) => {
+export const SearchMap = ({ items, className }: SearchMapProps) => {
     const [defaultIcon, setDefaultIcon] = useState<any>(null);
     const [isClient, setIsClient] = useState(false);
 
@@ -40,14 +42,16 @@ export const SearchMap = ({ items }: SearchMapProps) => {
     };
 
     if (!isClient || !defaultIcon) {
-        return <div className="w-full h-[150px] lg:h-[600px] bg-gray-200 flex items-center justify-center rounded-2xl">در حال بارگذاری نقشه...</div>;
+        return <div className={cn("w-full h-[150px] lg:h-[600px] bg-gray-200 flex items-center justify-center rounded-2xl", className)}>
+            در حال بارگذاری نقشه...
+        </div>;
     }
 
     return (
         <MapContainer
             center={getDefaultCenter()}
             zoom={12}
-            className="w-full h-[150px] lg:h-[600px] rounded-2xl z-20 sticky top-28"
+            className={cn("w-full h-[150px] lg:h-[600px] rounded-2xl z-20 sticky top-28", className)}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/">OSM</a>'
