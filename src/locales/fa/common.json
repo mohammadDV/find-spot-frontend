@@ -103,7 +103,9 @@
     "itemSelected": "فایل انتخاب شده",
     "writeAndAdd": "نوشتن و افزودن",
     "from": "از",
-    "to": "تا"
+    "to": "تا",
+    "rating": "امتیاز شما",
+    "comment": "نظر شما"
   },
   "categories": {
     "all": "دسته‌بندی‌ها",

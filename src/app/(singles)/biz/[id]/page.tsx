@@ -27,6 +27,8 @@ import { AddToFavorites } from "../_components/AddToFavorites";
 import { ImageGallery } from "../_components/ImageGallery";
 import { MenuViewer } from "../_components/MenuViewer";
 import { ReviewSortFilter } from "../_components/ReviewSortFilter";
+import { SubmitReview } from "../_components/SubmitReview";
+import { getUserData } from "@/lib/getUserDataFromHeaders";
 
 interface BizPageProps {
   params: Promise<{
@@ -42,6 +44,7 @@ interface BizPageProps {
 export default async function BizPage({ params, searchParams }: BizPageProps) {
   const tCommon = await getTranslations("common");
   const tPages = await getTranslations("pages");
+  const userData = await getUserData();
 
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
@@ -157,13 +160,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
         <div className="flex justify-between gap-10">
           <div className="w-full lg:w-2/3">
             <div className="flex items-center gap-2 lg:gap-4">
-              <Button
-                variant={"primary"}
-                size={"medium"}
-                className="px-4 lg:px-10 text-2xs lg:text-base rounded-lg lg:rounded-xl py-2 lg:py-2.5">
-                <Star1 className="stroke-white size-4 lg:size-6" />
-                {tCommon("buttons.submitComment")}
-              </Button>
+              <SubmitReview bizId={businessData.business.id} userData={userData} />
               {businessData.business.menu_image && <MenuViewer
                 menuImage={businessData.business.menu_image}
                 className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5"
