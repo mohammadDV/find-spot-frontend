@@ -24,10 +24,10 @@ export const VerticalPostCard = ({ data }: VerticalPostCardProps) => {
         className="rounded-2xl object-cover h-[137px] lg:h-[191px]"
       />
       <div className="mt-3 lg:mt-6">
-        <h3 className="text-2xs lg:text-2xl font-bold text-text line-clamp-1">
+        <h3 className="text-sm lg:text-lg font-bold text-text line-clamp-1">
           {data.title}
         </h3>
-        <p className="mt-1 lg:my-2.5 text-2xs lg:text-lg text-description line-clamp-3">
+        <p className="mt-1 lg:my-2.5 text-xs lg:text-base text-description line-clamp-3">
           {data.summary}
         </p>
         <Button
