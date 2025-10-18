@@ -1,0 +1,227 @@
+'use client'
+
+import { cn } from "@/lib/utils";
+import { InputHTMLAttributes, useRef, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { uploadImageAction, uploadVideoAction, uploadFileAction, UploadResponse } from "./formAction";
+import { useCommonTranslation } from "@/hooks/useTranslation";
+import { StatusCode } from "@/constants/enums";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/ui/form";
+import { Paperclip2, Trash } from "iconsax-react";
+import { Loading } from "@/ui/loading";
+
+type UploadType = 'image' | 'video' | 'file';
+
+interface RHFUploadProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "defaultValue"> {
+    name: string;
+    label?: string;
+    className?: string;
+    defaultValue?: string;
+    placeholder?: string;
+    uploadType: UploadType;
+    disabled?: boolean;
+}
+
+export const RHFUpload: React.FC<RHFUploadProps> = ({
+    name,
+    label,
+    className,
+    defaultValue,
+    placeholder,
+    uploadType,
+    disabled,
+    ...rest
+}) => {
+    const t = useCommonTranslation();
+    const { control } = useFormContext();
+    const [fileName, setFileName] = useState<string>("");
+    const [isUploading, setIsUploading] = useState<boolean>(false);
+    const [uploadError, setUploadError] = useState<string>("");
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const getAcceptTypes = () => {
+        switch (uploadType) {
+            case 'image':
+                return 'image/*';
+            case 'video':
+                return 'video/*';
+            case 'file':
+                return '*';
+            default:
+                return '*';
+        }
+    };
+
+    const getUploadAction = () => {
+        switch (uploadType) {
+            case 'image':
+                return uploadImageAction;
+            case 'video':
+                return uploadVideoAction;
+            case 'file':
+                return uploadFileAction;
+            default:
+                return uploadFileAction;
+        }
+    };
+
+    const getFormDataKey = () => {
+        switch (uploadType) {
+            case 'image':
+                return 'image';
+            case 'video':
+                return 'video';
+            case 'file':
+                return 'file';
+            default:
+                return 'file';
+        }
+    };
+
+    const handleChange = async (e: React.ChangeEvent<HTMLInputElement>, onChange: (...event: any[]) => void) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const getMaxFileSize = () => {
+            switch (uploadType) {
+                case 'image':
+                    return 5 * 1024 * 1024;
+                case 'video':
+                case 'file':
+                    return 20 * 1024 * 1024;
+                default:
+                    return 20 * 1024 * 1024;
+            }
+        };
+
+        const maxFileSize = getMaxFileSize();
+        if (file.size > maxFileSize) {
+            setUploadError(uploadType === "image"
+                ? t("validation.invalid.lowSizeError")
+                : t("validation.invalid.highSizeError"));
+            onChange("");
+            if (inputRef.current) {
+                inputRef.current.value = "";
+            }
+            return;
+        }
+
+        setFileName(file.name);
+        setIsUploading(true);
+        setUploadError("");
+
+        try {
+            const formData = new FormData();
+            formData.append(getFormDataKey(), file);
+
+            const uploadAction = getUploadAction();
+            const response: UploadResponse = await uploadAction(formData);
+
+            if (response.status === StatusCode.Success && response.url) {
+                onChange(response.url);
+            } else {
+                setUploadError(response.message || t("validation.invalid.fileError"));
+                onChange("");
+            }
+        } catch (error) {
+            setUploadError(t("validation.invalid.fileError"));
+            onChange("");
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement>, onChange: (...event: any[]) => void) => {
+        e.stopPropagation();
+        setFileName("");
+        setUploadError("");
+        onChange("");
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
+    };
+
+    const getPlaceholderText = () => {
+        if (placeholder) return placeholder;
+        switch (uploadType) {
+            case 'image':
+                return t("inputs.selectImage");
+            case 'video':
+                return t("inputs.selectVideo");
+            case 'file':
+                return t("inputs.selectFile");
+            default:
+                return t("inputs.selectFile");
+        }
+    };
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field, fieldState }) => (
+                <FormItem className="gap-1 w-full">
+                    {label && (
+                        <FormLabel className={cn("text-title mr-3 text-xs", disabled && "text-disabled-text")}>
+                            {label}
+                        </FormLabel>
+                    )}
+                    <FormControl>
+                        <div className="relative">
+                            <div className={cn(
+                                "flex text-muted-foreground border border-input bg-input h-12 w-full min-w-0 rounded-xl items-center justify-between px-3 py-4 text-sm",
+                                fieldState.error || uploadError ? "border-destructive" : "",
+                                "aria-invalid:ring-destructive/20 aria-invalid:border-destructive"
+                            )}>
+                                <label
+                                    htmlFor={`${name}-input`}
+                                    className={cn(
+                                        "flex-1 flex text-muted-foreground items-center gap-2 truncate cursor-pointer transition",
+                                        isUploading ? "cursor-not-allowed" : "",
+                                        className
+                                    )}
+                                >
+                                    {isUploading ? (
+                                        <Loading type="spinner" size={"small"} variant="primary" />
+                                    ) : (
+                                        <Paperclip2 className="stroke-label size-5" />
+                                    )}
+                                    <span className="truncate max-w-56">
+                                        {isUploading
+                                            ? t("messages.uploading")
+                                            : (fileName || field.value || placeholder || getPlaceholderText())}
+                                    </span>
+                                </label>
+
+                                {(fileName || field.value) && !isUploading && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) => handleDelete(e, field.onChange)}
+                                        className="text-destructive transition cursor-pointer"
+                                    >
+                                        <Trash className="stroke-label size-5" />
+                                    </button>
+                                )}
+                            </div>
+
+                            <input
+                                ref={inputRef}
+                                id={`${name}-input`}
+                                type="file"
+                                accept={getAcceptTypes()}
+                                className="hidden"
+                                onChange={(e) => handleChange(e, field.onChange)}
+                                disabled={isUploading}
+                                {...rest}
+                            />
+                        </div>
+                    </FormControl>
+                    {uploadError && (
+                        <p className="text-sm text-destructive">{uploadError}</p>
+                    )}
+                    <FormMessage className="text-xs mr-3" />
+                </FormItem>
+            )}
+        />
+    );
+};
