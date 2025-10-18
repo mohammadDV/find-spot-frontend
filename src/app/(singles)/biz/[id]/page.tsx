@@ -160,7 +160,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
         <div className="flex justify-between gap-10">
           <div className="w-full lg:w-2/3">
             <div className="flex items-center gap-2 lg:gap-4">
-              <SubmitReview bizId={businessData.business.id} userData={userData} />
+              <SubmitReview bizId={businessData.business.id} userData={userData} categories={businessData.business.categories} />
               {businessData.business.menu_image && <MenuViewer
                 menuImage={businessData.business.menu_image}
                 className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5"
