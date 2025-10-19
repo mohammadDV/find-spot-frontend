@@ -3,7 +3,7 @@ import { CheckVerification } from "./_components/CheckVerification";
 
 export default async function CheckVerificationPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<></>}>
             <CheckVerification />
         </Suspense>
     )

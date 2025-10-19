@@ -58,21 +58,21 @@ export const BannerSlider = ({ data }: BannerSliderProps) => {
                     <div className="flex items-center gap-2.5">
                       <Badge
                         variant={"primary"}
-                        className="text-lg py-0 font-normal"
+                        className="lg:text-lg py-0 font-normal"
                       >
                         {slide.start_date}
                       </Badge>
                       <Badge
                         variant={"primary"}
-                        className="text-lg py-0 font-normal"
+                        className="lg:text-lg py-0 font-normal"
                       >
                         {slide.end_date}
                       </Badge>
                     </div>
-                    <h1 className="text-white text-2xl lg:text-4xl font-bold mt-6 mb-2">
+                    <h1 className="text-white text-xl lg:text-4xl font-bold mt-6 mb-2">
                       {slide.title}
                     </h1>
-                    <p className="font-normal text-white text-xl lg:text-2xl">
+                    <p className="font-normal text-white text-lg lg:text-2xl">
                       {slide.summary}
                     </p>
                     <Link href={slide.link} target="_blank" className="mt-4">
