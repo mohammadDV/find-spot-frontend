@@ -12,7 +12,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "oshtow.s3.ir-thr-at1.arvanstorage.com",
+        hostname: "finybo-prod.s3.ir-thr-at1.arvanstorage.ir",
         port: "",
         pathname: "/**",
       },

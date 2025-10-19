@@ -11,6 +11,7 @@ export interface EventSummary {
     lat: string;
     long: string;
     image: string;
+    slider_image: string;
 }
 
 export interface Event {

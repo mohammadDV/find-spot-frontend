@@ -105,7 +105,9 @@
     "from": "از",
     "to": "تا",
     "rating": "امتیاز شما",
-    "comment": "نظر شما"
+    "comment": "نظر شما",
+    "services": "نکات مثبت",
+    "uploadFiles": "آپلود فایل‌ها"
   },
   "categories": {
     "all": "دسته‌بندی‌ها",

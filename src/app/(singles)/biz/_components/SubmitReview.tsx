@@ -16,17 +16,23 @@ import { useRouter } from "next/navigation";
 import { UserData } from "@/types/user.type";
 import { submitReviewAction, SubmitReviewService } from "../_api/submitReviewAction";
 import { isEmpty } from "@/lib/utils";
+import { RHFUploadMulti } from "@/app/_components/hookForm/RHFUploadMulti";
+import { RHFBadges } from "@/app/_components/hookForm/RHFBadges";
+import { getCategoryServices, CategoryServiceItem } from "../_api/getCategoryServices";
+import { Category } from "@/types/category.type";
 
 interface SubmitReviewProps {
   bizId: string | number;
   userData?: UserData | null;
+  categories?: Category[];
 }
 
-export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData }) => {
+export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData, categories }) => {
   const tCommon = useCommonTranslation();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [serviceOptions, setServiceOptions] = useState<CategoryServiceItem[]>([]);
   const [formState, formAction] = useActionState<SubmitReviewService | null, FormData>(
     submitReviewAction,
     null
@@ -35,6 +41,8 @@ export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData }) =
   const schema = z.object({
     rate: z.number().min(1, tCommon("validation.required.thisField")).max(5),
     comment: z.string().min(1, tCommon("validation.required.thisField")),
+    services: z.array(z.number()).optional().default([]),
+    files: z.any().optional(),
   });
   type ReviewFormData = z.infer<typeof schema>;
 
@@ -42,6 +50,8 @@ export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData }) =
     defaultValues: {
       rate: 0,
       comment: "",
+      services: [],
+      files: [],
     },
   });
 
@@ -64,6 +74,26 @@ export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData }) =
     }
   }, [formState, form]);
 
+  useEffect(() => {
+    const fetchServices = async () => {
+      if (!categories || categories.length === 0) return;
+      try {
+        const results = await Promise.all(categories.map((c) => getCategoryServices(c.id)));
+        const merged = results.map((r) => r?.data || []).flat();
+        const byId = new Map<number, CategoryServiceItem>();
+        for (const item of merged) {
+          if (!byId.has(item.id)) byId.set(item.id, item);
+        }
+        setServiceOptions(Array.from(byId.values()));
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    if (open && serviceOptions.length === 0) {
+      fetchServices();
+    }
+  }, [open, categories, serviceOptions.length]);
+
   const handleClick = () => {
     if (!isEmpty(userData)) {
       setOpen(true);
@@ -78,6 +108,8 @@ export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData }) =
     fd.append("bizId", String(bizId));
     fd.append("rate", String(data.rate));
     fd.append("comment", data.comment);
+    fd.append("services", JSON.stringify(data.services || []));
+    fd.append("files", JSON.stringify(data.files || []));
     startTransition(async () => {
       await formAction(fd);
     });
@@ -107,6 +139,10 @@ export const SubmitReview: React.FC<SubmitReviewProps> = ({ bizId, userData }) =
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <RHFStarRating name="rate" label={tCommon("inputs.rating")} />
             <RHFTextarea name="comment" label={tCommon("inputs.comment")} />
+            {serviceOptions.length > 0 && (
+              <RHFBadges name="services" label={tCommon("inputs.services")} options={serviceOptions} />
+            )}
+            <RHFUploadMulti name="files" maxItems={10} label={tCommon("inputs.uploadFiles")} />
             <Button
               size={"medium"}
               variant={"secondary"}

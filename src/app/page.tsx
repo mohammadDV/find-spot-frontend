@@ -82,7 +82,7 @@ export default async function Home() {
           </div>
         )}
         <div className="mt-4 lg:mt-16 container mx-auto px-4">
-          <TitleSection title={tPages("home.specialOffers")} link="/" />
+          <TitleSection title={tPages("home.specialOffers")} link="/search" />
           <div className="mt-4 lg:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
             {featuredBusinessesData?.data.offers?.slice(0, 6).map(item => (
               <BusinessCard
@@ -100,7 +100,7 @@ export default async function Home() {
           <BannerSlider data={eventsSlidersData.sliders} />
         </div>
         <div className="mt-10 lg:mt-24 container mx-auto px-4">
-          <TitleSection title={tPages("home.weekend")} link="/" />
+          <TitleSection title={tPages("home.weekend")} link="/search" />
           <div className="mt-4 lg:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
             {featuredBusinessesData?.data.weekends?.slice(0, isMobile ? 4 : 3).map(item => (
               <BusinessCard
@@ -135,7 +135,7 @@ export default async function Home() {
         <div className="mt-10 lg:mt-24 container mx-auto px-4">
           <TitleSection
             title={tPages("home.news")}
-            link="/"
+            link="/blog"
             linkLabel={tCommon("buttons.readAll")}
           />
           {isMobile ? (

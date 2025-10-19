@@ -25,6 +25,7 @@ interface RHFUploadMultiProps extends Omit<InputHTMLAttributes<HTMLInputElement>
   placeholder?: string;
   uploadTypes?: UploadType[];
   disabled?: boolean;
+  maxItems?: number;
 }
 
 export const RHFUploadMulti: React.FC<RHFUploadMultiProps> = ({
@@ -35,6 +36,7 @@ export const RHFUploadMulti: React.FC<RHFUploadMultiProps> = ({
   placeholder,
   uploadTypes = ['image', 'video', 'file'],
   disabled,
+  maxItems = Infinity,
   ...rest
 }) => {
   const t = useCommonTranslation();
@@ -130,8 +132,18 @@ export const RHFUploadMulti: React.FC<RHFUploadMultiProps> = ({
         }
       }
 
-      if (results.length > 0) {
-        onChange([...(currentValue || []), ...results]);
+      // Enforce max items limit
+      let allowedResults = results;
+      if (Number.isFinite(maxItems)) {
+        const remaining = Math.max((maxItems - (currentValue?.length || 0)), 0);
+        if (allowedResults.length > remaining) {
+          allowedResults = allowedResults.slice(0, remaining);
+          setUploadError(t('validation.invalid.fileError'));
+        }
+      }
+
+      if (allowedResults.length > 0) {
+        onChange([...(currentValue || []), ...allowedResults]);
       }
     } catch (error) {
       setUploadError(t('validation.invalid.fileError'));
@@ -272,4 +284,4 @@ export const RHFUploadMulti: React.FC<RHFUploadMultiProps> = ({
       }}
     />
   );
-};
+}

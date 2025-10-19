@@ -34,10 +34,10 @@ export const createBusinessAction = async (
     const start_amount = formData.get("start_amount") as string;
     const amount_type = formData.get("amount_type") as string;
     const image = formData.get("image") as string;
+    const slider_image = formData.get("slider_image") as string;
     const menu_image = formData.get("menu_image") as string;
     const video = formData.get("video") as string;
 
-    // Working hours
     const from_monday = parseInt(formData.get("from_monday") as string) || 0;
     const from_tuesday = parseInt(formData.get("from_tuesday") as string) || 0;
     const from_wednesday =
@@ -57,12 +57,10 @@ export const createBusinessAction = async (
     const to_saturday = parseInt(formData.get("to_saturday") as string) || 0;
     const to_sunday = parseInt(formData.get("to_sunday") as string) || 0;
 
-    // Location
     const country_id = parseInt(formData.get("country_id") as string) || 1;
     const city_id = parseInt(formData.get("city_id") as string) || 1;
     const area_id = parseInt(formData.get("area_id") as string) || 1;
 
-    // Arrays
     const categories = JSON.parse(
       (formData.get("categories") as string) || "[]"
     );
@@ -92,6 +90,7 @@ export const createBusinessAction = async (
         start_amount: start_amount || "",
         amount_type: amount_type || "1",
         image: image || "",
+        slider_image: slider_image || "",
         menu_image: menu_image || "",
         video: video || "",
         from_monday,

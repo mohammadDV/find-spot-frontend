@@ -85,7 +85,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
       <section className="relative lg:h-[560px] w-full">
         <div className="absolute inset-0">
           <Image
-            src={createFileUrl(businessData.business?.image!)}
+            src={createFileUrl(businessData.business?.slider_image!)}
             alt=""
             priority
             width={1420}
@@ -98,7 +98,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
         <div className="relative container px-4 py-4 lg:py-0 mx-auto z-10 h-full">
           <div className="flex flex-col justify-end pb-2 lg:pb-11 items-start h-full">
             <h1 className="text-2xl lg:text-[40px] font-bold text-white">
-              {businessData.business.title}
+              {businessData.business?.title}
             </h1>
             <div className="flex items-center gap-2 mt-6">
               <div className="flex items-center">
@@ -160,7 +160,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
         <div className="flex justify-between gap-10">
           <div className="w-full lg:w-2/3">
             <div className="flex items-center gap-2 lg:gap-4">
-              <SubmitReview bizId={businessData.business.id} userData={userData} />
+              <SubmitReview bizId={businessData.business.id} userData={userData} categories={businessData.business.categories} />
               {businessData.business.menu_image && <MenuViewer
                 menuImage={businessData.business.menu_image}
                 className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5"

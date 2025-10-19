@@ -44,7 +44,7 @@ export const BannerSlider = ({ data }: BannerSliderProps) => {
               <div className="relative w-full h-full">
                 <div className="absolute inset-0">
                   <Image
-                    src={createFileUrl(slide.image)}
+                    src={createFileUrl(slide.slider_image!)}
                     alt=""
                     priority={index === 0}
                     quality={100}
