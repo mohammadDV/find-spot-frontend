@@ -106,6 +106,7 @@ export const createBizSchema = (tCommon: (key: string) => string) =>
         friday: z.object({ from: z.number(), to: z.number() }),
 
         image: z.string().min(1, tCommon("validation.required.thisField")),
+        slider_image: z.string().min(1, tCommon("validation.required.thisField")),
         menu_image: z.string().optional(),
         video: z.string().optional(),
         files: z.any().optional(),
@@ -209,6 +210,7 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
             thursday: defaultData ? { from: defaultData.from_thursday, to: defaultData.to_thursday } : { from: 0, to: 0 },
             friday: defaultData ? { from: defaultData.from_friday, to: defaultData.to_friday } : { from: 0, to: 0 },
             image: defaultData?.image || '',
+            slider_image: defaultData?.slider_image || '',
             menu_image: defaultData?.menu_image || '',
             video: defaultData?.video || '',
             files: defaultData?.files || [],
@@ -439,7 +441,7 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
                 });
             }
         } else if (!!formState && formState.status === StatusCode.Success) {
-            toast.success(formState?.message || tCommon("messages.updated"));
+            toast.success(tPages("myBiz.successSubmit"));
             router.push("/profile/biz")
         }
     }, [formState, form]);
@@ -484,6 +486,7 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
         formData.append("to_sunday", data.sunday.to.toString());
 
         formData.append("image", data.image);
+        formData.append("slider_image", data.slider_image);
         formData.append("menu_image", data.menu_image || "");
         formData.append("video", data.video || "");
 
@@ -673,6 +676,11 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
                         <RHFUpload
                             name="image"
                             label={tPages("myBiz.image")}
+                            uploadType="image"
+                        />
+                        <RHFUpload
+                            name="slider_image"
+                            label={tPages("myBiz.imageSlider")}
                             uploadType="image"
                         />
                         <RHFUpload

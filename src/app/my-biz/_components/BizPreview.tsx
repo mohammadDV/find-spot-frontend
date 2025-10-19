@@ -33,7 +33,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
                 <div className="absolute inset-0">
                     {formValues?.image
                         ? (<Image
-                            src={createFileUrl(formValues?.image!)}
+                            src={createFileUrl(formValues?.slider_image!)}
                             alt=""
                             priority
                             width={1420}

@@ -72,6 +72,7 @@ export interface Business {
     facebook: string | null;
     instagram: string | null;
     image: string | null;
+    slider_image: string | null;
     status: BusinessType;
     description: string;
     vip: boolean;
@@ -139,7 +140,8 @@ export interface BusinessEditResponse {
     address: string;
     start_amount: number;
     amount_type: number;
-    image: string;
+    image: string | null;
+    image_slider: string | null;
     menu_image: string | null;
     slider_image: string | null;
     video: string | null;
