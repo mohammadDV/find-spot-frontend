@@ -99,12 +99,17 @@ export const Footer = () => {
   return (
     <footer className="mt-20 lg:mt-28 border-t border-border">
       <div className="container mx-auto px-4">
-        <div className="mt-6 lg:mt-12 grid grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-20">
+        <div className="mt-6 lg:mt-12 grid grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-24">
           <div className="col-span-3 lg:col-span-1 flex flex-col gap-3">
             <Image src="/images/finybo-logo.svg" alt="logo" width={125} height={125} />
             <p className="text-2xs lg:text-sm text-text">
               راهنمای سریع برای یافتن کسب‌وکارها، خدمات و رویدادها در نزدیکی شما.
             </p>
+            <div className="flex flex-col gap-2">
+              <p className="text-2xs lg:text-sm text-text">آدرس: استانبول، آتاشهیر، بایراک سوکاک</p>
+              <p className="text-2xs lg:text-sm text-text">+5379746381</p>
+              <p className="text-2xs lg:text-sm text-text">support@finybo.com</p>
+            </div>
             <div className="flex items-center gap-2">
               <Image src={instagramIcon} alt="instagram" width={20} height={20} />
               <Image src={twitterIcon} alt="twitter" width={20} height={20} />
@@ -151,32 +156,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 lg:mt-14 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10">
-          <div className="col-span-1">
-            <h4 className="font-bold text-title text-xs lg:text-base">{t("footer.contactInfo")}</h4>
-            <p className="my-2 text-2xs lg:text-sm text-text">آدرس: استانبول، آتاشهیر، بایراک سوکاک</p>
-            <p className="my-2 text-2xs lg:text-sm text-text">+5379746381</p>
-            <p className="my-2 text-2xs lg:text-sm text-text">support@finybo.com</p>
-          </div>
-          <div className="col-span-1 lg:col-span-2">
-            <div className="bg-on-primary rounded-2xl p-4 flex flex-col gap-3">
-              <h4 className="text-xs lg:text-lg text-title">عضویت در خبرنامه</h4>
-              <p className="text-2xs lg:text-sm text-text">با وارد کردن ایمیل، از جدیدترین کسب‌وکارها و رویدادها مطلع شوید.</p>
-              <form onSubmit={subscribe} className="flex items-center gap-2">
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t("inputs.email")}
-                  className="flex-1"
-                />
-                <Button type="submit" variant="primary" size="medium">ثبت</Button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 mb-6 lg:mb-8">
+        <div className="mt-12 mb-6 lg:mb-8">
           <p className="text-center text-2xs lg:text-sm text-title">{t("footer.copyright")}</p>
         </div>
       </div>

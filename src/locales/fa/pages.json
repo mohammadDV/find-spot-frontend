@@ -85,7 +85,10 @@
     "resetLinkSentDescription": "لینک بازنشانی رمز عبور به ایمیل شما ارسال شد. لطفاً ایمیل خود را بررسی کنید و روی لینک کلیک کنید.",
     "sendResetLink": "ارسال لینک بازنشانی",
     "newPassword": "رمز عبور جدید",
-    "newPasswordDescription": "لطفا رمز عبور جدید خود را وارد کنید."
+    "newPasswordDescription": "لطفا رمز عبور جدید خود را وارد کنید.",
+    "loginWithGoogle": "ورود با حساب گوگل",
+    "loadingAuth": "در حال بررسی احراز هویت...",
+    "authError": "احراز هویت با شکست مواجه شد!"
   },
   "profile": {
     "title": "پروفایل",

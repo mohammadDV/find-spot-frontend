@@ -53,7 +53,7 @@ export const LogoutButton = () => {
                 description={tPages("profile.logoutConfirm")}
                 confirmText={tCommon("buttons.yes")}
                 cancelText={tCommon("buttons.cancel")}
-                confirmVariant="error"
+                confirmVariant="secondary"
                 cancelVariant="outline"
                 onCancel={() => setIsOpenModal(false)}
                 loading={isLoading}

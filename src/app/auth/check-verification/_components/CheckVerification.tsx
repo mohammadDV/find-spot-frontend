@@ -32,7 +32,9 @@ export const CheckVerification = () => {
             setIsLoading(true);
             try {
                 const res = await checkVerificationAction();
-                if (res?.verify_email) {
+                if (res?.verify_access) {
+                    router.replace("/");
+                } else if (res?.verify_email) {
                     router.replace(backUrl || "/auth/complete-register")
                 } else setIsLoading(false);
             } catch (error) {
@@ -79,7 +81,7 @@ export const CheckVerification = () => {
                 <div>
                     <Loading type="ring" size="large" variant="secondary" className="mx-auto !w-20 text-center block" />
                     <h3 className="mt-7 text-title text-xl font-medium text-center">
-                        {tCommon("messages.loading")}
+                        {tPages("auth.loadingAuth")}
                     </h3>
                 </div>
             </div>
