@@ -15,7 +15,7 @@ export const HorizontalPostCard = ({ data }: HorizontalPostCardProps) => {
 
     return (
         <Link href={`/post/${data.id}`} className="p-6 rounded-2xl border-b border-border flex justify-between gap-6">
-            <Image src={createFileUrl(data.image!)} alt="" width={308} height={134} className="rounded-2xl object-cover" />
+            <Image src={createFileUrl(data.image!)} alt="" width={308} height={134} className="rounded-2xl object-cover lg:max-h-44" />
             <div className="flex-1">
                 <h3 className="text-text text-lg font-bold line-clamp-1">
                     {data.title}

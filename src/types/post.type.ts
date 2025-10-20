@@ -9,6 +9,7 @@ export interface Post {
     content: string;
     type: number;
     image: string | null;
+    slide: string | null;
     video: string | null;
     view: number;
     special: number;

@@ -3,11 +3,16 @@
 import { getFetch } from "@/core/publicService";
 import { useEffect, useState, useCallback } from "react";
 
-export function useFetchData<T>(url: string) {
+export function useFetchData<T>(url: string | null) {
     const [response, setResponse] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     const fetchData = useCallback(async () => {
+        if (!url) {
+            setLoading(false);
+            setResponse(null);
+            return;
+        }
         setLoading(true);
         try {
             const result = await getFetch<T>(url);
