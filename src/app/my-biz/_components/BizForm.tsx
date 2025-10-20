@@ -699,12 +699,13 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
                         />
                     </div>
 
-                    <div className="flex items-center justify-end gap-2.5">
+                    <div className="flex items-center justify-end gap-2.5 px-3 lg:px-0">
                         <Button
                             size={"medium"}
                             variant={"secondary"}
                             isLoading={isPending}
                             type="submit"
+                            className="w-full lg:w-auto"
                         >
                             {isEditMode ? tPages("myBiz.updateBiz") : tPages("myBiz.submitBiz")}
                         </Button>

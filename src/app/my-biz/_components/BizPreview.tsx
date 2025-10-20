@@ -28,7 +28,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
     const facilityLabels = (formValues?.facilities || []).map((id) => facilitiesOptions.find((o) => o.value === id)?.label || id);
 
     return (
-        <div className="flex-1">
+        <div className="flex-1 w-full px-4 lg:px-0">
             <section className="relative lg:h-[380px] w-full rounded-lg overflow-hidden">
                 <div className="absolute inset-0">
                     {formValues?.image
