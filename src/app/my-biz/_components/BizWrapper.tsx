@@ -20,7 +20,7 @@ export const BizWrapper = ({ bizData, id }: BizWrapperProps) => {
     });
 
     return (
-        <div className="lg:mt-10 md:flex justify-between items-start mx-auto gap-10">
+        <div className="lg:mt-10 flex flex-col lg:flex-row justify-between items-start mx-auto gap-10">
             <BizForm
                 defaultData={bizData}
                 id={id}

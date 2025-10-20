@@ -9,6 +9,7 @@ import { ArrowDown2, Coin1, HambergerMenu } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FastAccessModal } from "../common/FastAccessModal";
+import { CurrencyRatesModal } from "./CurrencyRatesModal";
 
 export interface MainHeaderProps {
   userData?: UserData | null;
@@ -61,15 +62,7 @@ export const MainHeader = ({ userData }: MainHeaderProps) => {
           ))}
         </ul>
         <div className="hidden lg:flex items-center justify-end gap-3">
-          <Button
-            variant={"outline"}
-            size={"medium"}
-            className="border-white text-white bg-transparent"
-          >
-            <Coin1 className="stroke-white" />
-            {t("buttons.convertCurrency")}
-            <ArrowDown2 className="stroke-white size-4" />
-          </Button>
+          <CurrencyRatesModal />
           <Link href={(!!userData && !isEmpty(userData) ? "/profile/biz" : "/auth/login")}>
             <Button variant={"white"} size={"medium"}>
               {(!!userData && !isEmpty(userData) ? t("buttons.profile") : t("buttons.login"))}

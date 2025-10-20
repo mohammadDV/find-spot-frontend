@@ -1,14 +1,14 @@
 "use client"
 
 import { usePagesTranslation } from "@/hooks/useTranslation";
-import { useFetchData } from "@/hooks/useFetchData";
 import { Button } from "@/ui/button";
 import { Checkbox } from "@/ui/checkbox";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/ui/sheet";
 import { ArrowDown2, HambergerMenu } from "iconsax-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { FiltersResponse } from "@/types/category.type";
+import { FilterFacilityResponse } from "@/types/filter-facility.type";
+import { getFilters } from "../../_api/getFilters";
 
 export const DynamicFilters = () => {
     const searchParams = useSearchParams();
@@ -18,13 +18,33 @@ export const DynamicFilters = () => {
 
     const categoryId = searchParams.get('category');
 
-    if (!categoryId) {
-        return null;
-    }
+    const [filtersResponse, setFiltersResponse] = useState<FilterFacilityResponse | null>(null);
+    const [loadingFilters, setLoadingFilters] = useState<boolean>(true);
 
-    const { response: filtersData, loading } = useFetchData<FiltersResponse>(
-        `/categories/${categoryId}/filters`
-    );
+    useEffect(() => {
+        const fetchFilters = async () => {
+            setLoadingFilters(true);
+            try {
+                if (!categoryId) {
+                    setFiltersResponse(null);
+                    return;
+                }
+                const idNum = parseInt(categoryId);
+                if (isNaN(idNum)) {
+                    setFiltersResponse(null);
+                    return;
+                }
+                const res = await getFilters([idNum]);
+                setFiltersResponse(res);
+            } catch (error) {
+                console.error('Error fetching filters:', error);
+                setFiltersResponse(null);
+            } finally {
+                setLoadingFilters(false);
+            }
+        };
+        fetchFilters();
+    }, [categoryId]);
 
     const [selectedFilters, setSelectedFilters] = useState<string[]>(() => {
         const filtersParam = searchParams.getAll('filters');
@@ -76,7 +96,11 @@ export const DynamicFilters = () => {
         router.replace(newURL, { scroll: false });
     }, [categoryId]);
 
-    if (loading || !filtersData?.data) {
+    if (!categoryId) {
+        return null;
+    }
+
+    if (loadingFilters || !filtersResponse?.data) {
         return (
             <Button variant={"primary"} size={"small"} className="rounded-lg lg:text-sm" disabled>
                 <HambergerMenu className="size-4 lg:size-6 stroke-white" />
@@ -104,8 +128,8 @@ export const DynamicFilters = () => {
                 <SheetHeader>
                     <SheetTitle>{t("search.filters")}</SheetTitle>
                 </SheetHeader>
-                <div className="space-y-3 px-4">
-                    {filtersData.data.map((option) => (
+                <div className="flex flex-wrap gap-2.5 space-y-1.5 px-4">
+                    {filtersResponse.data.map((option) => (
                         <div key={option.id} className="flex items-center">
                             <Checkbox
                                 id={`filter-${option.id}`}

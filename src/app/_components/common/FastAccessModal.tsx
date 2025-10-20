@@ -7,6 +7,8 @@ import Link from "next/link";
 import { ArrowLeft2 } from "iconsax-react";
 import { Modal } from "../modal";
 import { Button } from "@/ui/button";
+import { useState } from "react";
+import { CurrencyRatesModal } from "../headers/CurrencyRatesModal";
 
 interface FastAccessModalProps {
   open: boolean;
@@ -16,6 +18,7 @@ interface FastAccessModalProps {
 
 export const FastAccessModal = ({ open, onOpenChange, userData }: FastAccessModalProps) => {
   const t = useCommonTranslation();
+  const [isRatesOpen, setIsRatesOpen] = useState(false);
 
   return (
     <Modal
@@ -49,16 +52,23 @@ export const FastAccessModal = ({ open, onOpenChange, userData }: FastAccessModa
             <ArrowLeft2 className="size-6 stroke-title" />
           </Link>
           <hr className="border-t border-border" />
-          <Link href={"/"} className="flex items-center justify-between">
+          <div
+            className="flex items-center justify-between"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsRatesOpen(true);
+            }}
+          >
             <p className="text-lg text-primary">{t("buttons.convertCurrency")}</p>
             <ArrowLeft2 className="size-6 stroke-title" />
-          </Link>
+          </div>
         </div>
         <Link href={(!!userData && !isEmpty(userData) ? "/profile" : "/auth/login")}>
           <Button variant={"primary"} size={"medium"} className="w-full">
             {(!!userData && !isEmpty(userData) ? t("buttons.profile") : t("buttons.login"))}
           </Button>
         </Link>
+        <CurrencyRatesModal open={isRatesOpen} onOpenChange={setIsRatesOpen} showTrigger={false} />
       </>
     </Modal>
   );

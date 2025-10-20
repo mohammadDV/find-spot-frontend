@@ -17,7 +17,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <h1 className="lg:text-[40px] font-bold text-title">
                 {postData.title}
             </h1>
-            {(postData.video || postData.image) && (
+            {(postData.video || postData.slide) && (
                 <div>
                     {postData.video ? (
                         <div className="aspect-video w-full rounded-2xl object-cover my-2 lg:my-6 overflow-hidden">
@@ -29,8 +29,8 @@ export default async function PostPage({ params }: PostPageProps) {
                             >
                             </video>
                         </div>
-                    ) : postData.image && (
-                        <Image src={createFileUrl(postData.image!)} alt="" width={1188} height={411} className="w-full rounded-2xl object-cover my-2 lg:my-6" />
+                    ) : postData.slide && (
+                        <Image src={createFileUrl(postData.slide!)} alt="" width={1188} height={411} className="w-full rounded-2xl object-cover my-2 lg:my-6" />
                     )}
                 </div>
             )}
