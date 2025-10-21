@@ -3,6 +3,7 @@
 import { OptionTypes, RHFCombobox } from "@/app/_components/hookForm/RHFCombobox";
 import { RHFComboboxMulti } from "@/app/_components/hookForm/RHFComboboxMulti";
 import { RHFCreateList } from "@/app/_components/hookForm/RHFCreateList";
+import { RHFCurrency } from "@/app/_components/hookForm/RHFCurrency";
 import { RHFInput } from "@/app/_components/hookForm/RHFInput";
 import { RHFMap } from "@/app/_components/hookForm/RHFMap";
 import { RHFTextarea } from "@/app/_components/hookForm/RHFTextarea";
@@ -563,10 +564,9 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
                             label={tPages("myBiz.amountType")}
                             options={amountTypeOptions}
                         />
-                        <RHFInput
+                        <RHFCurrency
                             name="start_amount"
                             label={tPages("myBiz.startAmount")}
-                            type="text"
                         />
                         <RHFInput
                             name="website"
