@@ -26,3 +26,7 @@ export const convertPersianToEnglish = (str: string): string => {
     return englishDigits[persianDigits.indexOf(char)];
   });
 };
+
+export const putCommas = (value: number): string => {
+  return new Intl.NumberFormat().format(Math.trunc(value));
+};
