@@ -21,19 +21,19 @@ export const VerticalPostCard = ({ data }: VerticalPostCardProps) => {
         alt=""
         width={337}
         height={191}
-        className="rounded-2xl object-cover h-[137px] lg:h-[191px]"
+        className="rounded-2xl object-cover w-full h-[137px] lg:h-[203px]"
       />
       <div className="mt-3 lg:mt-6">
-        <h3 className="text-sm lg:text-lg font-bold text-text line-clamp-1">
+        <h3 className="text-sm lg:text-lg text-center lg:text-right font-bold text-text line-clamp-1">
           {data.title}
         </h3>
-        <p className="mt-1 lg:my-2.5 text-xs lg:text-base text-description line-clamp-3">
+        <p className="mt-1 lg:my-2.5 text-xs lg:text-base text-center lg:text-right text-description line-clamp-3">
           {data.summary}
         </p>
         <Button
           variant={"link"}
           size={"medium"}
-          className="!px-0 lg:px-2 text-xs lg:text lg:text-base"
+          className="!px-0 lg:px-2 text-xs lg:text justify-center w-full lg:justify-start lg:text-base"
         >
           {t("buttons.readMore")}
           <ArrowLeft2 className="size-4 stroke-primary" />

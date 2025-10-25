@@ -18,6 +18,7 @@ import Hero from "./_components/hero/Hero";
 import { TitleSection } from "./_components/titleSection";
 import { getUserData } from "@/lib/getUserDataFromHeaders";
 import { BottomNavigation } from "./_components/bottomNavigation";
+import Link from "next/link";
 
 interface FeaturedBusinessesService {
   status: StatusCode;
@@ -68,14 +69,14 @@ export default async function Home() {
         <Hero />
         {isMobile && (
           <div className="mt-8 container mx-auto px-4">
-            <div className="grid grid-cols-5 gap-x-4 gap-y-2">
+            <div className="grid grid-cols-5 gap-2">
               {activeCategoriesData?.slice(0, 10).map(item => (
                 <div
                   key={item.id}
-                  className="py-1 flex flex-col justify-center items-center gap-1"
+                  className="py-1 flex flex-col justify-start items-center gap-1.5"
                 >
                   <Image src={createFileUrl(item.image!)} alt="" width={24} height={24} />
-                  <h3 className="text-description text-sm">{item.title}</h3>
+                  <h3 className="text-description text-xs text-center line-clamp-2">{item.title}</h3>
                 </div>
               ))}
             </div>
@@ -121,13 +122,14 @@ export default async function Home() {
             </h2>
             <div className="grid lg:grid-cols-5 gap-8 mt-10">
               {activeCategoriesData?.slice(0, 10).map(item => (
-                <div
+                <Link
+                  href={`/search?category=${item.id}`}
                   key={item.id}
                   className="py-10 cursor-pointer border border-border rounded-3xl flex flex-col justify-center items-center gap-4"
                 >
                   <Image src={createFileUrl(item.image!)} alt="" width={56} height={56} />
                   <h3 className="text-description text-lg">{item.title}</h3>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -146,7 +148,7 @@ export default async function Home() {
             </div>
           ) : (
             <div className="mt-8 flex justify-between gap-6">
-              <div className="flex flex-col gap-6 flex-1">
+              <div className="flex flex-col flex-1">
                 <HorizontalPostCard data={latestPostsData.data?.[0]} />
                 <HorizontalPostCard data={latestPostsData.data?.[1]} />
               </div>

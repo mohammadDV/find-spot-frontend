@@ -159,7 +159,7 @@
     "address": "آدرس *",
     "location": "موقعیت مکانی",
     "amountType": "نوع مبلغ *",
-    "startAmount": "شروع قیمت از *",
+    "startAmount": "شروع قیمت از",
     "country": "کشور *",
     "city": "شهر *",
     "area": "منطقه *",
