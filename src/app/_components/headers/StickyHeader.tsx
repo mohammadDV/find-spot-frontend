@@ -37,6 +37,11 @@ export const StickyHeader = ({ userData }: StickyHeaderProps) => {
         },
         {
             id: 4,
+            title: t("navigation.weekend"),
+            link: "/weekend",
+        },
+        {
+            id: 5,
             title: t("navigation.news"),
             link: "/blog",
         },
@@ -52,11 +57,12 @@ export const StickyHeader = ({ userData }: StickyHeaderProps) => {
                             alt="finybo logo"
                             width={158}
                             height={40}
+                            quality={100}
                             className="w-[94px] h-6 lg:w-[158px] lg:h-10"
                         />
                     </Link>
                     <StickyHeaderSearch />
-                    <ul className="hidden lg:flex items-center gap-10">
+                    <ul className="hidden lg:flex items-center gap-8">
                         {menuData.map((item) => (
                             <li key={item.id} className="text-lg font-normal text-title">
                                 <Link href={item.link}>{item.title}</Link>
