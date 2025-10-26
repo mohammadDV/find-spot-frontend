@@ -40,7 +40,7 @@ export const Carousel = ({
                 <div className="flex items-center gap-2.5 lg:gap-4">
                     {title && <div className="flex items-center gap-1 lg:gap-2">
                         <Image
-                            src={"/images/finybo-icon.svg"}
+                            src={"/images/finybo-icon.png"}
                             alt="finybo icon"
                             width={24}
                             height={24}

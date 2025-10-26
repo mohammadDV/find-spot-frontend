@@ -52,7 +52,7 @@ export const StickyHeader = ({ userData }: StickyHeaderProps) => {
                 <div className="flex items-center justify-between">
                     <Link href={"/"}>
                         <img
-                            src={"/images/finybo-logo.svg"}
+                            src={"/images/finybo-logo.png"}
                             alt="finybo logo"
                             width={158}
                             height={40}

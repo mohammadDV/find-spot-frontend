@@ -66,7 +66,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
                 <div className="flex items-center gap-2 lg:gap-6">
                     <div className="flex items-center gap-1 lg:gap-2">
                         <Image
-                            src={"/images/finybo-icon.svg"}
+                            src={"/images/finybo-icon.png"}
                             alt="finybo icon"
                             width={24}
                             height={24}

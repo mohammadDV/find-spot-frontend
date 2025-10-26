@@ -180,7 +180,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             </div>
             <div className="flex items-center gap-2 mt-4 lg:mt-8">
               <Image
-                src={"/images/finybo-icon.svg"}
+                src={"/images/finybo-icon.png"}
                 alt="finybo icon"
                 width={24}
                 height={24}
@@ -204,7 +204,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             )}
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
-                src={"/images/finybo-icon.svg"}
+                src={"/images/finybo-icon.png"}
                 alt="finybo icon"
                 width={24}
                 height={24}
@@ -271,7 +271,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             </div>
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
-                src={"/images/finybo-icon.svg"}
+                src={"/images/finybo-icon.png"}
                 alt="finybo icon"
                 width={24}
                 height={24}
@@ -290,7 +290,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             </div>
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
-                src={"/images/finybo-icon.svg"}
+                src={"/images/finybo-icon.png"}
                 alt="finybo icon"
                 width={24}
                 height={24}
@@ -339,7 +339,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             </div>
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
-                src={"/images/finybo-icon.svg"}
+                src={"/images/finybo-icon.png"}
                 alt="finybo icon"
                 width={24}
                 height={24}
@@ -367,7 +367,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             <div className="flex items-center gap-4 mt-4 lg:mt-8">
               <div className="flex items-center gap-1 lg:gap-2">
                 <Image
-                  src={"/images/finybo-icon.svg"}
+                  src={"/images/finybo-icon.png"}
                   alt="finybo icon"
                   width={24}
                   height={24}

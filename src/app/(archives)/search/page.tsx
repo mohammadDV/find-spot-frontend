@@ -66,7 +66,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1 lg:gap-2">
                             <Image
-                                src={"/images/finybo-icon.svg"}
+                                src={"/images/finybo-icon.png"}
                                 alt="finybo icon"
                                 width={24}
                                 height={24}

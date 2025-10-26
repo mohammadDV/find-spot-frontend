@@ -15,7 +15,7 @@ export const TitleSection = ({ title, link, linkLabel }: TitleSectionProps) => {
     <div className="flex items-center justify-between py-2.5 lg:py-0">
       <div className="flex items-center gap-1 lg:gap-2">
         <img
-          src={"/images/finybo-icon.svg"}
+          src={"/images/finybo-icon.png"}
           alt="finybo icon"
           width={24}
           height={24}

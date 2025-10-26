@@ -84,7 +84,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="mt-6 lg:mt-12 grid grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-24">
           <div className="col-span-3 lg:col-span-1 flex flex-col gap-3">
-            <img src="/images/finybo-logo.svg" alt="logo" width={125} height={125} />
+            <img src="/images/finybo-logo.png" alt="logo" width={125} height={125} />
             <p className="text-2xs lg:text-sm text-text">
               راهنمای سریع برای یافتن کسب‌وکارها، خدمات و رویدادها در نزدیکی شما.
             </p>
