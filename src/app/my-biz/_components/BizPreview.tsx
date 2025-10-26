@@ -136,7 +136,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
                         </div>
                         <div className="flex items-center gap-2 mt-4 lg:mt-8">
                             <Image
-                                src={"/images/finybo-icon.svg"}
+                                src={"/images/finybo-icon.png"}
                                 alt="finybo icon"
                                 width={24}
                                 height={24}
@@ -160,7 +160,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
                         )}
                         <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
                             <Image
-                                src={"/images/finybo-icon.svg"}
+                                src={"/images/finybo-icon.png"}
                                 alt="finybo icon"
                                 width={24}
                                 height={24}
@@ -241,7 +241,7 @@ export const BizPreview = ({ bizData, formValues, areaOptions = [], facilitiesOp
                         </div>
                         <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
                             <Image
-                                src={"/images/finybo-icon.svg"}
+                                src={"/images/finybo-icon.png"}
                                 alt="finybo icon"
                                 width={24}
                                 height={24}

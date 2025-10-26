@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   title: "فینیبو | همه چیز برای ایرانی‌ها در استانبول",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/images/finybo-icon.svg",
-    shortcut: "/images/finybo-icon.svg",
+    icon: "/images/finybo-icon.png",
+    shortcut: "/images/finybo-icon.png",
   },
 };
 

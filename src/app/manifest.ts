@@ -11,7 +11,7 @@ export default function manifest(): MetadataRoute.Manifest {
         theme_color: "#D71616",
         icons: [
             {
-                src: "/images/finybo-icon.svg",
+                src: "/images/finybo-icon.png",
                 sizes: "any",
                 type: "image/svg+xml",
             },

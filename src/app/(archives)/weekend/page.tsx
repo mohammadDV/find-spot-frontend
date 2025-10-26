@@ -14,7 +14,7 @@ export default async function WeekendPage() {
             <div className="container px-4 mx-auto mt-4 lg:mt-10">
                 <div className="flex items-center gap-2 mt-4 lg:mt-8">
                     <Image
-                        src={"/images/finybo-icon.svg"}
+                        src={"/images/finybo-icon.png"}
                         alt="finybo icon"
                         width={24}
                         height={24}
