@@ -37,6 +37,11 @@ export const MainHeader = ({ userData }: MainHeaderProps) => {
     },
     {
       id: 4,
+      title: t("navigation.weekend"),
+      link: "/weekend",
+    },
+    {
+      id: 5,
       title: t("navigation.news"),
       link: "/blog",
     },
@@ -51,6 +56,7 @@ export const MainHeader = ({ userData }: MainHeaderProps) => {
             alt="finybo logo"
             width={158}
             height={40}
+            quality={100}
             className="w-[94px] h-6 lg:w-[158px] lg:h-10"
           />
         </Link>

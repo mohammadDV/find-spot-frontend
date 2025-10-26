@@ -47,6 +47,11 @@ export const FastAccessModal = ({ open, onOpenChange, userData }: FastAccessModa
             <ArrowLeft2 className="size-6 stroke-title" />
           </Link>
           <hr className="border-t border-border" />
+          <Link href={"/weekend"} className="flex items-center justify-between">
+            <p className="text-lg text-primary">{t("navigation.weekend")}</p>
+            <ArrowLeft2 className="size-6 stroke-title" />
+          </Link>
+          <hr className="border-t border-border" />
           <Link href={"/blog"} className="flex items-center justify-between">
             <p className="text-lg text-primary">{t("navigation.news")}</p>
             <ArrowLeft2 className="size-6 stroke-title" />

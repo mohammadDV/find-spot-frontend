@@ -20,6 +20,7 @@ export const TitleSection = ({ title, link, linkLabel }: TitleSectionProps) => {
           alt="finybo icon"
           width={24}
           height={24}
+          quality={100}
           className="size-4 lg:size-6"
         />
         <h2 className="text-title lg:text-3xl font-bold">{title}</h2>

@@ -54,7 +54,7 @@ export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCar
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                     <Image
-                        src={review.user.profile_photo_path || "/images/default-avatar.png"}
+                        src={createFileUrl(review.user.profile_photo_path!) || "/images/default-avatar.png"}
                         alt=""
                         width={57}
                         height={57}
