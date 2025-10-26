@@ -1,40 +1,46 @@
 import { MenuItem } from "@/app/profile/_components/sidebar";
-import { ArchiveAdd, I24Support, Messages1 } from "iconsax-react";
+import { ArchiveAdd, Edit, Global, I24Support, Messages1 } from "iconsax-react";
 import { Settings2 } from "lucide-react";
 
 export const profileMenuData: MenuItem[] = [
     {
         id: 1,
         title: "کسب و کار من",
-        icon: Messages1,
+        icon: Global,
         link: "/profile/biz"
     },
     {
         id: 2,
+        title: "ثبت کسب و کار جدید",
+        icon: Edit,
+        link: "/my-biz/create"
+    },
+    {
+        id: 3,
         title: "نظرات",
         icon: Messages1,
         link: "/profile/reviews"
     },
     {
-        id: 3,
+        id: 4,
         title: "کسب و کارهای ذخیره شده",
         icon: ArchiveAdd,
         link: "/profile/favorites/businesses"
     },
     {
-        id: 4,
+        id: 5,
         title: "رویدادهای ذخیره شده",
         icon: ArchiveAdd,
         link: "/profile/favorites/events"
     },
     {
-        id: 5,
+        id: 6,
         title: "پشتیبانی",
         icon: I24Support,
         link: "/profile/support"
     },
     {
-        id: 6,
+        id: 7,
         title: "تغییر رمز عبور",
         icon: Settings2,
         link: "/profile/change-password"

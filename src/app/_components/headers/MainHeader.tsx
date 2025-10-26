@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { isEmpty } from "@/lib/utils";
 import { UserData } from "@/types/user.type";
 import { Button } from "@/ui/button";
-import { ArrowDown2, Coin1, HambergerMenu } from "iconsax-react";
-import Image from "next/image";
+import { HambergerMenu } from "iconsax-react";
 import Link from "next/link";
+import { useState } from "react";
 import { FastAccessModal } from "../common/FastAccessModal";
 import { CurrencyRatesModal } from "./CurrencyRatesModal";
 
@@ -51,13 +50,12 @@ export const MainHeader = ({ userData }: MainHeaderProps) => {
     <header className="container relative mx-auto px-4 py-3 lg:py-6 z-40">
       <div className="flex items-center justify-between">
         <Link href={"/"}>
-          <Image
+          <img
             src={"/images/finybo-logo.svg"}
             alt="finybo logo"
             width={158}
             height={40}
-            quality={100}
-            className="w-[94px] h-6 lg:w-[158px] lg:h-10"
+            className="w-[94px] h-6 lg:w-[158px] object-contain lg:h-10"
           />
         </Link>
         <ul className="hidden lg:flex items-center gap-10">

@@ -12,8 +12,10 @@ import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { reviewChangeStatus } from "./reviewChangeStatus";
-import { StatusCode } from "@/constants/enums";
+import { LikeStatus, StatusCode } from "@/constants/enums";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { likeReviewAction } from "@/app/(singles)/biz/_api/likeReviewAction";
 
 interface ReviewCardProps {
     review: Review;
@@ -27,6 +29,8 @@ export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCar
     const tCommon = useCommonTranslation();
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [likeLoading, setLikeLoading] = useState<boolean>(false);
+    const [likeActive, setLikeActive] = useState<LikeStatus | null>(null);
 
     const imageFiles = review.files
         ?.filter(file => file.type === "image")
@@ -49,6 +53,25 @@ export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCar
         }
     }
 
+    const likeHandler = async () => {
+        if (!enableLike) return;
+        setLikeLoading(true);
+        try {
+            const res = await likeReviewAction(review.id);
+            if (res.status === StatusCode.Success) {
+                setLikeActive(res.active);
+                toast.success(res.message);
+                router.refresh();
+            } else {
+                toast.error(tCommon("messages.error"));
+            }
+        } catch (error) {
+            toast.error(tCommon("messages.error"));
+        } finally {
+            setLikeLoading(false);
+        }
+    }
+
     return (
         <div className={cn("p-3 lg:p-6 border-b border-border", review.status === "cancelled" && "bg-red-50")}>
             <div className="flex items-center justify-between">
@@ -66,9 +89,9 @@ export const ReviewCard = ({ review, enableLike, enableDeactivation }: ReviewCar
                     </div>
                 </div>
                 {enableLike && (
-                    <Button variant={"link"} size={"small"} className="!px-2">
+                    <Button variant={"link"} size={"small"} className="!px-2" onClick={likeHandler} disabled={likeLoading}>
                         {tPages("biz.likeComment")}
-                        <Like1 className="stroke-primary size-4" />
+                        <Like1 className={cn("size-4", likeActive === LikeStatus.Active ? "fill-primary stroke-primary" : "stroke-primary")} />
                     </Button>
                 )}
                 {enableDeactivation && (

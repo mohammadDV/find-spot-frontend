@@ -1,19 +1,12 @@
-"use client"
-
 import facebookIcon from "@/assets/images/Facebook.png";
 import instagramIcon from "@/assets/images/Instagram.png";
 import twitterIcon from "@/assets/images/Twitter.png";
 import { useCommonTranslation } from "@/hooks/useTranslation";
-import { Button } from "@/ui/button";
-import { Input } from "@/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { toast } from "sonner";
 
 export const Footer = () => {
   const t = useCommonTranslation();
-  const [email, setEmail] = useState("");
 
   const accessLinks = [
     {
@@ -86,22 +79,12 @@ export const Footer = () => {
     { id: 4, title: t("navigation.news"), link: "/blog" },
   ];
 
-  const subscribe = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email.trim()) {
-      toast.error("لطفاً ایمیل خود را وارد کنید");
-      return;
-    }
-    toast.success("عضویت در خبرنامه با موفقیت انجام شد");
-    setEmail("");
-  };
-
   return (
     <footer className="mt-20 lg:mt-28 border-t border-border">
       <div className="container mx-auto px-4">
         <div className="mt-6 lg:mt-12 grid grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-24">
           <div className="col-span-3 lg:col-span-1 flex flex-col gap-3">
-            <Image src="/images/finybo-logo.svg" alt="logo" width={125} height={125} />
+            <img src="/images/finybo-logo.svg" alt="logo" width={125} height={125} />
             <p className="text-2xs lg:text-sm text-text">
               راهنمای سریع برای یافتن کسب‌وکارها، خدمات و رویدادها در نزدیکی شما.
             </p>

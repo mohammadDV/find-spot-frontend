@@ -1,6 +1,5 @@
 import { useCommonTranslation } from "@/hooks/useTranslation";
 import { ArrowLeft2 } from "iconsax-react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface TitleSectionProps {
@@ -15,13 +14,12 @@ export const TitleSection = ({ title, link, linkLabel }: TitleSectionProps) => {
   return (
     <div className="flex items-center justify-between py-2.5 lg:py-0">
       <div className="flex items-center gap-1 lg:gap-2">
-        <Image
+        <img
           src={"/images/finybo-icon.svg"}
           alt="finybo icon"
           width={24}
           height={24}
-          quality={100}
-          className="size-4 lg:size-6"
+          className="size-4 lg:size-6 object-contain"
         />
         <h2 className="text-title lg:text-3xl font-bold">{title}</h2>
       </div>

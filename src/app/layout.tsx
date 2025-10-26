@@ -9,6 +9,11 @@ import { Toaster } from "@/ui/sonner";
 
 export const metadata: Metadata = {
   title: "فینیبو | همه چیز برای ایرانی‌ها در استانبول",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/images/finybo-icon.svg",
+    shortcut: "/images/finybo-icon.svg",
+  },
 };
 
 export default async function RootLayout({

@@ -2,6 +2,7 @@ import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { Map } from "@/app/_components/map/Map";
 import { Pagination } from "@/app/_components/pagination/Pagination";
 import { TitleSection } from "@/app/_components/titleSection";
+import { getUserData } from "@/lib/getUserDataFromHeaders";
 import { cn, createFileUrl, isEmpty } from "@/lib/utils";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
@@ -13,8 +14,7 @@ import {
   Global,
   Location,
   Share,
-  ShieldTick,
-  Star1
+  ShieldTick
 } from "iconsax-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -28,7 +28,11 @@ import { ImageGallery } from "../_components/ImageGallery";
 import { MenuViewer } from "../_components/MenuViewer";
 import { ReviewSortFilter } from "../_components/ReviewSortFilter";
 import { SubmitReview } from "../_components/SubmitReview";
-import { getUserData } from "@/lib/getUserDataFromHeaders";
+import facebookIcon from "@/assets/images/Facebook.png";
+import instagramIcon from "@/assets/images/Instagram.png";
+import youtubeIcon from "@/assets/images/youtube.svg";
+import tiktokIcon from "@/assets/images/tiktok.svg";
+import whatsappIcon from "@/assets/images/whatsapp.svg";
 
 interface BizPageProps {
   params: Promise<{
@@ -420,6 +424,35 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
                   {businessData.business.address}
                 </p>
               </div>
+              {(businessData.business.facebook || businessData.business.instagram || businessData.business.youtube || businessData.business.tiktok || businessData.business.whatsapp) && (
+                <div className="flex items-center justify-end gap-3">
+                  {businessData.business.facebook && (
+                    <Link href={businessData.business.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                      <Image src={facebookIcon} alt="facebook" width={24} height={24} className="size-6" />
+                    </Link>
+                  )}
+                  {businessData.business.instagram && (
+                    <Link href={businessData.business.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                      <Image src={instagramIcon} alt="instagram" width={24} height={24} className="size-6" />
+                    </Link>
+                  )}
+                  {businessData.business.youtube && (
+                    <Link href={businessData.business.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                      <Image src={youtubeIcon} alt="youtube" width={24} height={24} className="size-6" />
+                    </Link>
+                  )}
+                  {businessData.business.tiktok && (
+                    <Link href={businessData.business.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                      <Image src={tiktokIcon} alt="tiktok" width={24} height={24} className="size-6" />
+                    </Link>
+                  )}
+                  {businessData.business.whatsapp && (
+                    <Link href={businessData.business.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                      <Image src={whatsappIcon} alt="whatsapp" width={24} height={24} className="size-6" />
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

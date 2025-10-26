@@ -75,7 +75,7 @@ export const BusinessCard = ({
         className="rounded-t-lg lg:rounded-t-3xl w-full lg:aspect-3/2 object-cover"
       />
       <div className="p-3 lg:p-6">
-        <h3 className="text-title font-semibold text-2xs mb-2.5 lg:text-base line-clamp-1">
+        <h3 className="text-title font-semibold text-xs mb-2.5 lg:text-base line-clamp-1">
           {title}
         </h3>
         {start_date && <div className="flex items-center gap-2 mb-1 lg:my-2">

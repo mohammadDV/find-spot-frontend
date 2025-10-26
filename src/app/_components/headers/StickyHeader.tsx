@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useCommonTranslation } from "@/hooks/useTranslation";
+import { isEmpty } from "@/lib/utils";
+import { UserData } from "@/types/user.type";
 import { Button } from "@/ui/button";
 import { HambergerMenu } from "iconsax-react";
-import Image from "next/image";
 import Link from "next/link";
-import { StickyHeaderSearch } from "./StickyHeaderSearch";
-import { UserData } from "@/types/user.type";
-import { isEmpty } from "@/lib/utils";
+import { useState } from "react";
 import { FastAccessModal } from "../common/FastAccessModal";
+import { StickyHeaderSearch } from "./StickyHeaderSearch";
 
 export interface StickyHeaderProps {
     userData?: UserData | null;
@@ -52,13 +51,12 @@ export const StickyHeader = ({ userData }: StickyHeaderProps) => {
             <div className="container relative mx-auto px-4 py-3 lg:py-6">
                 <div className="flex items-center justify-between">
                     <Link href={"/"}>
-                        <Image
+                        <img
                             src={"/images/finybo-logo.svg"}
                             alt="finybo logo"
                             width={158}
                             height={40}
-                            quality={100}
-                            className="w-[94px] h-6 lg:w-[158px] lg:h-10"
+                            className="w-[94px] h-6 lg:w-[158px] lg:h-10 object-contain"
                         />
                     </Link>
                     <StickyHeaderSearch />
