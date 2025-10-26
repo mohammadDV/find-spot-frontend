@@ -26,7 +26,7 @@ export const SearchCard = ({ data }: SearchCardProps) => {
         className="lg:rounded-2xl object-cover w-full lg:w-[308px] h-[107px] lg:h-[184px]"
       />
       <div className="flex flex-col gap-2.5 p-3 lg:p-0">
-        <h3 className="text-title font-bold line-clamp-1">{data.title}</h3>
+        <h3 className="text-title font-bold text-sm lg:text-base line-clamp-1">{data.title}</h3>
         <div className="flex items-center gap-1">
           <div className="flex items-center">
             {Array.from({ length: 5 }, (_, index) => (

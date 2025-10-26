@@ -71,13 +71,14 @@ export default async function Home() {
           <div className="mt-8 container mx-auto px-4">
             <div className="grid grid-cols-5 gap-2">
               {activeCategoriesData?.slice(0, 10).map(item => (
-                <div
+                <Link
                   key={item.id}
+                  href={`/search?category=${item.id}`}
                   className="py-1 flex flex-col justify-start items-center gap-1.5"
                 >
                   <Image src={createFileUrl(item.image!)} alt="" width={24} height={24} />
                   <h3 className="text-description text-xs text-center line-clamp-2">{item.title}</h3>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

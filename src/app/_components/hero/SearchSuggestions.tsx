@@ -128,12 +128,12 @@ export const SearchSuggestions = () => {
                                                     onClick={() => handleBusinessClick(business.id)}
                                                     className="w-full flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-50 rounded-lg text-right transition-colors"
                                                 >
-                                                    <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+                                                    <div className="relative w-10 h-10 overflow-hidden flex-shrink-0">
                                                         <Image
                                                             src={createFileUrl(business.image!)}
                                                             alt={business.title}
                                                             fill
-                                                            className="object-cover"
+                                                            className="object-contain"
                                                         />
                                                     </div>
                                                     <div className="flex-1 text-right">
@@ -161,12 +161,12 @@ export const SearchSuggestions = () => {
                                                     onClick={() => handleCategoryClick(category.id)}
                                                     className="w-full flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-50 rounded-lg text-right transition-colors"
                                                 >
-                                                    <div className="relative w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+                                                    <div className="relative w-8 h-8 overflow-hidden flex-shrink-0">
                                                         <Image
                                                             src={createFileUrl(category.image!)}
                                                             alt={category.title}
                                                             fill
-                                                            className="object-cover"
+                                                            className="object-contain"
                                                         />
                                                     </div>
                                                     <p className="text-sm text-gray-900 flex-1 text-right">

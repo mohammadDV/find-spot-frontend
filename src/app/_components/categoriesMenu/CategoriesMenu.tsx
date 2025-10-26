@@ -70,12 +70,12 @@ export const CategoriesMenu = () => {
                           rounded-lg transition-colors text-right"
                         >
                           {category.image && (
-                            <div className="relative size-7 rounded-lg overflow-hidden flex-shrink-0">
+                            <div className="relative size-7 overflow-hidden flex-shrink-0">
                               <Image
                                 src={createFileUrl(category.image)}
                                 alt={category.title}
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                               />
                             </div>
                           )}
