@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "@/ui/button";
 import { getMyBusinesses } from "./_api/getMyBusinesses";
 import { ArrowLeft2 } from "iconsax-react";
+import { Badge } from "@/ui/badge";
 
 interface MyBizPageProps {
     searchParams: Promise<{
@@ -28,16 +29,21 @@ export default async function MyBizPage({ searchParams }: MyBizPageProps) {
             {isMobile && <ProfileNavigation title={t("profile.biz.title")} />}
             {bizData.total > 0
                 ? (
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-5 lg:gap-6">
                         {bizData.data?.map(biz => (
                             <Link
                                 key={biz.id}
                                 href={`/my-biz/${biz.id}`}
                                 className="bg-white rounded-xl p-6 shadow-card flex items-center justify-between">
-                                <p className="text-title text-lg">
+                                <p className="text-title lg:text-lg line-clamp-1">
                                     {biz.title}
                                 </p>
-                                <ArrowLeft2 className="stroke-title size-6" />
+                                <div className="flex items-center justify-end gap-3.5 lg:gap-6">
+                                    <Badge variant={biz.status === "approved" ? "grey" : "secondary"}>
+                                        {t(`profile.biz.${biz.status}`)}
+                                    </Badge>
+                                    <ArrowLeft2 className="stroke-title size-6" />
+                                </div>
                             </Link>
                         ))}
                         {bizData.last_page > 1 && (

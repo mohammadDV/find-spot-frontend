@@ -2,7 +2,7 @@ import { PaginationLink } from "@/app/_components/pagination";
 import { Category } from "./category.type";
 import { FileType } from "./file.type";
 
-export type BusinessType = "approved";
+export type BusinessType = "approved" | "pending";
 
 export type BusinessOption = {
     id: number;
@@ -37,6 +37,7 @@ export interface BusinessSummary {
         image: string | null
     },
     tags: BusinessOption[];
+    status?: BusinessType;
 }
 
 export interface Business {
@@ -71,6 +72,9 @@ export interface Business {
     website: string | null;
     facebook: string | null;
     instagram: string | null;
+    youtube: string | null;
+    tiktok: string | null;
+    whatsapp: string | null;
     image: string | null;
     slider_image: string | null;
     status: BusinessType;

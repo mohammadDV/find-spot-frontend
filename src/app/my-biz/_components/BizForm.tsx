@@ -506,8 +506,14 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
         });
     };
 
+    const seeBizHandler = () => {
+        if (typeof window != "undefined") {
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
     return (
-        <div className="lg:w-[509px] lg:shrink-0">
+        <div className="lg:w-[509px] lg:shrink-0 w-full">
             <FormProvider {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                     <div className="px-4 py-3 border-b border-border rounded-lg flex flex-col gap-4">
@@ -699,7 +705,16 @@ export const BizForm = ({ defaultData, id, onValuesChange, onOptionsChange }: Bi
                         />
                     </div>
 
-                    <div className="flex items-center justify-end gap-2.5 px-3 lg:px-0">
+                    <div className="flex flex-col-reverse lg:flex-row items-center justify-end gap-2.5 px-3 lg:px-0">
+                        <Button
+                            size={"medium"}
+                            variant={"outline"}
+                            className="w-full lg:w-auto"
+                            onClick={seeBizHandler}
+                            type="button"
+                        >
+                            {tPages("myBiz.seeBiz")}
+                        </Button>
                         <Button
                             size={"medium"}
                             variant={"secondary"}

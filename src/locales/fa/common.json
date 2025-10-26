@@ -111,7 +111,8 @@
     "rating": "امتیاز شما",
     "comment": "نظر شما",
     "services": "نکات مثبت",
-    "uploadFiles": "آپلود فایل‌ها"
+    "uploadFiles": "آپلود فایل‌ها",
+    "clearFilters": "حذف فیلترها"
   },
   "categories": {
     "all": "دسته‌بندی‌ها",
