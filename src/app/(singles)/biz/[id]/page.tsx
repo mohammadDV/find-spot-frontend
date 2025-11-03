@@ -1,9 +1,17 @@
 import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { Map } from "@/app/_components/map/Map";
 import { Pagination } from "@/app/_components/pagination/Pagination";
+import { ShareSheet } from "@/app/_components/shareSheet";
 import { TitleSection } from "@/app/_components/titleSection";
+import facebookIcon from "@/assets/images/Facebook.png";
+import instagramIcon from "@/assets/images/Instagram.png";
+import tiktokIcon from "@/assets/images/tiktok.svg";
+import whatsappIcon from "@/assets/images/whatsapp.svg";
+import youtubeIcon from "@/assets/images/youtube.svg";
+import { SITE_URL } from "@/configs/global";
+import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
 import { getUserData } from "@/lib/getUserDataFromHeaders";
-import { cn, createFileUrl, isEmpty } from "@/lib/utils";
+import { cn, createFileUrl, formatWebsiteUrl, isEmpty } from "@/lib/utils";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import { Progress } from "@/ui/progress";
@@ -18,6 +26,7 @@ import {
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import { ReviewCard } from "../../../_components/cards/ReviewCard";
 import { getBusiness } from "../_api/getBusiness";
 import { getBusinessReviews } from "../_api/getBusinessReviews";
@@ -27,13 +36,6 @@ import { ImageGallery } from "../_components/ImageGallery";
 import { MenuViewer } from "../_components/MenuViewer";
 import { ReviewSortFilter } from "../_components/ReviewSortFilter";
 import { SubmitReview } from "../_components/SubmitReview";
-import facebookIcon from "@/assets/images/Facebook.png";
-import instagramIcon from "@/assets/images/Instagram.png";
-import youtubeIcon from "@/assets/images/youtube.svg";
-import tiktokIcon from "@/assets/images/tiktok.svg";
-import whatsappIcon from "@/assets/images/whatsapp.svg";
-import { ShareSheet } from "@/app/_components/shareSheet";
-import { SITE_URL } from "@/configs/global";
 
 interface BizPageProps {
   params: Promise<{
@@ -46,10 +48,28 @@ interface BizPageProps {
   }>;
 }
 
+type BusinessDays = {
+  from_monday: number;
+  to_monday: number;
+  from_tuesday: number;
+  to_tuesday: number;
+  from_wednesday: number;
+  to_wednesday: number;
+  from_thursday: number;
+  to_thursday: number;
+  from_friday: number;
+  to_friday: number;
+  from_saturday: number;
+  to_saturday: number;
+  from_sunday: number;
+  to_sunday: number;
+};
+
 export default async function BizPage({ params, searchParams }: BizPageProps) {
   const tCommon = await getTranslations("common");
   const tPages = await getTranslations("pages");
   const userData = await getUserData();
+  const isMobile = await isMobileDevice();
 
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
@@ -70,6 +90,16 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
     }),
   ])
 
+  const businessDays: { label: string; from: keyof BusinessDays; to: keyof BusinessDays }[] = [
+    { label: tPages("biz.monday"), from: "from_monday", to: "to_monday" },
+    { label: tPages("biz.tuesday"), from: "from_tuesday", to: "to_tuesday" },
+    { label: tPages("biz.wednesday"), from: "from_wednesday", to: "to_wednesday" },
+    { label: tPages("biz.thursday"), from: "from_thursday", to: "to_thursday" },
+    { label: tPages("biz.friday"), from: "from_friday", to: "to_friday" },
+    { label: tPages("biz.saturday"), from: "from_saturday", to: "to_saturday" },
+    { label: tPages("biz.sunday"), from: "from_sunday", to: "to_sunday" },
+  ];
+
   const colorClasses = [
     "bg-secondary",
     "bg-[#DE3314]",
@@ -77,6 +107,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
     "bg-[#E86310]",
     "bg-[#F59D0C]"
   ];
+
   const translationKeys = [
     "biz.great",
     "biz.good",
@@ -205,6 +236,73 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
                 />
               </div>
             )}
+            {isMobile && <div className="mt-4">
+              <div className="w-full shadow-card rounded-2xl p-6 flex flex-col gap-6 sticky top-28">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Global className="stroke-title size-6" />
+                    <p className="text-xs text-title">{tPages("biz.website")}</p>
+                  </div>
+                  {businessData.business.website && <Link
+                    href={formatWebsiteUrl(businessData.business.website)}
+                    target="_blank"
+                    className="text-sm text-title text-left">
+                    {businessData.business.website}
+                  </Link>}
+                </div>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Call className="stroke-title size-6" />
+                    <p className="text-xs text-title">
+                      {tPages("biz.phoneNumber")}
+                    </p>
+                  </div>
+                  {businessData.business.phone && <Link
+                    href={`tel:${businessData.business.phone}`}
+                    className="text-sm text-title text-left">
+                    {businessData.business.phone}
+                  </Link>}
+                </div>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Location className="stroke-title size-6" />
+                    <p className="text-xs text-title">{tPages("biz.address")}</p>
+                  </div>
+                  <p className="text-sm text-title text-left">
+                    {businessData.business.address}
+                  </p>
+                </div>
+                {(businessData.business.facebook || businessData.business.instagram || businessData.business.youtube || businessData.business.tiktok || businessData.business.whatsapp) && (
+                  <div className="flex items-center justify-end gap-3">
+                    {businessData.business.facebook && (
+                      <Link href={businessData.business.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <Image src={facebookIcon} alt="facebook" width={24} height={24} className="size-6" />
+                      </Link>
+                    )}
+                    {businessData.business.instagram && (
+                      <Link href={businessData.business.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <Image src={instagramIcon} alt="instagram" width={24} height={24} className="size-6" />
+                      </Link>
+                    )}
+                    {businessData.business.youtube && (
+                      <Link href={businessData.business.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                        <Image src={youtubeIcon} alt="youtube" width={24} height={24} className="size-6" />
+                      </Link>
+                    )}
+                    {businessData.business.tiktok && (
+                      <Link href={businessData.business.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                        <Image src={tiktokIcon} alt="tiktok" width={24} height={24} className="size-6" />
+                      </Link>
+                    )}
+                    {businessData.business.whatsapp && (
+                      <Link href={businessData.business.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                        <Image src={whatsappIcon} alt="whatsapp" width={24} height={24} className="size-6" />
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>}
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
               <Image
                 src={"/images/finybo-icon.png"}
@@ -222,54 +320,23 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
                 className="rounded-xl lg:w-[473px] h-[300px]"
               />
               <div className="flex-1 h-full bg-card rounded-xl p-4 flex flex-col gap-2 lg:gap-1.5">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">شنبه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_saturday} صبح تا {businessData.business.to_saturday} شب
-                  </p>
-                </div>
-                <hr className="border-t border-border" />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">یکشنبه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_sunday} صبح تا {businessData.business.to_sunday} شب
-                  </p>
-                </div>
-                <hr className="border-t border-border" />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">دوشنبه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_monday} صبح تا {businessData.business.to_monday} شب
-                  </p>
-                </div>
-                <hr className="border-t border-border" />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">سه‌شنبه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_tuesday} صبح تا {businessData.business.to_tuesday} شب
-                  </p>
-                </div>
-                <hr className="border-t border-border" />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">چهارشنبه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_wednesday} صبح تا {businessData.business.to_wednesday} شب
-                  </p>
-                </div>
-                <hr className="border-t border-border" />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">پنجشنبه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_thursday} صبح تا {businessData.business.to_thursday} شب
-                  </p>
-                </div>
-                <hr className="border-t border-border" />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs lg:text-lg text-title">جمعه</p>
-                  <p className="text-sm text-title">
-                    {businessData.business.from_friday} صبح تا {businessData.business.to_friday} شب
-                  </p>
-                </div>
+                {businessDays.map((day, index) => {
+                  const from = businessData.business[day.from as keyof typeof businessData.business];
+                  const to = businessData.business[day.to as keyof typeof businessData.business];
+                  const isClosed = (!from && !to) || (from === 0 && to === 0);
+
+                  return (
+                    <Fragment key={day.label}>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs lg:text-lg text-title">{day.label}</p>
+                        <p className="text-sm text-title">
+                          {isClosed ? "تعطیل" : `${from} صبح تا ${to} شب`}
+                        </p>
+                      </div>
+                      {index < businessDays.length - 1 && <hr className="border-t border-border" />}
+                    </Fragment>
+                  );
+                })}
               </div>
             </div>
             <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
@@ -323,10 +390,11 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
               </div>
               <div className="flex flex-col items-center justify-center gap-2">
                 <p className="text-xs lg:text-sm text-black">
-                  {businessData.business.rate >= 4 ? tPages("biz.tooBad") :
-                    businessData.business.rate >= 3 ? tPages("biz.good") :
-                      businessData.business.rate >= 2 ? tPages("biz.medium") :
-                        businessData.business.rate >= 1 ? tPages("biz.bad") : tPages("biz.noScoreYet")}
+                  {businessData.business.rate >= 5 ? tPages("biz.great") :
+                    businessData.business.rate >= 4 ? tPages("biz.good") :
+                      businessData.business.rate >= 3 ? tPages("biz.medium") :
+                        businessData.business.rate >= 2 ? tPages("biz.bad") :
+                          businessData.business.rate >= 1 ? tPages("biz.tooBad") : tPages("biz.noScoreYet")}
                 </p>
                 <div className="flex items-center">
                   {Array.from({ length: 5 }, (_, index) => (
@@ -400,14 +468,19 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
             )}
           </div>
 
-          <div className="hidden lg:block lg:w-1/3">
+          {!isMobile && <div className="lg:w-1/3">
             <div className="w-full shadow-card rounded-2xl p-6 flex flex-col gap-6 sticky top-28">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Global className="stroke-title size-6" />
                   <p className="text-xs text-title">{tPages("biz.website")}</p>
                 </div>
-                <p className="text-sm text-title text-left">{businessData.business.website}</p>
+                {businessData.business.website && <Link
+                  href={formatWebsiteUrl(businessData.business.website)}
+                  target="_blank"
+                  className="text-sm text-title text-left">
+                  {businessData.business.website}
+                </Link>}
               </div>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
@@ -416,7 +489,11 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
                     {tPages("biz.phoneNumber")}
                   </p>
                 </div>
-                <p className="text-sm text-title text-left">{businessData.business.phone}</p>
+                {businessData.business.phone && <Link
+                  href={`tel:${businessData.business.phone}`}
+                  className="text-sm text-title text-left">
+                  {businessData.business.phone}
+                </Link>}
               </div>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
@@ -457,7 +534,7 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
                 </div>
               )}
             </div>
-          </div>
+          </div>}
         </div>
         <div className="mt-10 lg:mt-24 container mx-auto">
           <TitleSection title={tPages("biz.suggestions")} link="/" />

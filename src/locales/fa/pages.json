@@ -50,7 +50,14 @@
     "highestScore": "بالاترین امتیاز",
     "lowestScore": "کمترین امتیاز",
     "likeComment": "پسندیدن نظر",
-    "suggestions": "پیشنهادها"
+    "suggestions": "پیشنهادها",
+    "saturday": "شنبه",
+    "sunday": "یکشنبه",
+    "monday": "دوشنبه",
+    "tuesday": "سه شنبه",
+    "wednesday": "چهارشنبه",
+    "thursday": "پنجشنبه",
+    "friday": "جمعه"
   },
   "event": {
     "information": "اطلاعات",
