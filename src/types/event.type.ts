@@ -35,6 +35,7 @@ export interface Event {
     start_date: string;
     end_date: string;
     slider_image: string | null;
+    is_favorite?: boolean;
 }
 
 export interface EventsSlidersResponse {

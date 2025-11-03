@@ -11,6 +11,9 @@ import Link from "next/link";
 import { getEvent } from "../_api/getEvents";
 import { getSimilarEvents } from "../_api/getSimilarEvents";
 import { AddToFavorites } from "../_components/AddToFavorites";
+import { ShareSheet } from "@/app/_components/shareSheet";
+import { SITE_URL } from "@/configs/global";
+import { getUserData } from "@/lib/getUserDataFromHeaders";
 
 interface EventPageProps {
     params: Promise<{
@@ -21,6 +24,7 @@ interface EventPageProps {
 export default async function EventPage({ params }: EventPageProps) {
     const tCommon = await getTranslations("common");
     const tPages = await getTranslations("pages");
+    const userData = await getUserData();
 
     const resolvedParams = await params;
 
@@ -83,14 +87,15 @@ export default async function EventPage({ params }: EventPageProps) {
                                     {tCommon("buttons.ticketing")}
                                 </Button>
                             </Link>}
-                            <Button
-                                variant={"outline"}
-                                size={"medium"}
-                                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
-                                {tCommon("buttons.share")}
-                                <Share className="stroke-primary size-4 lg:size-6" />
-                            </Button>
-                            <AddToFavorites id={eventData.id} />
+                            <ShareSheet
+                                title={eventData.title}
+                                text={eventData?.summary || ""}
+                                url={`${SITE_URL}/event/${eventData.id}`}
+                            />
+                            <AddToFavorites
+                                id={eventData.id}
+                                userData={userData}
+                                isFavorite={eventData?.is_favorite} />
                         </div>
                         <div className="flex items-center gap-2 mt-4 lg:mt-8">
                             <Image
@@ -104,9 +109,10 @@ export default async function EventPage({ params }: EventPageProps) {
                                 {eventData.title}
                             </h2>
                         </div>
-                        <p className="mt-2 lg:mt-4 text-xs lg:text-lg text-title">
-                            {eventData?.description}
-                        </p>
+                        <div
+                            className="mt-2 lg:mt-4 text-xs lg:text-lg text-title"
+                            dangerouslySetInnerHTML={{ __html: eventData?.description || "" }}>
+                        </div>
                         <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
                             <Image
                                 src={"/images/finybo-icon.png"}
