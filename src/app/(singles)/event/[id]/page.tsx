@@ -1,10 +1,13 @@
 import { BusinessCard } from "@/app/_components/cards/BusinessCard";
 import { Map } from "@/app/_components/map";
+import { ShareSheet } from "@/app/_components/shareSheet";
 import { TitleSection } from "@/app/_components/titleSection";
-import { createFileUrl } from "@/lib/utils";
+import { SITE_URL } from "@/configs/global";
+import { getUserData } from "@/lib/getUserDataFromHeaders";
+import { createFileUrl, formatWebsiteUrl } from "@/lib/utils";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
-import { Call, Global, Location, Share, Star1 } from "iconsax-react";
+import { Call, Global, Location, Star1 } from "iconsax-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,6 +24,7 @@ interface EventPageProps {
 export default async function EventPage({ params }: EventPageProps) {
     const tCommon = await getTranslations("common");
     const tPages = await getTranslations("pages");
+    const userData = await getUserData();
 
     const resolvedParams = await params;
 
@@ -83,14 +87,15 @@ export default async function EventPage({ params }: EventPageProps) {
                                     {tCommon("buttons.ticketing")}
                                 </Button>
                             </Link>}
-                            <Button
-                                variant={"outline"}
-                                size={"medium"}
-                                className="text-2xs lg:text-base rounded-lg lg:rounded-xl !px-2 py-2 lg:!px-5 lg:py-2.5">
-                                {tCommon("buttons.share")}
-                                <Share className="stroke-primary size-4 lg:size-6" />
-                            </Button>
-                            <AddToFavorites id={eventData.id} />
+                            <ShareSheet
+                                title={eventData.title}
+                                text={eventData?.summary || ""}
+                                url={`${SITE_URL}/event/${eventData.id}`}
+                            />
+                            <AddToFavorites
+                                id={eventData.id}
+                                userData={userData}
+                                isFavorite={eventData?.is_favorite} />
                         </div>
                         <div className="flex items-center gap-2 mt-4 lg:mt-8">
                             <Image
@@ -104,9 +109,10 @@ export default async function EventPage({ params }: EventPageProps) {
                                 {eventData.title}
                             </h2>
                         </div>
-                        <p className="mt-2 lg:mt-4 text-xs lg:text-lg text-title">
-                            {eventData?.description}
-                        </p>
+                        <div
+                            className="mt-2 lg:mt-4 text-xs lg:text-lg text-title"
+                            dangerouslySetInnerHTML={{ __html: eventData?.description || "" }}>
+                        </div>
                         <div className="flex items-center gap-1 lg:gap-2 mt-4 lg:mt-8">
                             <Image
                                 src={"/images/finybo-icon.png"}
@@ -141,7 +147,12 @@ export default async function EventPage({ params }: EventPageProps) {
                                     <Global className="stroke-title size-6" />
                                     <p className="text-xs text-title">{tPages("biz.website")}</p>
                                 </div>
-                                <p className="text-sm text-title text-left">{eventData?.website}</p>
+                                {eventData.website && <Link
+                                    href={formatWebsiteUrl(eventData.website)}
+                                    target="_blank"
+                                    className="text-sm text-title text-left">
+                                    {eventData.website}
+                                </Link>}
                             </div>
                             <div className="flex items-start justify-between gap-3">
                                 <div className="flex items-center gap-2">
@@ -150,7 +161,11 @@ export default async function EventPage({ params }: EventPageProps) {
                                         {tPages("biz.phoneNumber")}
                                     </p>
                                 </div>
-                                <p className="text-sm text-title text-left">{eventData?.whatsapp}</p>
+                                {eventData.whatsapp && <Link
+                                    href={`tel:${eventData.whatsapp}`}
+                                    className="text-sm text-title text-left">
+                                    {eventData.whatsapp}
+                                </Link>}
                             </div>
                             <div className="flex items-start justify-between gap-3">
                                 <div className="flex items-center gap-2">

@@ -102,6 +102,7 @@ export interface BusinessResponse {
     business: Business;
     quality_services: QualityService[];
     reviews: ReviewType[];
+    is_favorite?: boolean;
 }
 
 export interface BusinessesSearchResponse {
