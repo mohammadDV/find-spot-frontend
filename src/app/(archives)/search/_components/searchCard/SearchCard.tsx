@@ -38,9 +38,10 @@ export const SearchCard = ({ data }: SearchCardProps) => {
           <Location className="stroke-title size-3 lg:size-6" />
           <p className="text-2xs lg:text-xs text-title">{data.area.title}</p>
         </div>
-        <p className="text-description text-2xs lg:text-lg lg:leading-6 line-clamp-2">
-          {data.description}
-        </p>
+        <div
+          dangerouslySetInnerHTML={{ __html: data.description || "" }}
+          className="text-description text-2xs lg:text-lg lg:leading-6 line-clamp-2">
+        </div>
         <div className="flex items-center flex-wrap gap-2">
           {data.tags?.map(tag => (
             <Badge key={tag.id} variant={"secondary"}>{tag.title}</Badge>

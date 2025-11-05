@@ -1,6 +1,7 @@
 import { PaginationLink } from "@/app/_components/pagination";
 import { Category } from "./category.type";
 import { FileType } from "./file.type";
+import { StatusCode } from "@/constants/enums";
 
 export type BusinessType = "approved" | "pending";
 
@@ -103,6 +104,7 @@ export interface BusinessResponse {
     quality_services: QualityService[];
     reviews: ReviewType[];
     is_favorite?: boolean;
+    status?: StatusCode;
 }
 
 export interface BusinessesSearchResponse {

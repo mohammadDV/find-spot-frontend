@@ -14,6 +14,8 @@ import Link from "next/link";
 import { getEvent } from "../_api/getEvents";
 import { getSimilarEvents } from "../_api/getSimilarEvents";
 import { AddToFavorites } from "../_components/AddToFavorites";
+import { StatusCode } from "@/constants/enums";
+import { redirect } from "next/navigation";
 
 interface EventPageProps {
     params: Promise<{
@@ -32,6 +34,10 @@ export default async function EventPage({ params }: EventPageProps) {
         getEvent({ id: resolvedParams?.id }),
         getSimilarEvents({ id: resolvedParams?.id })
     ]);
+
+    if (eventData?.status === StatusCode.Failed) {
+        return redirect("/not-found");
+    }
 
     return (
         <>
@@ -133,11 +139,16 @@ export default async function EventPage({ params }: EventPageProps) {
                             <p className="text-xs lg:text-lg text-title">
                                 {eventData.start_date} - {eventData.end_date}
                             </p>
-                            {(eventData.lat && eventData.long) && <Map
-                                lat={parseFloat(eventData.lat)}
-                                long={parseFloat(eventData.long)}
-                                className="rounded-xl lg:w-[473px] h-[150px] mt-6"
-                            />}
+                            {(eventData.lat && eventData.long) && (
+                                <Link
+                                    href={`https://www.google.com/maps?q=${eventData.lat},${eventData.long}`}
+                                    target="_blank">
+                                    <Map
+                                        lat={parseFloat(eventData.lat)}
+                                        long={parseFloat(eventData.long)}
+                                        className="rounded-xl lg:w-[473px] h-[150px] mt-6"
+                                    />
+                                </Link>)}
                         </div>
                     </div>
                     <div className="hidden lg:block lg:w-1/3">
