@@ -1,4 +1,5 @@
 import { PaginationLink } from "@/app/_components/pagination";
+import { StatusCode } from "@/constants/enums";
 
 export interface EventSummary {
     id: number;
@@ -36,6 +37,7 @@ export interface Event {
     end_date: string;
     slider_image: string | null;
     is_favorite?: boolean;
+    status?: StatusCode;
 }
 
 export interface EventsSlidersResponse {

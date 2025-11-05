@@ -1,6 +1,8 @@
 import { createFileUrl } from "@/lib/utils";
 import Image from "next/image";
 import { getPost } from "../_api/getPost";
+import { StatusCode } from "@/constants/enums";
+import { redirect } from "next/navigation";
 
 interface PostPageProps {
     params: Promise<{
@@ -11,6 +13,10 @@ interface PostPageProps {
 export default async function PostPage({ params }: PostPageProps) {
     const resolvedParams = await params;
     const postData = await getPost(resolvedParams.id);
+
+    if (postData?.status === StatusCode.Failed) {
+        return redirect("/not-found");
+    }
 
     return (
         <div className="max-w-6xl mx-auto px-4 mt-4 lg:mt-10">

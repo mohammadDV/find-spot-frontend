@@ -14,6 +14,8 @@ import Link from "next/link";
 import { getEvent } from "../_api/getEvents";
 import { getSimilarEvents } from "../_api/getSimilarEvents";
 import { AddToFavorites } from "../_components/AddToFavorites";
+import { StatusCode } from "@/constants/enums";
+import { redirect } from "next/navigation";
 
 interface EventPageProps {
     params: Promise<{
@@ -32,6 +34,10 @@ export default async function EventPage({ params }: EventPageProps) {
         getEvent({ id: resolvedParams?.id }),
         getSimilarEvents({ id: resolvedParams?.id })
     ]);
+
+    if (eventData?.status === StatusCode.Failed) {
+        return redirect("/not-found");
+    }
 
     return (
         <>

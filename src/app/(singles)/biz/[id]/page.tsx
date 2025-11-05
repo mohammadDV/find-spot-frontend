@@ -36,6 +36,8 @@ import { ImageGallery } from "../_components/ImageGallery";
 import { MenuViewer } from "../_components/MenuViewer";
 import { ReviewSortFilter } from "../_components/ReviewSortFilter";
 import { SubmitReview } from "../_components/SubmitReview";
+import { StatusCode } from "@/constants/enums";
+import { redirect } from "next/navigation";
 
 interface BizPageProps {
   params: Promise<{
@@ -89,6 +91,10 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
       column
     }),
   ])
+
+  if (businessData?.status === StatusCode.Failed) {
+    return redirect("/not-found");
+  }
 
   const businessDays: { label: string; from: keyof BusinessDays; to: keyof BusinessDays }[] = [
     { label: tPages("biz.monday"), from: "from_monday", to: "to_monday" },

@@ -1,4 +1,5 @@
 import { PaginationLink } from "@/app/_components/pagination";
+import { StatusCode } from "@/constants/enums";
 
 export interface Post {
     id: number;
@@ -14,6 +15,7 @@ export interface Post {
     view: number;
     special: number;
     created_at: string;
+    status?: StatusCode;
 }
 
 export interface PostsResponse {
