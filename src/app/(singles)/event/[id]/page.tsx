@@ -139,11 +139,16 @@ export default async function EventPage({ params }: EventPageProps) {
                             <p className="text-xs lg:text-lg text-title">
                                 {eventData.start_date} - {eventData.end_date}
                             </p>
-                            {(eventData.lat && eventData.long) && <Map
-                                lat={parseFloat(eventData.lat)}
-                                long={parseFloat(eventData.long)}
-                                className="rounded-xl lg:w-[473px] h-[150px] mt-6"
-                            />}
+                            {(eventData.lat && eventData.long) && (
+                                <Link
+                                    href={`https://www.google.com/maps?q=${eventData.lat},${eventData.long}`}
+                                    target="_blank">
+                                    <Map
+                                        lat={parseFloat(eventData.lat)}
+                                        long={parseFloat(eventData.long)}
+                                        className="rounded-xl lg:w-[473px] h-[150px] mt-6"
+                                    />
+                                </Link>)}
                         </div>
                     </div>
                     <div className="hidden lg:block lg:w-1/3">

@@ -320,11 +320,15 @@ export default async function BizPage({ params, searchParams }: BizPageProps) {
               <h2 className="text-title lg:text-2xl font-bold">{tPages("biz.addressAndHour")}</h2>
             </div>
             <div className="flex flex-col-reverse lg:flex-row gap-3 lg:gap-6 mt-2 lg:mt-4">
-              <Map
-                lat={parseFloat(businessData.business.lat)}
-                long={parseFloat(businessData.business.long)}
-                className="rounded-xl lg:w-[473px] h-[300px]"
-              />
+              <Link
+                href={`https://www.google.com/maps?q=${businessData.business.lat},${businessData.business.long}`}
+                target="_blank">
+                <Map
+                  lat={parseFloat(businessData.business.lat)}
+                  long={parseFloat(businessData.business.long)}
+                  className="rounded-xl lg:w-[473px] h-[300px]"
+                />
+              </Link>
               <div className="flex-1 h-full bg-card rounded-xl p-4 flex flex-col gap-2 lg:gap-1.5">
                 {businessDays.map((day, index) => {
                   const from = businessData.business[day.from as keyof typeof businessData.business];
