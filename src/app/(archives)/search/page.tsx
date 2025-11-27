@@ -8,6 +8,9 @@ import { SearchCard } from "./_components/searchCard/SearchCard";
 import { SortFilter } from "./_components/filters/SortFilter";
 import { SearchMap } from "./_components/map";
 import { isMobileDevice } from "@/lib/getDeviceFromHeaders";
+import Link from "next/link";
+import { Badge } from "@/ui/badge";
+import { getChildCategories } from "@/app/my-biz/_api/getChildCategories";
 
 interface SearchPageProps {
     searchParams: Promise<{
@@ -59,8 +62,25 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         query
     })
 
+    const childCategories = category
+        ? await getChildCategories(Number(category))
+        : [];
+
     return (
-        <div className="my-4 lg:my-10 container mx-auto px-4">
+        <div className="my-4 lg:my-8 container mx-auto px-4">
+            {childCategories.length > 0 && (
+                <div className="my-4 lg:my-6 -mx-4 px-4 overflow-x-auto scroll-smooth">
+                    <div className="flex items-center gap-2 whitespace-nowrap">
+                        {childCategories.map((child) => (
+                            <Badge key={child.id} asChild variant="outline">
+                                <Link href={`/search?category=${child.id}`}>
+                                    {child.title}
+                                </Link>
+                            </Badge>
+                        ))}
+                    </div>
+                </div>
+            )}
             <div className="lg:flex justify-between gap-10">
                 <div className="lg:w-3/4">
                     <div className="flex items-center justify-between">
@@ -118,6 +138,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     </div>
                 )}
             </div>
-        </div >
+        </div>
     )
 }
