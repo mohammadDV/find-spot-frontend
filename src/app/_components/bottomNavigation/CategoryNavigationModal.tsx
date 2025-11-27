@@ -62,7 +62,7 @@ export const CategoryNavigationModal = () => {
             <div className="text-description">{t("messages.loading")}</div>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 mb-12">
             {currentParent ? (
               <>
                 <button
@@ -83,12 +83,12 @@ export const CategoryNavigationModal = () => {
                       >
                         <div className="flex items-center gap-3">
                           {child.image && (
-                            <div className="relative size-7 rounded-lg overflow-hidden flex-shrink-0">
+                            <div className="relative size-7 overflow-hidden flex-shrink-0">
                               <Image
                                 src={createFileUrl(child.image)}
                                 alt={child.title}
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                               />
                             </div>
                           )}
@@ -117,12 +117,12 @@ export const CategoryNavigationModal = () => {
                     >
                       <div className="flex items-center gap-3">
                         {cat.image && (
-                          <div className="relative size-7 rounded-lg overflow-hidden flex-shrink-0">
+                          <div className="relative size-7 overflow-hidden flex-shrink-0">
                             <Image
                               src={createFileUrl(cat.image)}
                               alt={cat.title}
                               fill
-                              className="object-cover"
+                              className="object-contain"
                             />
                           </div>
                         )}
