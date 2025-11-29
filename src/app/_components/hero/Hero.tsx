@@ -19,7 +19,7 @@ const Hero = () => {
   return (
     <div className="relative h-[420px] lg:h-[630px] 2xl:h-[760px] w-full bg-[url('/images/hero.jpg')] -mt-24 z-10 flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0"></div>
-      <div className="lg:w-3xl flex flex-col items-center w-full p-4 lg:p-0 mt-12 lg:mb-20 2xl:mb-44">
+      <div className="lg:w-4xl flex flex-col items-center w-full p-4 lg:p-0 mt-12 lg:mb-20 2xl:mb-44">
         <h1 className="text-white text-2xl lg:text-4xl font-bold">
           {tPages("home.title")}
         </h1>
@@ -31,16 +31,16 @@ const Hero = () => {
               {tCommon("categories.restaurants")}
             </p>
           </Link>
-          <Link href={"/search?category=13"} className="flex items-center cursor-pointer gap-2 z-10">
+          <Link href={"/search?category=4"} className="flex items-center cursor-pointer gap-2 z-10">
             <House className="size-4 stroke-white" />
             <p className="text-xl font-light text-white">
-              {tCommon("categories.house")}
+              {tCommon("categories.technical")}
             </p>
           </Link>
-          <Link href={"/search?category=10"} className="flex items-center cursor-pointer gap-2 z-10">
+          <Link href={"/search?category=5"} className="flex items-center cursor-pointer gap-2 z-10">
             <Car className="size-4 stroke-white" />
             <p className="text-xl font-light text-white">
-              {tCommon("categories.vehicle")}
+              {tCommon("categories.medical")}
             </p>
           </Link>
           <Link href={"/search?category=3"} className="flex items-center cursor-pointer gap-2 z-10">
