@@ -98,9 +98,9 @@ export default async function Home() {
             ))}
           </div>
         </div>
-        <div className="mt-10 lg:mt-24">
+        {eventsSlidersData?.sliders?.length > 0 && <div className="mt-10 lg:mt-24">
           <BannerSlider data={eventsSlidersData.sliders} />
-        </div>
+        </div>}
         <div className="mt-10 lg:mt-24 container mx-auto px-4">
           <TitleSection title={tPages("home.weekend")} link="/weekend" />
           <div className="mt-4 lg:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">

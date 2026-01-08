@@ -112,13 +112,13 @@ export const CategoriesMenu = () => {
             <Reserve className="size-4 stroke-title" />
             <p className="text-title text-lg">{tCommon("categories.restaurants")}</p>
           </Link>
-          <Link href={"/search?category=13"} className="flex items-center cursor-pointer gap-2">
+          <Link href={"/search?category=4"} className="flex items-center cursor-pointer gap-2">
             <House className="size-4 stroke-title" />
-            <p className="text-title text-lg">{tCommon("categories.house")}</p>
+            <p className="text-title text-lg">{tCommon("categories.technical")}</p>
           </Link>
-          <Link href={"/search?category=10"} className="flex items-center cursor-pointer gap-2">
+          <Link href={"/search?category=5"} className="flex items-center cursor-pointer gap-2">
             <Car className="size-4 stroke-title" />
-            <p className="text-title text-lg">{tCommon("categories.vehicle")}</p>
+            <p className="text-title text-lg">{tCommon("categories.medical")}</p>
           </Link>
           <Link href={"/search?category=3"} className="flex items-center cursor-pointer gap-2">
             <Health className="size-4 stroke-title" />
