@@ -10,6 +10,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    loader: "custom",
+    loaderFile: "./imageLoader.ts",
     remotePatterns: [
       {
         protocol: "https",
